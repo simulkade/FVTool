@@ -43,4 +43,4 @@ the visualization and sparse solvers of Julia are not mature yet.
 
 ## Other codes
 I have a PVT tool (phase equilibrium calculations) in matlab, which is not ready to be shared yet. The code must be commented and revised.
-That's the reason that you get this warning durin the start-up.
+That's the reason that you get a warning when you run the FVToolStartUp script.
