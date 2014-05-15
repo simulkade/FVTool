@@ -11,10 +11,10 @@ include:
 
 ## How to start
 Download the package, start matlab, and run
-   FVToolStartUp
+   `FVToolStartUp`
    
 You can see a very early document and tutorial by typing (in matlab command line)
-   showdemo FVTdemo
+   `showdemo FVTdemo`
    
 ## Inspiration
 I started writing this tool after playing with [FiPy] (http://www.ctcms.nist.gov/fipy/), an amazing python-based finite volume solver. 
