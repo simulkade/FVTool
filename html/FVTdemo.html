@@ -1,0 +1,820 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Apparently it must be here!</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-05-15"><meta name="DC.source" content="FVTdemo.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Apparently it must be here!</h1><!--introduction--><p>Copyright (c) 2012, 2013, 2014, Ali Akbar Eftekhari All rights reserved.</p><p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p><pre>   *   Redistributions of source code must retain the above copyright notice,
+       this list of conditions and the following disclaimer.
+   *   Redistributions in binary form must reproduce the above
+       copyright notice, this list of conditions and the following
+       disclaimer in the documentation and/or other materials provided
+       with the distribution.</pre><p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Build a mesh and visualize it</a></li><li><a href="#13">Boundary condition structure</a></li><li><a href="#26">Solve a diffusion equation</a></li><li><a href="#37">Solve a convection-diffuison equation and compare it to analytical solution</a></li><li><a href="#53">solve a transient diffusion equation</a></li><li><a href="#67">convection equations; different discretization schemes</a></li></ul></div><h2>Build a mesh and visualize it<a name="1"></a></h2><p>The first part of this demo shows you how to build a mesh and visualize it. The aim of the visualization is to introduce you to the mesh structure. Here, we are going to build and visualize a 1D uniform equidistant mesh and show the cell centers with a 'o' marker and the face of each cell with a '+' marker. We start by defining the length of the domain:</p><pre class="codeinput">L = 1.0; <span class="comment">% length of the domain</span>
+</pre><p>Then we define the number of cells in the domain:</p><pre class="codeinput">Nx = 10; <span class="comment">% number of cells in the domain</span>
+</pre><p>Now we call buildMesh1D, one of the functions from a group of buildMesh* functions:</p><pre class="codeinput">m = buildMesh1D(Nx, L);
+</pre><p>This function generates a structure which keeps the domain and grid information, which will be used by almost every other function in the FVMtool.</p><p>In general, 1D, 2D, 3D, 1D radial (axial symetry), and 2D cylindrical grids can be constructed. For more information, type</p><pre class="language-matlab">help <span class="string">buildMesh2D</span>
+help <span class="string">buildMesh3D</span>
+help <span class="string">buildMeshCylindrical1D</span>
+help <span class="string">buildMeshCylindrical2D</span>
+</pre><p>Now, let's have a look at the structure of the created mesh:</p><pre class="codeinput">disp(m);
+</pre><pre class="codeoutput">        dimension: 1
+        numbering: [12x1 double]
+      cellcenters: [1x1 struct]
+      facecenters: [1x1 struct]
+    numberofcells: 10
+         cellsize: 0.1000
+
+</pre><p>You can easily get more information about this structure by typing</p><pre class="language-matlab">help <span class="string">buildMesh1D</span>
+</pre><p>As an example, we use the position of the cell centers to visualize the domain, the cells, and the interfaces between them:</p><pre class="codeinput">plot(m.cellcenters.x, ones(size(m.cellcenters.x)), <span class="string">'or'</span>, <span class="keyword">...</span>
+     m.facecenters.x, ones(size(m.facecenters.x)), <span class="string">'-+b'</span>);
+legend(<span class="string">'cell centers'</span>, <span class="string">'face centers'</span>);
+title(<span class="string">'Visualization of a 1D discretized domain'</span>);
+</pre><img vspace="5" hspace="5" src="FVTdemo_01.png" alt=""> <p>The generated figure shows a 1D domain of length 1.0 [unit], discretized into 10 cells of the same size (dx = 1/10). I'm going to assume that you are familiar with the cell-centred finite volume method, discretization, and especially handling the boundary conditions using the ghost cells. You can also generate and visualize 2D and 3D meshes. To find some examples, type:</p><pre class="language-matlab">help <span class="string">buildMesh2D</span>;
+help <span class="string">buildMesh3D</span>;
+</pre><p>You will end up with the following two simple examples:</p><pre class="codeinput">Nx = 5;
+Ny = 7;
+Lx = 10;
+Ly = 20;
+m = buildMesh2D(Nx, Ny, Lx, Ly);
+[X, Y] = ndgrid(m.cellcenters.x, m.cellcenters.y);
+[Xf,Yf]=ndgrid(m.facecenters.x, m.facecenters.y);
+plot(X, Y, <span class="string">'or'</span>, <span class="keyword">...</span>
+     Xf, Yf, <span class="string">'-b'</span>, Xf', Yf', <span class="string">'-b'</span>);
+</pre><img vspace="5" hspace="5" src="FVTdemo_02.png" alt=""> <p>that shows you a 2D grid, and</p><pre class="codeinput">Nx = 2;
+Lx = 1.0;
+Ny = 3;
+Ly = 2.0;
+Nz = 4;
+Lz = 3.0;
+m = buildMesh3D(Nx, Ny, Nz, Lx, Ly, Lz);
+[X, Y, Z] = ndgrid(m.cellcenters.x, m.cellcenters.y, m.cellcenters.z);
+[Xf, Yf, Zf] = ndgrid(m.facecenters.x, m.facecenters.y, m.facecenters.z);
+plot3(X(:), Y(:), Z(:), <span class="string">'or'</span>)
+hold <span class="string">on</span>;
+plot3(Xf(:), Yf(:), Zf(:), <span class="string">'+b'</span>)
+legend(<span class="string">'cell centers'</span>, <span class="string">'cell corners'</span>);
+</pre><img vspace="5" hspace="5" src="FVTdemo_03.png" alt=""> <p>that shows a 3D grid.</p><h2>Boundary condition structure<a name="13"></a></h2><p>I had so many reasons to write this toy toolbox, of which, the most important one was to be able to implement different boundary conditions in the most convenient way! My final implementation makes the user able to define either a <i>periodic boundary condition</i> or a <i>general boundary condition</i> of the following form:</p><p><img src="FVTdemo_eq36288.png" alt="$$a (\nabla \phi .\mathbf{n}) + b \phi = c $$"></p><p>In the above equation, <img src="FVTdemo_eq26509.png" alt="$\phi$"> is the unknown, and <i>a</i>, <i>b</i>, and <i>c</i> are constants. In practice, this boundary condition equation will be discretized to the following system of algebraic equations:</p><p><img src="FVTdemo_eq52362.png" alt="$$M_{bc} \phi = {RHS}_{bc}$$"></p><p>By adjusting the values of <i>a</i> and <i>b</i>, onne can easily define one of the following well-known boundary conditions:</p><div><ul><li>Neumann (<i>a</i> is nonzero; <i>b</i> is 0)</li><li>Dirichlet (<i>a</i> is zero; <i>b</i> is nonzero)</li><li>Robin (<i>a</i> and <i>b</i> are both nonzero)</li></ul></div><p>To clarify the above explanations, let us create a boundary condition structure for a 1D mesh.</p><pre class="codeinput">Nx = 10; <span class="comment">% number of cells in the domain</span>
+Lx = 1.0; <span class="comment">% length of the domain</span>
+m = createMesh1D(Nx, Lx); <span class="comment">% createMesh and buildMesh are identical</span>
+BC = createBC(m); <span class="comment">% creates a boundary condition structure</span>
+disp(BC); <span class="comment">% display the BC structure</span>
+</pre><pre class="codeoutput">    right: [1x1 struct]
+     left: [1x1 struct]
+
+</pre><p>The BC structure has two substructures, i.e., <i>left</i> that denotes the boundary at the left side of the domain (at x=0), and <i>right</i> that denotes the boundary at the end of the domain (at x=Lx). Each of these substructures have three fields, i.e., <i>a</i>, <i>b</i>, and <i>c</i>. The default values are <i>a</i>=1, <i>b</i>=0, and <i>c</i>=0:</p><pre class="codeinput">disp(BC.left); <span class="comment">% show the values of the coefficients for the left boundary</span>
+</pre><pre class="codeoutput">           a: 1
+           b: 0
+           c: 0
+    periodic: 0
+
+</pre><p>There is one other field, i.e., <i>periodic</i>, which has a zero value. If you change it to one, then a periodic boundary condition will be created and the <i>a</i>, <i>b</i>, and <i>c</i> values will be ignored. clearly, you can change the above boundary condition by assigning new values to the <tt>BC.left</tt> fields. For instance, you can define a Dirichlet  boundary (i.e., fixed value) with a value of 2.5 by typing</p><pre class="codeinput">BC.left.a = 0;
+BC.left.b = 1;
+BC.left.c = 2.5;
+</pre><p>You can define a periodic boundary condition simply by writing:</p><pre class="codeinput">BC.left.periodic = 1;
+</pre><p>For boundary condition structures created for 2D and 3D grids, we will have <i>left</i>, <i>right</i>, <i>bottom</i>, <i>top</i>, <i>back</i>, and <i>front</i> boundaries and thus substructures. Let me show them to you in action:</p><pre class="codeinput">m = createMesh2D(3,4, 1.0, 2.0);
+BC = createBC(m);
+disp(BC);
+disp(BC.top);
+</pre><pre class="codeoutput">       top: [1x1 struct]
+    bottom: [1x1 struct]
+     right: [1x1 struct]
+      left: [1x1 struct]
+
+           a: [3x1 double]
+           b: [3x1 double]
+           c: [3x1 double]
+    periodic: 0
+
+</pre><p>Yes, that's right. <i>a</i>, <i>b</i>, and <i>c</i> are vectors. It means that you can have different boundary conditions for different cell faces at each boundary. For instance, I can have a Neumann boundary condition for the first cell and a Dirichlet boundary condition for the last cell at the top boundary:</p><pre class="codeinput">BC.top.a(1) = 1; BC.top.b(1) = 0; BC.top.c(1) = 0; <span class="comment">% zero value Neumann</span>
+BC.top.a(end) =0; BC.top.b(end)=1; BC.top.c(end) = 0; <span class="comment">% zero value Dirichlet</span>
+disp(<span class="string">'top.  a     b     c'</span>); <span class="comment">% some fancy display!</span>
+disp(<span class="string">'   ---------------'</span>);
+disp([BC.top.a BC.top.b BC.top.c]);
+</pre><pre class="codeoutput">top.  a     b     c
+   ---------------
+     1     0     0
+     1     0     0
+     0     1     0
+
+</pre><p>The same procedure can be followed for a 3D grid. However, <i>a</i>, <i>b</i>, and <i>c</i> values are 2D matrices for a 3D grid. I will discuss it in more details when we reach the practical examples. <b>Important note:</b> If you need to assign a boundary condition to the entire boundary, use (:) in your assignment. For instance, to define a Dirichlet boundary for the right boundary, you may write</p><pre class="codeinput">BC.right.a(:)=0; BC.right.b(:)=1; BC.right.c(:)=0;
+</pre><h2>Solve a diffusion equation<a name="26"></a></h2><p>As the first example, we solve a steady-state diffusion equation of the following formform</p><p><img src="FVTdemo_eq32452.png" alt="$$\nabla.\left(-D\nabla c\right)=0,$$"></p><p>where <i>D</i> is the diffusivity and <i>c</i> is the concentration. Let me assume that we have a 1D domain, with Dirichlet boundary conditions at both boundaries, i.e., at x=0, c=1; and at x=L, c=0. First of all, we need to define our domain, discretize it, and define the boundaries at the borders.</p><pre class="codeinput">clc; clear; close <span class="string">all</span>; <span class="comment">% clear the screen and memory</span>
+L = 0.01; <span class="comment">% a 1 cm domain</span>
+Nx = 10; <span class="comment">% number of cells</span>
+m = createMesh3D(Nx,Nx,Nx,L, L,L); <span class="comment">% create the mesh</span>
+BC = createBC(m); <span class="comment">% construct the BC structure (Neumann by default)</span>
+</pre><p>Now as you may remeber, we have to switch from Neumann to Dirichlet boundary conditions</p><pre class="codeinput">BC.left.a(:) = 0; BC.left.b(:) = 1; BC.left.c(:) = 1; <span class="comment">% Left boundary to Dirichlet</span>
+BC.right.a(:) = 0; BC.right.b(:) = 1; BC.left.c(:) = 1; <span class="comment">% right boundary to Dirichlet</span>
+</pre><p>The next sep is to define the diffusivity coefficient. In this FVTool, the physical properties of the domain are defined for each cell, with the function createCellVariable</p><pre class="codeinput">D = createCellVariable(m, 1e-5); <span class="comment">% assign a constant value of 1e-5 to diffusivity value on each cell</span>
+</pre><p>However, the transfer coefficients must be known on the face of each cell. For this reason, we have a few averaging schemes implemented in the Utilities folder. For a 1D domain, we can use a harmonic mean scheme:</p><pre class="codeinput">D_face = harmonicMean(m, D); <span class="comment">% average diffusivity value on the cell faces</span>
+</pre><p>Now, we can convert the PDE to a algebraic system of linear equations, i.e.,</p><p><img src="FVTdemo_eq56138.png" alt="$$\nabla.\left(-D\nabla c\right) \approx Mc = 0$$"></p><p>where M is the matrix of coefficient that is going to be calculated using this toolbox. The matrix of coefficient, <i>M</i> has two parts. The diffusion equation and the boundary conditions. They are calculated by:</p><pre class="codeinput">M_diff = diffusionTerm(m, D_face); <span class="comment">% matrix of coefficients for diffusion term</span>
+[M_bc, RHS_bc] = boundaryCondition(m, BC); <span class="comment">% matrix of coefficient and RHS vector for the boundary condition</span>
+</pre><p>A vector of right hand side values are always obtained during the discretization of the boundary conditions. Now that the PDE is discretized, we can solve it by a Matlab linear solver.</p><pre class="codeinput">c = solvePDE(m, M_diff+M_bc, RHS_bc);
+</pre><p>finally, the resut can be visualized:</p><pre class="codeinput">visualizeCells(m, c);
+</pre><img vspace="5" hspace="5" src="FVTdemo_04.png" alt=""> <p>Just to get excited a little bit, only change the mesh definition command from createMesh1D(Nx,L) to createMesh2D(Nx,Nx,L,L), run the code and see what happens. For even more excitement, change it to createMesh3D(Nx,Nx,Nx,L,L,L). This is usually the way we develop new mathematical models for a physical phenomenon. Write the equation, solve it in 1D, compare it to the analytical solution, then solve it numerically in 2D and 3D for more realistic cases with heterogeneous transfer coefficients and other nonidealities (and perhaps compare it to some experimental data)</p><h2>Solve a convection-diffuison equation and compare it to analytical solution<a name="37"></a></h2><p>Here, I'm going to add a convection term to what we solved in the previous example. This tutorial is adopted from the fipy convection-diffusion example you can find at this address:</p><p><a href="http://www.ctcms.nist.gov/fipy/examples/convection/index.html">http://www.ctcms.nist.gov/fipy/examples/convection/index.html</a></p><p>The differential equation reads</p><p><img src="FVTdemo_eq48710.png" alt="$$\nabla.\left(\mathbf{u} \phi -D\nabla \phi \right)=0$$"></p><p>Here, <img src="FVTdemo_eq85330.png" alt="$\mathbf{u}$"> is a velocity vector (face variable) and <img src="FVTdemo_eq35719.png" alt="$D$"> is the diffusion coefficient (again a face variable). Please see the PDF document for an explanation of cell and face variables. We use Dirichlet (constant value) boundary conditions on the left and right boundaries. It is zero at the left boundary and one at the right boundary. The analytical solution of this differential equation reads</p><p><img src="FVTdemo_eq30327.png" alt="$$c = \frac{1-exp(ux/D)}{1-exp(uL/D)}$$"></p><p>We start the code as always with some cleaning up:</p><pre class="codeinput">clc; clear; close <span class="string">all</span>;
+</pre><p>Then we define the domain and mesh size:</p><pre class="codeinput">L = 1;  <span class="comment">% domain length</span>
+Nx = 25; <span class="comment">% number of cells</span>
+meshstruct = createMesh1D(Nx, L);
+x = meshstruct.cellcenters.x; <span class="comment">% extract the cell center positions</span>
+</pre><p>The next step is to define the boundary condition:</p><pre class="codeinput">BC = createBC(meshstruct); <span class="comment">% all Neumann boundary condition structure</span>
+BC.left.a = 0; BC.left.b=1; <span class="comment">% switch the left boundary to Dirichlet</span>
+BC.left.c=0; <span class="comment">% value = 0 at the left boundary</span>
+BC.right.a = 0; BC.right.b=1; <span class="comment">% switch the right boundary to Dirichlet</span>
+BC.right.c=1; <span class="comment">% value = 1 at the right boundary</span>
+</pre><p>Now we define the transfer coefficients:</p><pre class="codeinput">D_val = 1.0; <span class="comment">% diffusion coefficient value</span>
+D = createCellVariable(meshstruct, D_val); <span class="comment">% assign dif. coef. to all the cells</span>
+Dave = harmonicMean(meshstruct, D); <span class="comment">% convert a cell variable to face variable</span>
+u = -10; <span class="comment">% velocity value</span>
+u_face = createFaceVariable(meshstruct, u); <span class="comment">% assign velocity value to cell faces</span>
+</pre><p>Now we discretize the differential equation into a system of linear algebraic equations:</p><p><img src="FVTdemo_eq43192.png" alt="$$(M_{conv}-M_{diff}+M_{bc})\phi={RHS}_{bc}$$"></p><p>or if we use an upwind discretization scheme, we will obtain:</p><p><img src="FVTdemo_eq40672.png" alt="$$(M_{conv,uw}-M_{diff}+M_{bc})\phi={RHS}_{bc}$$"></p><pre class="codeinput">Mconv =  convectionTerm(meshstruct, u_face); <span class="comment">% convection term, central, second order</span>
+Mconvupwind = convectionUpwindTerm(meshstruct, u_face); <span class="comment">% convection term, upwind, first order</span>
+Mdiff = diffusionTerm(meshstruct, Dave); <span class="comment">% diffusion term</span>
+[Mbc, RHSbc] = boundaryCondition(meshstruct, BC); <span class="comment">% boundary condition discretization</span>
+M = Mconv-Mdiff+Mbc; <span class="comment">% matrix of coefficient for central scheme</span>
+Mupwind = Mconvupwind-Mdiff+Mbc; <span class="comment">% matrix of coefficient for upwind scheme</span>
+RHS = RHSbc; <span class="comment">% right hand side vector</span>
+c = solvePDE(meshstruct, M, RHS); <span class="comment">% solve for the central scheme</span>
+c_upwind = solvePDE(meshstruct, Mupwind, RHS); <span class="comment">% solve for the upwind scheme</span>
+c_analytical = (1-exp(u*x/D_val))/(1-exp(u*L/D_val)); <span class="comment">% analytical solution</span>
+plot(x, c(2:Nx+1), x, c_upwind(2:Nx+1), <span class="string">'--'</span>,<span class="keyword">...</span>
+    x, c_analytical, <span class="string">'.'</span>);
+legend(<span class="string">'central'</span>, <span class="string">'upwind'</span>, <span class="string">'analytical'</span>);
+</pre><img vspace="5" hspace="5" src="FVTdemo_05.png" alt=""> <p>As you see here, we obtain a more accurate result by using a central difference discretization scheme for the convection term compared to the first order upwind.</p><h2>solve a transient diffusion equation<a name="53"></a></h2><p>This tutorial is adapted from the fipy 1D diffusion example</p><p><a href="http://www.ctcms.nist.gov/fipy/examples/diffusion/index.html">FiPy diffusion tutorial</a> The transient diffusion equation reads</p><p><img src="FVTdemo_eq21773.png" alt="$$\alpha\frac{\partial c}{\partial t}+\nabla.\left(-D\nabla c\right)=0,$$"></p><p>where <img src="FVTdemo_eq27869.png" alt="$c$"> is the independent variable (concentration, temperature, etc) , <img src="FVTdemo_eq35719.png" alt="$D$"> is the diffusion coefficient, and <img src="FVTdemo_eq87919.png" alt="$\alpha$"> is a constant.</p><p>Once again, clean up:</p><pre class="codeinput">clc; clear; close <span class="string">all</span>;
+</pre><p>Define the domain and create a mesh structure</p><pre class="codeinput">L = 50;  <span class="comment">% domain length</span>
+Nx = 20; <span class="comment">% number of cells</span>
+m = buildMesh1D(Nx, L);
+x = m.cellcenters.x; <span class="comment">% cell centers position</span>
+</pre><p>Create the boundary condition structure:</p><pre class="codeinput">BC = createBC(m); <span class="comment">% all Neumann boundary condition structure</span>
+</pre><p>Switch the left and right boundaries to Dirichlet:</p><pre class="codeinput">BC.left.a = 0; BC.left.b=1; BC.left.c=1; <span class="comment">% left boundary</span>
+BC.right.a = 0; BC.right.b=1; BC.right.c=0; <span class="comment">% right boundary</span>
+</pre><p>Define the transfer coefficients:</p><pre class="codeinput">D_val = 1;
+D = createCellVariable(m, D_val);
+Dave = harmonicMean(m, D); <span class="comment">% convert it to face variables</span>
+<span class="comment">% Define alfa, the coefficient of the transient term:</span>
+alfa_val = 1;
+alfa = createCellVariable(m, alfa_val);
+</pre><p>Define the initial values:</p><pre class="codeinput">c_init = 0;
+c.Old = createCellVariable(m, c_init, BC); <span class="comment">% initial values</span>
+c.value = c.Old; <span class="comment">% assign the old value of the cells to the current values</span>
+</pre><p>Now define the time step and the final time:</p><pre class="codeinput">dt = 0.1; <span class="comment">% time step</span>
+final_t = 100;
+</pre><p>Here, we first define the matrices of coefficients that will not change as we progress in time, viz. diffusion term and boundary condition:</p><pre class="codeinput">Mdiff = diffusionTerm(m, Dave);
+[Mbc, RHSbc] = boundaryCondition(m, BC);
+</pre><p>The transitionTerm function gives a matrix of coefficient and a RHS vector. The matrix of coefficient does not change in each time step, but the RHS does (see the PDF documents). Therefore, we need to call the function inside the time loop. Start the loop here:</p><pre class="codeinput"><span class="keyword">for</span> t=dt:dt:final_t
+    [M_trans, RHS_trans] = transientTerm(m, alfa, dt, c);
+    M = M_trans-Mdiff+Mbc;
+    RHS = RHS_trans+RHSbc;
+    c.value = solvePDE(m,M, RHS);
+    c_analytical = 1-erf(x/(2*sqrt(D_val*t)));
+    c.Old = c.value;
+<span class="keyword">end</span>
+</pre><p>Now visualize the final results</p><pre class="codeinput">plot(x, c.value(2:Nx+1), <span class="string">'o'</span>, x, c_analytical);
+xlabel(<span class="string">'Length [m]'</span>); ylabel(<span class="string">'c'</span>);
+legend(<span class="string">'Numerical'</span>, <span class="string">'Analytical'</span>);
+</pre><img vspace="5" hspace="5" src="FVTdemo_06.png" alt=""> <p>you can visualize the results from each time step by moving the plot line inside the for loop.</p><h2>convection equations; different discretization schemes<a name="67"></a></h2><p>If I want to highlight one special feature of this FVTool, I will point a finger on its various discretization schemes for a linear convection term, which includes central difference (second order), upwind (first order), and TVD scheme with various flux limiters.</p><p>Here, we are going to compare the performance of each scheme for solving two PDE's. First, a simple linear transient convection equation with an strange initial condition and later, we solve the well-known Burger's equation.</p><pre class="codeinput">clc; clear; close <span class="string">all</span>;
+<span class="comment">% define a 1D domain and mesh</span>
+W = 1;
+Nx = 500;
+mesh1 = buildMesh1D(Nx, W);
+x = mesh1.cellcenters.x;
+<span class="comment">% define the boundaries</span>
+BC = createBC(mesh1); <span class="comment">% all Neumann</span>
+BC.left.periodic=1;
+BC.right.periodic =1;
+<span class="comment">% Initial values</span>
+phi.Old = createCellVariable(mesh1, 0.0, BC);
+phi.Old(20:120) = 1;
+phi.Old(180:400)= sin(x(180:400)*10*pi());
+<span class="comment">% initial guess for phi</span>
+phi.value = phi.Old;
+<span class="comment">% initial values for upwind scheme</span>
+phiuw = phi;
+<span class="comment">% keep the initial values for visualization</span>
+phiinit=phi.Old;
+<span class="comment">% velocity field</span>
+u = 0.3;
+uf = createFaceVariable(mesh1, u);
+<span class="comment">% diffusion field</span>
+D = 1e-2;
+Df = createFaceVariable(mesh1, D);
+<span class="comment">% transient term coefficient</span>
+alfa = createCellVariable(mesh1,1.0);
+<span class="comment">% upwind convection term</span>
+Mconvuw = convectionUpwindTerm1D(mesh1, uf);
+<span class="comment">% define the BC term</span>
+[Mbc, RHSbc] = boundaryCondition(mesh1, BC);
+<span class="comment">% choose a flux limiter</span>
+FL = fluxLimiter(<span class="string">'MUSCL'</span>);
+<span class="comment">% solver</span>
+dt = 0.0005; <span class="comment">% time step</span>
+final_t = W/u;
+t = 0;
+<span class="keyword">while</span> t&lt;final_t
+    t = t+dt;
+    <span class="comment">% inner loop for TVD scheme</span>
+    <span class="keyword">for</span> j = 1:5
+        [Mt, RHSt] = transientTerm(mesh1, alfa, dt, phi);
+        [Mconv, RHSconv] = convectionTvdTerm1D(mesh1, uf, phi.value, FL);
+        M = Mconv+Mt+Mbc;
+        RHS = RHSt+RHSbc+RHSconv;
+        PHI = M\RHS;
+        phi.value = reshape(PHI, Nx+2, 1);
+    <span class="keyword">end</span>
+    [Mtuw, RHStuw] = transientTerm(mesh1, alfa, dt, phiuw);
+    Muw = Mconvuw+Mtuw+Mbc;
+    RHSuw = RHStuw+RHSbc;
+    PHI = Muw\RHSuw;
+    phiuw.value = reshape(PHI, Nx+2, 1);
+    phiuw.Old = phiuw.value;
+    phi.Old = phi.value;
+<span class="keyword">end</span>
+figure(1);plot(x, phiinit(2:Nx+1), x, phi.value(2:Nx+1), <span class="string">'-o'</span>, x, <span class="keyword">...</span>
+        phiuw.value(2:Nx+1));
+
+<span class="comment">% %% method of lines: using Matlab's ODE solvers for adaptive time stepping</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">% %% solving a nonlinear PDE</span>
+<span class="comment">%</span>
+<span class="comment">% %% solving a system of linear PDE's: sequential and coupled methods</span>
+<span class="comment">%</span>
+<span class="comment">% %% solving a system of nonlinear PDE's: sequential and coupled olutions</span>
+<span class="comment">%</span>
+<span class="comment">% %% Real life cases: water-flooding in the production of oil</span>
+<span class="comment">%</span>
+<span class="comment">% %% and finally your examples?</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+</pre><img vspace="5" hspace="5" src="FVTdemo_07.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Apparently it must be here! 
+% Copyright (c) 2012, 2013, 2014, Ali Akbar Eftekhari
+% All rights reserved.
+% 
+% Redistribution and use in source and binary forms, with or 
+% without modification, are permitted provided that the following 
+% conditions are met:
+% 
+%     *   Redistributions of source code must retain the above copyright notice, 
+%         this list of conditions and the following disclaimer.
+%     *   Redistributions in binary form must reproduce the above 
+%         copyright notice, this list of conditions and the following 
+%         disclaimer in the documentation and/or other materials provided 
+%         with the distribution.
+% 
+% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+% AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+% THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+% PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
+% CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
+% EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+% PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
+% OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+% LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+% NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+% SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+%% Build a mesh and visualize it
+% The first part of this demo shows you how to build a mesh and visualize
+% it. The aim of the visualization is to introduce you to the mesh
+% structure. 
+% Here, we are going to build and visualize a 1D uniform equidistant mesh
+% and show the cell centers with a 'o' marker and the face of each cell
+% with a '+' marker.
+% We start by defining the length of the domain:
+L = 1.0; % length of the domain
+%%
+% Then we define the number of cells in the domain:
+%
+Nx = 10; % number of cells in the domain
+%%
+% Now we call buildMesh1D, one of the functions from a group of buildMesh*
+% functions:
+%
+m = buildMesh1D(Nx, L);
+%%
+% This function generates a structure which keeps the domain and grid
+% information, which will be used by almost every other function in the
+% FVMtool.
+%
+% In general, 1D, 2D, 3D, 1D radial (axial symetry), and 2D cylindrical
+% grids can be constructed. For more information, type
+%%
+% 
+%   help buildMesh2D
+%   help buildMesh3D
+%   help buildMeshCylindrical1D
+%   help buildMeshCylindrical2D
+% 
+%%
+% Now, let's have a look at the structure of the created mesh:
+%
+disp(m);
+%%
+% You can easily get more information about this structure by typing
+%%
+%   help buildMesh1D
+%
+%%
+% As an example, we use the position of the cell centers to visualize the 
+% domain, the cells, and the interfaces between them:
+%
+plot(m.cellcenters.x, ones(size(m.cellcenters.x)), 'or', ...
+     m.facecenters.x, ones(size(m.facecenters.x)), '-+b');
+legend('cell centers', 'face centers');
+title('Visualization of a 1D discretized domain');
+%%
+% The generated figure shows a 1D domain of length 1.0 [unit], discretized
+% into 10 cells of the same size (dx = 1/10).
+% I'm going to assume that you are familiar with the cell-centred finite 
+% volume method, discretization, and especially handling the boundary
+% conditions using the ghost cells.
+% You can also generate and visualize 2D and 3D meshes. To find some
+% examples, type:
+%
+%   help buildMesh2D;
+%   help buildMesh3D;
+%
+% You will end up with the following two simple examples:
+%
+Nx = 5;
+Ny = 7;
+Lx = 10;
+Ly = 20;
+m = buildMesh2D(Nx, Ny, Lx, Ly);
+[X, Y] = ndgrid(m.cellcenters.x, m.cellcenters.y);
+[Xf,Yf]=ndgrid(m.facecenters.x, m.facecenters.y);
+plot(X, Y, 'or', ...
+     Xf, Yf, '-b', Xf', Yf', '-b');
+%%
+% that shows you a 2D grid, and
+%
+Nx = 2;
+Lx = 1.0;
+Ny = 3;
+Ly = 2.0;
+Nz = 4;
+Lz = 3.0;
+m = buildMesh3D(Nx, Ny, Nz, Lx, Ly, Lz);
+[X, Y, Z] = ndgrid(m.cellcenters.x, m.cellcenters.y, m.cellcenters.z);
+[Xf, Yf, Zf] = ndgrid(m.facecenters.x, m.facecenters.y, m.facecenters.z);
+plot3(X(:), Y(:), Z(:), 'or')
+hold on;
+plot3(Xf(:), Yf(:), Zf(:), '+b')
+legend('cell centers', 'cell corners');
+%%
+% that shows a 3D grid.
+%% Boundary condition structure
+% I had so many reasons to write this toy toolbox, of which, the most
+% important one was to be able to implement different boundary conditions
+% in the most convenient way! My final implementation makes the user able
+% to define either a _periodic boundary condition_ or a _general boundary
+% condition_ of the following form:
+%%
+% 
+% $$a (\nabla \phi .\mathbf{n}) + b \phi = c $$
+%
+%%
+% In the above equation, $\phi$ is the unknown, and _a_, _b_, and _c_ are 
+% constants. In practice, this boundary condition equation will be discretized
+% to the following system of algebraic equations:
+%%
+% 
+% $$M_{bc} \phi = {RHS}_{bc}$$
+% 
+%%
+% By adjusting the values of _a_ and _b_, onne can easily define
+% one of the following well-known boundary conditions:
+%%
+% 
+% * Neumann (_a_ is nonzero; _b_ is 0)
+% * Dirichlet (_a_ is zero; _b_ is nonzero)
+% * Robin (_a_ and _b_ are both nonzero)
+% 
+%%
+% To clarify the above explanations, let us create a boundary condition
+% structure for a 1D mesh.
+%
+Nx = 10; % number of cells in the domain
+Lx = 1.0; % length of the domain
+m = createMesh1D(Nx, Lx); % createMesh and buildMesh are identical
+BC = createBC(m); % creates a boundary condition structure
+disp(BC); % display the BC structure
+%%
+% The BC structure has two substructures, i.e., _left_ that denotes the boundary
+% at the left side of the domain (at x=0), and _right_ that denotes the
+% boundary at the end of the domain (at x=Lx). Each of these substructures 
+% have three fields, i.e., _a_, _b_, and _c_. The default values are _a_=1,
+% _b_=0, and _c_=0:
+%
+disp(BC.left); % show the values of the coefficients for the left boundary
+%%
+% There is one other field, i.e., _periodic_, which has a zero value. If
+% you change it to one, then a periodic boundary condition will be created
+% and the _a_, _b_, and _c_ values will be ignored.
+% clearly, you can change the above boundary condition by assigning new
+% values to the |BC.left| fields. For instance, you can define a Dirichlet
+%  boundary (i.e., fixed value) with a value of 2.5 by typing
+%
+BC.left.a = 0;
+BC.left.b = 1;
+BC.left.c = 2.5;
+%%
+% You can define a periodic boundary condition simply by writing:
+%
+BC.left.periodic = 1;
+%%
+% For boundary condition structures created for 2D and 3D grids, we will
+% have _left_, _right_, _bottom_, _top_, _back_, and _front_ boundaries 
+% and thus substructures. Let me show them to you in action:
+%
+m = createMesh2D(3,4, 1.0, 2.0);
+BC = createBC(m);
+disp(BC);
+disp(BC.top);
+%%
+% Yes, that's right. _a_, _b_, and _c_ are vectors. It means that you can 
+% have different boundary conditions for
+% different cell faces at each boundary. For instance, I can have a Neumann
+% boundary condition for the first cell and a Dirichlet boundary condition
+% for the last cell at the top boundary:
+BC.top.a(1) = 1; BC.top.b(1) = 0; BC.top.c(1) = 0; % zero value Neumann
+BC.top.a(end) =0; BC.top.b(end)=1; BC.top.c(end) = 0; % zero value Dirichlet
+disp('top.  a     b     c'); % some fancy display!
+disp('   REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-');
+disp([BC.top.a BC.top.b BC.top.c]);
+%%
+% The same procedure can be followed for a 3D grid. However, _a_, _b_, and
+% _c_ values are 2D matrices for a 3D grid. I will discuss it in more
+% details when we reach the practical examples.
+% *Important note:* If you need to assign a boundary condition to the
+% entire boundary, use (:) in your assignment. For instance, to define a 
+% Dirichlet boundary for the right boundary, you may write
+BC.right.a(:)=0; BC.right.b(:)=1; BC.right.c(:)=0;
+%% Solve a diffusion equation
+% As the first example, we solve a steady-state diffusion equation of the 
+% following formform
+% 
+% $$\nabla.\left(-D\nabla c\right)=0,$$
+%
+%%
+% where _D_ is the diffusivity and _c_ is the concentration. Let me assume
+% that we have a 1D domain, with Dirichlet boundary conditions at both
+% boundaries, i.e.,
+% at x=0, c=1; and at x=L, c=0.
+% First of all, we need to define our domain, discretize it, and define the
+% boundaries at the borders.
+clc; clear; close all; % clear the screen and memory
+L = 0.01; % a 1 cm domain
+Nx = 10; % number of cells
+m = createMesh3D(Nx,Nx,Nx,L, L,L); % create the mesh
+BC = createBC(m); % construct the BC structure (Neumann by default)
+%%
+% Now as you may remeber, we have to switch from Neumann to Dirichlet
+% boundary conditions
+%
+BC.left.a(:) = 0; BC.left.b(:) = 1; BC.left.c(:) = 1; % Left boundary to Dirichlet
+BC.right.a(:) = 0; BC.right.b(:) = 1; BC.left.c(:) = 1; % right boundary to Dirichlet
+%%
+% The next sep is to define the diffusivity coefficient. In this FVTool,
+% the physical properties of the domain are defined for each cell, with the
+% function createCellVariable
+D = createCellVariable(m, 1e-5); % assign a constant value of 1e-5 to diffusivity value on each cell
+%%
+% However, the transfer coefficients must be known on the face of each cell.
+% For this reason, we have a few averaging schemes implemented in the
+% Utilities folder. For a 1D domain, we can use a harmonic mean scheme:
+D_face = harmonicMean(m, D); % average diffusivity value on the cell faces
+%%
+% Now, we can convert the PDE to a algebraic system of linear equations,
+% i.e.,
+%%
+% 
+% $$\nabla.\left(-D\nabla c\right) \approx Mc = 0$$
+% 
+%%
+% where M is the matrix of coefficient that is going to be calculated using
+% this toolbox. The matrix of coefficient, _M_ has two parts. The diffusion
+% equation and the boundary conditions. They are calculated by:
+M_diff = diffusionTerm(m, D_face); % matrix of coefficients for diffusion term
+[M_bc, RHS_bc] = boundaryCondition(m, BC); % matrix of coefficient and RHS vector for the boundary condition
+%%
+% A vector of right hand side values are always obtained during the
+% discretization of the boundary conditions.
+% Now that the PDE is discretized, we can solve it by a Matlab linear solver. 
+c = solvePDE(m, M_diff+M_bc, RHS_bc);
+%%
+% finally, the resut can be visualized:
+visualizeCells(m, c);
+%%
+% Just to get excited a little bit, only change the mesh definition command
+% from createMesh1D(Nx,L) to createMesh2D(Nx,Nx,L,L), run the code and see 
+% what happens. For even more excitement, change it to 
+% createMesh3D(Nx,Nx,Nx,L,L,L).
+% This is usually the way we develop new mathematical models for a physical
+% phenomenon. Write the equation, solve it in 1D, compare it to the
+% analytical solution, then solve it numerically in 2D and 3D for more
+% realistic cases with heterogeneous transfer coefficients and other
+% nonidealities (and perhaps compare it to some experimental data)
+%% Solve a convection-diffuison equation and compare it to analytical solution
+% Here, I'm going to add a convection term to what we solved in the 
+% previous example. This tutorial is adopted from the fipy
+% convection-diffusion example you can find at this address:
+%%
+% <http://www.ctcms.nist.gov/fipy/examples/convection/index.html>
+%%
+% The differential equation reads
+%%
+% 
+% $$\nabla.\left(\mathbf{u} \phi -D\nabla \phi \right)=0$$
+% 
+%%
+% Here, $\mathbf{u}$ is a velocity vector (face variable) and $D$ is the
+% diffusion coefficient (again a face variable). Please see the PDF
+% document for an explanation of cell and face variables. We use Dirichlet
+% (constant value) boundary conditions on the left and right boundaries.
+% It is zero at the left boundary and one at the right boundary. The
+% analytical solution of this differential equation reads
+%%
+% 
+% $$c = \frac{1-exp(ux/D)}{1-exp(uL/D)}$$
+% 
+%%
+% We start the code as always with some cleaning up:
+clc; clear; close all;
+%%
+% Then we define the domain and mesh size:
+L = 1;  % domain length
+Nx = 25; % number of cells
+meshstruct = createMesh1D(Nx, L);
+x = meshstruct.cellcenters.x; % extract the cell center positions
+%%
+% The next step is to define the boundary condition:
+BC = createBC(meshstruct); % all Neumann boundary condition structure
+BC.left.a = 0; BC.left.b=1; % switch the left boundary to Dirichlet
+BC.left.c=0; % value = 0 at the left boundary
+BC.right.a = 0; BC.right.b=1; % switch the right boundary to Dirichlet
+BC.right.c=1; % value = 1 at the right boundary
+%% 
+% Now we define the transfer coefficients:
+D_val = 1.0; % diffusion coefficient value
+D = createCellVariable(meshstruct, D_val); % assign dif. coef. to all the cells
+Dave = harmonicMean(meshstruct, D); % convert a cell variable to face variable
+u = -10; % velocity value
+u_face = createFaceVariable(meshstruct, u); % assign velocity value to cell faces
+%%
+% Now we discretize the differential equation into a system of linear
+% algebraic equations:
+%%
+% 
+% $$(M_{conv}-M_{diff}+M_{bc})\phi={RHS}_{bc}$$
+% 
+%%
+% or if we use an upwind discretization scheme, we will obtain:
+%%
+% 
+% $$(M_{conv,uw}-M_{diff}+M_{bc})\phi={RHS}_{bc}$$
+% 
+%%
+%
+Mconv =  convectionTerm(meshstruct, u_face); % convection term, central, second order 
+Mconvupwind = convectionUpwindTerm(meshstruct, u_face); % convection term, upwind, first order
+Mdiff = diffusionTerm(meshstruct, Dave); % diffusion term
+[Mbc, RHSbc] = boundaryCondition(meshstruct, BC); % boundary condition discretization
+M = Mconv-Mdiff+Mbc; % matrix of coefficient for central scheme
+Mupwind = Mconvupwind-Mdiff+Mbc; % matrix of coefficient for upwind scheme
+RHS = RHSbc; % right hand side vector
+c = solvePDE(meshstruct, M, RHS); % solve for the central scheme
+c_upwind = solvePDE(meshstruct, Mupwind, RHS); % solve for the upwind scheme
+c_analytical = (1-exp(u*x/D_val))/(1-exp(u*L/D_val)); % analytical solution
+plot(x, c(2:Nx+1), x, c_upwind(2:Nx+1), 'REPLACE_WITH_DASH_DASH',...
+    x, c_analytical, '.');
+legend('central', 'upwind', 'analytical');
+%%
+% As you see here, we obtain a more accurate result by using a central
+% difference discretization scheme for the convection term compared to the
+% first order upwind.
+%% solve a transient diffusion equation
+% This tutorial is adapted from the fipy 1D diffusion example
+%%
+% <http://www.ctcms.nist.gov/fipy/examples/diffusion/index.html FiPy diffusion tutorial>
+% The transient diffusion equation reads
+%%
+%
+% $$\alpha\frac{\partial c}{\partial t}+\nabla.\left(-D\nabla c\right)=0,$$
+%
+% where $c$ is the independent variable (concentration, temperature, etc)
+% , $D$ is the diffusion coefficient, and $\alpha$ is a constant. 
+%%
+% Once again, clean up:
+clc; clear; close all;
+%%
+% Define the domain and create a mesh structure
+L = 50;  % domain length
+Nx = 20; % number of cells
+m = buildMesh1D(Nx, L);
+x = m.cellcenters.x; % cell centers position
+%%
+% Create the boundary condition structure:
+BC = createBC(m); % all Neumann boundary condition structure
+%%
+% Switch the left and right boundaries to Dirichlet:
+BC.left.a = 0; BC.left.b=1; BC.left.c=1; % left boundary
+BC.right.a = 0; BC.right.b=1; BC.right.c=0; % right boundary
+%%
+% Define the transfer coefficients:
+D_val = 1;
+D = createCellVariable(m, D_val);
+Dave = harmonicMean(m, D); % convert it to face variables
+% Define alfa, the coefficient of the transient term:
+alfa_val = 1;
+alfa = createCellVariable(m, alfa_val);
+%%
+% Define the initial values:
+c_init = 0;
+c.Old = createCellVariable(m, c_init, BC); % initial values
+c.value = c.Old; % assign the old value of the cells to the current values
+%%
+% Now define the time step and the final time:
+dt = 0.1; % time step
+final_t = 100;
+%%
+% Here, we first define the matrices of coefficients that will not change
+% as we progress in time, viz. diffusion term and boundary condition:
+Mdiff = diffusionTerm(m, Dave);
+[Mbc, RHSbc] = boundaryCondition(m, BC);
+%%
+% The transitionTerm function gives a matrix of coefficient and a RHS
+% vector. The matrix of coefficient does not change in each time step, but
+% the RHS does (see the PDF documents). Therefore, we need to call the
+% function inside the time loop.
+% Start the loop here:
+for t=dt:dt:final_t
+    [M_trans, RHS_trans] = transientTerm(m, alfa, dt, c);
+    M = M_trans-Mdiff+Mbc;
+    RHS = RHS_trans+RHSbc;
+    c.value = solvePDE(m,M, RHS);
+    c_analytical = 1-erf(x/(2*sqrt(D_val*t)));
+    c.Old = c.value;
+end
+%% 
+% Now visualize the final results
+plot(x, c.value(2:Nx+1), 'o', x, c_analytical);
+xlabel('Length [m]'); ylabel('c');
+legend('Numerical', 'Analytical');
+%%
+% you can visualize the results from each time step by moving the plot line
+% inside the for loop.
+%% convection equations; different discretization schemes
+% If I want to highlight one special feature of this FVTool, I will point 
+% a finger on its various discretization schemes for a linear convection 
+% term, which includes central difference (second order), upwind (first 
+% order), and TVD scheme with various flux limiters.
+%%
+% Here, we are going to compare the performance of each scheme for solving
+% two PDE's.
+% First, a simple linear transient convection equation with an strange initial
+% condition and later, we solve the well-known Burger's equation.
+clc; clear; close all;
+% define a 1D domain and mesh
+W = 1;
+Nx = 500;
+mesh1 = buildMesh1D(Nx, W);
+x = mesh1.cellcenters.x;
+% define the boundaries
+BC = createBC(mesh1); % all Neumann
+BC.left.periodic=1;
+BC.right.periodic =1;
+% Initial values
+phi.Old = createCellVariable(mesh1, 0.0, BC);
+phi.Old(20:120) = 1;
+phi.Old(180:400)= sin(x(180:400)*10*pi());
+% initial guess for phi
+phi.value = phi.Old;
+% initial values for upwind scheme
+phiuw = phi;
+% keep the initial values for visualization
+phiinit=phi.Old;
+% velocity field
+u = 0.3;
+uf = createFaceVariable(mesh1, u);
+% diffusion field
+D = 1e-2;
+Df = createFaceVariable(mesh1, D);
+% transient term coefficient
+alfa = createCellVariable(mesh1,1.0);
+% upwind convection term
+Mconvuw = convectionUpwindTerm1D(mesh1, uf);
+% define the BC term
+[Mbc, RHSbc] = boundaryCondition(mesh1, BC);
+% choose a flux limiter
+FL = fluxLimiter('MUSCL');
+% solver
+dt = 0.0005; % time step
+final_t = W/u;
+t = 0;
+while t<final_t
+    t = t+dt;
+    % inner loop for TVD scheme
+    for j = 1:5
+        [Mt, RHSt] = transientTerm(mesh1, alfa, dt, phi);
+        [Mconv, RHSconv] = convectionTvdTerm1D(mesh1, uf, phi.value, FL);
+        M = Mconv+Mt+Mbc;
+        RHS = RHSt+RHSbc+RHSconv;
+        PHI = M\RHS;
+        phi.value = reshape(PHI, Nx+2, 1);
+    end
+    [Mtuw, RHStuw] = transientTerm(mesh1, alfa, dt, phiuw);
+    Muw = Mconvuw+Mtuw+Mbc;
+    RHSuw = RHStuw+RHSbc;
+    PHI = Muw\RHSuw;
+    phiuw.value = reshape(PHI, Nx+2, 1);
+    phiuw.Old = phiuw.value;
+    phi.Old = phi.value;
+end
+figure(1);plot(x, phiinit(2:Nx+1), x, phi.value(2:Nx+1), '-o', x, ...
+        phiuw.value(2:Nx+1));
+
+% %% method of lines: using Matlab's ODE solvers for adaptive time stepping
+% 
+% 
+% 
+% %% solving a nonlinear PDE
+% 
+% %% solving a system of linear PDE's: sequential and coupled methods
+% 
+% %% solving a system of nonlinear PDE's: sequential and coupled olutions
+% 
+% %% Real life cases: water-flooding in the production of oil
+% 
+% %% and finally your examples?
+% 
+% 
+% 
+
+##### SOURCE END #####
+--></body></html>
