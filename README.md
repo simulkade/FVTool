@@ -9,13 +9,22 @@ include:
   * transient term
   * Dirichlet, Neumann, Robin, and periodic boundary conditions
 
+## which equation do we solve?
+We an solve the following equation:
+
+$$ \alpha\frac{\partial\phi}{\partial t}+\nabla.\left(\mathbf{u}\phi\right)+\nabla.\left(-D\nabla\phi\right)+\beta\phi=\gamma $$
+
+with the boundary condition:
+
+$$a\nabla\phi.\mathbf{n}+b\phi=c$$
+
 ## How to start
 Download the package, start matlab, and run
    `FVToolStartUp`
    
 You can see a very early document and tutorial by typing (in matlab command line)
    `showdemo FVTdemo`
-   
+
 ## Inspiration
 I started writing this tool after playing with [FiPy] (http://www.ctcms.nist.gov/fipy/), an amazing python-based finite volume solver. 
 This matlab solver is not a clone, and indeed very limited compared to FiPy.
@@ -27,6 +36,26 @@ Then I extended the code to
   * 2D axisymmetric
   
 I have overloaded some of the matlab operators to simplify the switch from 1D codes to 2D and 3D.
+
+### A simple example
+You can solve a diffusion equation, i.e., $ \nabla. (-D \nabla \phi) = 0 $ by running the following code in Matlab:
+```matlab
+clc; clear;
+L = 50;  % domain length
+Nx = 20; % number of cells
+m = createMesh1D(Nx, L);
+BC = createBC(m); % all Neumann boundary condition structure
+BC.left.a(:) = 0; BC.left.b(:)=1; BC.left.c=1; % Dirichlet for the left boundary
+BC.right.a = 0; BC.right.b=1; BC.right.c=0; % right boundary
+D_val = 1; % value of the diffusion coefficient
+D = createFaceVariable(m, D_val); % define the diffusion coefficient over the cell faces
+Mdiff = diffusionTerm(m, D); % matrix of coefficients for the diffusion term
+[Mbc, RHSbc] = boundaryCondition(m, BC); % matix of coefficients and RHS vector for the BC
+M = Mdiff + Mbc; % matrix of cefficients for the PDE
+c = solvePDE(m,M, RHSbc); % send M and RHS to the solver
+visualizeCells(m, c); % visualize the results
+```
+change the third line to `m = createMesh2D(Nx,Nx, L,L);` or `m = createMesh1D(Nx,Nx,Nx, L,L,L);` and see the outcome for yourself.
 
 ## Examples
 There are a few simple examples in the [Tutorial] (https://github.com/simulkade/FVTool/tree/master/Examples/Tutorial) folder. 
