@@ -45,8 +45,8 @@ L = 50;  % domain length
 Nx = 20; % number of cells
 m = createMesh1D(Nx, L);
 BC = createBC(m); % all Neumann boundary condition structure
-BC.left.a(:) = 0; BC.left.b(:)=1; BC.left.c=1; % Dirichlet for the left boundary
-BC.right.a = 0; BC.right.b=1; BC.right.c=0; % right boundary
+BC.left.a(:) = 0; BC.left.b(:)=1; BC.left.c(:)=1; % Dirichlet for the left boundary
+BC.right.a(:) = 0; BC.right.b(:)=1; BC.right.c(:)=0; % right boundary
 D_val = 1; % value of the diffusion coefficient
 D = createCellVariable(m, D_val); % assign the diffusion coefficient to the cells
 D_face = harmonicMean(m, D); % calculate harmonic average of the diffusion coef on the cell faces
