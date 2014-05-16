@@ -77,4 +77,4 @@ I have a PVT tool (phase equilibrium calculations) in matlab, which is not ready
 That's the reason that you get a warning when you run the FVToolStartUp script.
 
 ## Questions and bug reports
-You can ask your questions here or in [my blog] (http://www.simulkade.com). I truly appreciate your feedback and/or contribution.
+You can ask your questions by creating a new issue here, or by writing a comment in [my blog] (http://www.simulkade.com). You can aslo ask your question in the [Matlab file exchange page] (http://www.mathworks.com/matlabcentral/fileexchange/46637-a-simple-finite-volume-solver-for-matlab) of this code. I truly appreciate your feedback and/or contribution.
