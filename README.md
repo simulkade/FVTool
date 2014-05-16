@@ -55,7 +55,7 @@ M = Mdiff + Mbc; % matrix of cefficients for the PDE
 c = solvePDE(m,M, RHSbc); % send M and RHS to the solver
 visualizeCells(m, c); % visualize the results
 ```
-change the third line to `m = createMesh2D(Nx,Nx, L,L);` or `m = createMesh1D(Nx,Nx,Nx, L,L,L);` and see the outcome for yourself.
+change the third line to `m = createMesh2D(Nx,Nx, L,L);` or `m = createMesh3D(Nx,Nx,Nx, L,L,L);` and see the outcome for yourself.
 
 ## Examples
 There are a few simple examples in the [Tutorial] (https://github.com/simulkade/FVTool/tree/master/Examples/Tutorial) folder. 
