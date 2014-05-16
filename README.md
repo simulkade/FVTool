@@ -9,7 +9,7 @@ include:
   * transient term
   * Dirichlet, Neumann, Robin, and periodic boundary conditions
 
-## which equation do we solve?
+## Which equation do we solve?
 We an solve the following equation:
 
 $$ \alpha\frac{\partial\phi}{\partial t}+\nabla.\left(\mathbf{u}\phi\right)+\nabla.\left(-D\nabla\phi\right)+\beta\phi=\gamma $$
