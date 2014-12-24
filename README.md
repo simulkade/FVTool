@@ -31,9 +31,11 @@ This matlab solver is not a clone, and indeed very limited compared to FiPy.
 I wrote it to have a very handy tool for testing new ideas (new mathematical models) by solving them in 1D uniform Cartesian grids. 
 Then I extended the code to 
   * 1D axisymmetric (radial)
+  * 2D radial (r, theta)
   * 2D Cartesian
   * 3D Cartesian
-  * 2D axisymmetric
+  * 2D axisymmetric (cylindrical, r, z)
+  * 3D cylindrical (r, theta, z)
   
 I have overloaded some of the matlab operators to simplify the switch from 1D codes to 2D and 3D.
 
