@@ -50,6 +50,10 @@ if (d ==1) || (d==1.5)
 	faceGrad = gradientTerm1D(MeshStructure, phi);
 elseif (d == 2) || (d == 2.5)
 	faceGrad = gradientTerm2D(MeshStructure, phi);
+elseif (d==2.8)
+    faceGrad = gradientTermRadial2D(MeshStructure, phi);
 elseif d == 3
     faceGrad = gradientTerm3D(MeshStructure, phi);
+elseif d == 3.2
+    faceGrad = gradientTermCylindrical3D(MeshStructure, phi);
 end

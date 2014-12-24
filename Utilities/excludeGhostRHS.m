@@ -51,8 +51,8 @@ G = MeshStructure.numbering;
 
 if (d ==1) || (d==1.5)
 	RHSout = RHS(reshape(G(2:end-1),N,1));
-elseif (d == 2) || (d == 2.5)
+elseif (d == 2) || (d == 2.5) || (d==2.8)
 	RHSout = RHS(reshape(G(2:end-1,2:end-1),N(1)*N(2),1));
-elseif d == 3
+elseif (d == 3) || (d==3.2)
     RHSout = RHS(reshape(G(2:end-1,2:end-1,2:end-1),N(1)*N(2)*N(3),1));
 end

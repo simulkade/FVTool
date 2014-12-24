@@ -54,6 +54,10 @@ switch d
         S = domainInt2D(MeshStructure, phi(2:end-1,2:end-1));
     case 2.5
         S = domainIntCylindrical2D(MeshStructure, phi(2:end-1,2:end-1));
+    case 2.8
+        S = domainIntRadial2D(MeshStructure, phi(2:end-1,2:end-1));
     case 3
         S = domainInt3D(MeshStructure, phi(2:end-1,2:end-1,2:end-1));
+    case 3.2
+        S = domainIntCylindrical3D(MeshStructure, phi(2:end-1,2:end-1,2:end-1));
 end

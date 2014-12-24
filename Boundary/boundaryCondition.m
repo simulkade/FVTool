@@ -58,6 +58,10 @@ if (d ==1) || (d==1.5)
 	[BCMatrix, BCRHS] = boundaryCondition1D(MeshStructure, BC);
 elseif (d == 2) || (d == 2.5)
 	[BCMatrix, BCRHS] = boundaryCondition2D(MeshStructure, BC);
-elseif d == 3
+elseif (d == 2.8)
+    [BCMatrix, BCRHS] = boundaryConditionRadial2D(MeshStructure, BC);
+elseif (d == 3)
     [BCMatrix, BCRHS] = boundaryCondition3D(MeshStructure, BC);
+elseif (d == 3.2)
+    [BCMatrix, BCRHS] = boundaryConditionCylindrical3D(MeshStructure, BC);
 end

@@ -51,8 +51,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 d = MeshStructure.dimension;
 if (d ==1) || (d==1.5)
 	phiFaceAverage = upwindMean1D(MeshStructure, u, phi);
-elseif (d == 2) || (d == 2.5)
+elseif (d == 2) || (d == 2.5) || (d==2.8)
 	phiFaceAverage = upwindMean2D(MeshStructure, u, phi);
-elseif d == 3
+elseif (d == 3) || (d==3.2)
     phiFaceAverage = upwindMean3D(MeshStructure, u, phi);
 end

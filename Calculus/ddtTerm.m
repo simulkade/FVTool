@@ -50,8 +50,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 d = MeshStructure.dimension;
 if (d ==1) || (d==1.5)
 	ddt = ddtTerm1D(MeshStructure, dt, phi);
-elseif (d == 2) || (d == 2.5)
+elseif (d == 2) || (d == 2.5) || (d==2.8)
 	ddt = ddtTerm2D(MeshStructure, dt, phi);
-elseif d == 3
+elseif (d == 3) || (d==3.2)
     ddt = ddtTerm3D(MeshStructure, dt, phi);
 end

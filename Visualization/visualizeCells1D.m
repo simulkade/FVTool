@@ -43,7 +43,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-
-plot(MeshStructure.cellcenters.x, phi')
+x = [MeshStructure.facecenters.x(1) MeshStructure.cellcenters.x MeshStructure.facecenters.x(end)];
+plot(x, phi')
 xlabel('Cell centers [x vlaues]');
 ylabel('Cell values');

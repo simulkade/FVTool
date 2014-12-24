@@ -55,6 +55,10 @@ switch d
         [M, Mx, My] = convectionTerm2D(MeshStructure, u);
     case 2.5
         [M, Mx, My] = convectionTermCylindrical2D(MeshStructure, u);
+    case 2.8
+        [M, Mx, My] = convectionTermRadial2D(MeshStructure, u);
     case 3
         [M, Mx, My, Mz] = convectionTerm3D(MeshStructure, u);
+    case 3.2
+        [M, Mx, My, Mz] = convectionTermCylindrical3D(MeshStructure, u);
 end

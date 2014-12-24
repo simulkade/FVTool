@@ -1,9 +1,8 @@
-function [M_out, RHS_out] = maskCells(meshstruct, M, RHS, cellIndex, cellValue)
-% This function masks the specified cells by giving them a constant value.
-% It modifies the matrix of coefficient and the RHS vector
+function visualizeCellsRadial2D(MeshStructure, phi)
+%VISUALIZECELLS plots the values of cell variable phi
 % 
 % SYNOPSIS:
-%   [M_out, RHS_out] = maskCells(meshstruct, M, RHS, cellIndex, cellValue)
+%   
 % 
 % PARAMETERS:
 %   
@@ -43,28 +42,19 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
+L = MeshStructure.cellcenters.x(end);
+x = [MeshStructure.facecenters.x(1) MeshStructure.cellcenters.x MeshStructure.facecenters.x(end)];
+y = [MeshStructure.facecenters.y(1) MeshStructure.cellcenters.y MeshStructure.facecenters.y(end)]; 
+[TH,R] = meshgrid(y, x);
+[X,Y] = pol2cart(TH,R);
+h = polar([0 2*pi], [0 L]);
+delete(h);
+hold on
+pcolor(X,Y,phi)
 
-% extract some data
-d = meshstruct.dimension;
-domain_size = meshstruct.numberofcells+2; % 2 is added for the ghost cells
-M_size = size(M);
-if d ==1 || d==1.5
-    i = sub2ind([domain_size 1], cellIndex(:,1));
-elseif d==2 || d==2.5 || d==2.8
-    i = sub2ind(domain_size, cellIndex(:,1), cellIndex(:,2));
-elseif d==3 || d==3.2
-    i = sub2ind(domain_size, cellIndex(:,1), cellIndex(:,2), cellIndex(:,2));
-end
-
-% define the new masked matrix of coefficients
-M_masked = sparse(i,i,1, M_size(1), M_size(2));
-RHS_masked = zeros(length(RHS),1);
-RHS_masked(i) = cellValue;
-
-% zero the masked rows in the original matrix
-M(i, :) = 0;
-RHS(i) = 0;
-
-% add the new masked matrix to the modifed original
-M_out = M+M_masked;
-RHS_out = RHS + RHS_masked;
+% pcolor(MeshStructure.cellcenters.x, MeshStructure.cellcenters.y, phi')
+% axis equal tight
+% xlabel('Cell centers [x vlaues]');
+% ylabel('Cell centers [y vlaues]');
+colorbar
+hold off

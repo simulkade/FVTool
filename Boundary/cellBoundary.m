@@ -51,6 +51,10 @@ if (d ==1) || (d==1.5)
 	phiBC = cellBoundary1D(MeshStructure, BC, phi);
 elseif (d == 2) || (d == 2.5)
 	phiBC = cellBoundary2D(MeshStructure, BC, phi);
+elseif (d==2.8)
+    phiBC = cellBoundaryRadial2D(MeshStructure, BC, phi);
 elseif (d==3)
     phiBC = cellBoundary3D(MeshStructure, BC, phi);
+elseif (d==3.2)
+    phiBC = cellBoundaryCylindrical3D(MeshStructure, BC, phi);
 end

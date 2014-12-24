@@ -55,6 +55,10 @@ switch d
         [M, Mx, My] = diffusionTerm2D(MeshStructure, D);
     case 2.5
         [M, Mx, My] = diffusionTermCylindrical2D(MeshStructure, D);
+    case 2.8
+        [M, Mx, My] = diffusionTermRadial2D(MeshStructure, D);
     case 3
         [M, Mx, My, Mz] = diffusionTerm3D(MeshStructure, D);
+    case 3.2
+        [M, Mx, My, Mz] = diffusionTermCylindrical3D(MeshStructure, D);
 end

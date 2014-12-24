@@ -55,6 +55,12 @@ switch d
         [M, RHS, Mx, My, RHSx, RHSy] = convectionTvdTerm2D(MeshStructure, u, phi, FL);
     case 2.5
         [M, RHS, Mx, My, RHSx, RHSy] = convectionTvdTermCylindrical2D(MeshStructure, u, phi, FL);
+    case 2.8
+        [M, RHS, Mx, My, RHSx, RHSy] = ...
+            convectionTvdTermRadial2D(MeshStructure, u, phi, FL);
     case 3
         [M, RHS, Mx, My, Mz, RHSx, RHSy, RHSz] = convectionTvdTerm3D(MeshStructure, u, phi, FL);
+    case 3.2
+        [M, RHS, Mx, My, Mz, RHSx, RHSy, RHSz] = ...
+            convectionTvdTermCylindrical3D(MeshStructure, u, phi, FL);
 end

@@ -49,10 +49,10 @@ mn = MeshStructure.numberofcells;
 
 if (d ==1) || (d==1.5)
 	cellnorm = abs(cellvector.xvalue);
-elseif (d == 2) || (d == 2.5)
+elseif (d == 2) || (d == 2.5) || (d==2.8)
 	cellnorm = realsqrt(cellvector.xvalue.*cellvector.xvalue+ ...
         cellvector.yvalue.*cellvector.yvalue);
-elseif d == 3
+elseif (d == 3) || (d==3.2)
     cellnorm = realsqrt(cellvector.xvalue.*cellvector.xvalue+ ...
         cellvector.yvalue.*cellvector.yvalue+ ...
         cellvector.zvalue.*cellvector.zvalue);

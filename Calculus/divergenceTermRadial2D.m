@@ -1,9 +1,10 @@
-function [M_out, RHS_out] = maskCells(meshstruct, M, RHS, cellIndex, cellValue)
-% This function masks the specified cells by giving them a constant value.
-% It modifies the matrix of coefficient and the RHS vector
+function [RHSdiv, RHSdivx, RHSdivy] = ...
+            divergenceTermRadial2D(MeshStructure, faceVariable)
+% This function calculates the divergence of a field using its face
+% average value and the vector u, which is a face vector
 % 
 % SYNOPSIS:
-%   [M_out, RHS_out] = maskCells(meshstruct, M, RHS, cellIndex, cellValue)
+%   
 % 
 % PARAMETERS:
 %   
@@ -44,27 +45,39 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-% extract some data
-d = meshstruct.dimension;
-domain_size = meshstruct.numberofcells+2; % 2 is added for the ghost cells
-M_size = size(M);
-if d ==1 || d==1.5
-    i = sub2ind([domain_size 1], cellIndex(:,1));
-elseif d==2 || d==2.5 || d==2.8
-    i = sub2ind(domain_size, cellIndex(:,1), cellIndex(:,2));
-elseif d==3 || d==3.2
-    i = sub2ind(domain_size, cellIndex(:,1), cellIndex(:,2), cellIndex(:,2));
-end
+% extract data from the mesh structure
+G = MeshStructure.numbering;
+Nrz = MeshStructure.numberofcells;
+Nr = Nrz(1); Ntetta = Nrz(2);
+dxdy = MeshStructure.cellsize;
+dx = dxdy(1); dtetta = dxdy(2);
+rp = repmat(MeshStructure.cellcenters.x', 1, Ntetta);
+rf = repmat(MeshStructure.facecenters.x', 1, Ntetta);
 
-% define the new masked matrix of coefficients
-M_masked = sparse(i,i,1, M_size(1), M_size(2));
-RHS_masked = zeros(length(RHS),1);
-RHS_masked(i) = cellValue;
+% define the vector of cell index
+row_index = reshape(G(2:Nr+1,2:Ntetta+1),Nr*Ntetta,1); % main diagonal (only internal cells)
 
-% zero the masked rows in the original matrix
-M(i, :) = 0;
-RHS(i) = 0;
+% calculate the flux vector
+% note: size(Fx) = [1:m+1, 1:n] and size(Fy) = [1:m, 1:n+1]
+Fx = faceVariable.xvalue;
+Fy = faceVariable.yvalue;
 
-% add the new masked matrix to the modifed original
-M_out = M+M_masked;
-RHS_out = RHS + RHS_masked;
+% reassign the east, west, north, and south flux vectors for the 
+% code readability
+Fe = Fx(2:Nr+1,:);		Fw = Fx(1:Nr,:);
+Fn = Fy(:,2:Ntetta+1);       Fs = Fy(:,1:Ntetta);
+re = rf(2:Nr+1,:);         rw = rf(1:Nr,:);
+
+% compute the divergence
+div_x = (re.*Fe - rw.*Fw)./(rp*dx);
+div_y = (Fn - Fs)./(dtetta*rp);
+
+% define the RHS Vector
+RHSdiv = zeros((Nr+2)*(Ntetta+2),1);
+RHSdivx = zeros((Nr+2)*(Ntetta+2),1);
+RHSdivy = zeros((Nr+2)*(Ntetta+2),1);
+
+% assign the values of the RHS vector
+RHSdiv(row_index) = reshape(div_x+div_y,Nr*Ntetta,1);
+RHSdivx(row_index) = reshape(div_x,Nr*Ntetta,1);
+RHSdivy(row_index) = reshape(div_y,Nr*Ntetta,1);

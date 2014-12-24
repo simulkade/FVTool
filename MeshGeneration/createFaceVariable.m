@@ -50,10 +50,10 @@ mn = MeshStructure.numberofcells;
 
 if (d ==1) || (d==1.5)
 	facevar.xvalue = faceval.*ones(mn+1, 1);
-elseif (d == 2) || (d == 2.5)
+elseif (d == 2) || (d == 2.5) || (d == 2.8)
 	facevar.xvalue = faceval(1).*ones(mn(1)+1, mn(2));
     facevar.yvalue = faceval(2).*ones(mn(1), mn(2)+1);
-elseif d == 3
+elseif (d == 3) || (d==3.2)
     facevar.xvalue = faceval(1).*ones(mn(1)+1, mn(2), mn(3));
     facevar.yvalue = faceval(2).*ones(mn(1), mn(2)+1, mn(3));
     facevar.zvalue = faceval(3).*ones(mn(1), mn(2), mn(3)+1);

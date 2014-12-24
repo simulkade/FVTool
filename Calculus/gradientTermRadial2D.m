@@ -1,9 +1,10 @@
-function [M_out, RHS_out] = maskCells(meshstruct, M, RHS, cellIndex, cellValue)
-% This function masks the specified cells by giving them a constant value.
-% It modifies the matrix of coefficient and the RHS vector
+function faceGrad = gradientTermRadial2D(MeshStructure, phi)
+% this function calculates the gradient of a variable in x and y direction
+% it checks for the availability of the ghost variables and use them, otherwise
+% estimate them, assuming a zero gradient on the boundaries
 % 
 % SYNOPSIS:
-%   [M_out, RHS_out] = maskCells(meshstruct, M, RHS, cellIndex, cellValue)
+%   
 % 
 % PARAMETERS:
 %   
@@ -44,27 +45,24 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-% extract some data
-d = meshstruct.dimension;
-domain_size = meshstruct.numberofcells+2; % 2 is added for the ghost cells
-M_size = size(M);
-if d ==1 || d==1.5
-    i = sub2ind([domain_size 1], cellIndex(:,1));
-elseif d==2 || d==2.5 || d==2.8
-    i = sub2ind(domain_size, cellIndex(:,1), cellIndex(:,2));
-elseif d==3 || d==3.2
-    i = sub2ind(domain_size, cellIndex(:,1), cellIndex(:,2), cellIndex(:,2));
+
+% check the size of the variable and the mesh dimension
+Nxy = MeshStructure.numberofcells;
+Nx = Nxy(1); Ntetta = Nxy(2);
+Nxy_phi = size(phi);
+Nx_phi = Nxy_phi(1);
+dxdy = MeshStructure.cellsize;
+dx = dxdy(1); dtetta = dxdy(2);
+if Nx_phi == Nx
+    rp = repmat(MeshStructure.cellcenters.x', 1, Ntetta-1);
+    % define the average face variabe
+    faceGrad.xvalue = [zeros(1,Ntetta); (phi(2:Nx,:)-phi(1:Nx-1,:))/dx; zeros(1,Ntetta)];
+    faceGrad.yvalue = [zeros(Nx,1), (phi(:,2:Ntetta)-phi(:,1:Ntetta-1))./(dtetta*rp), zeros(Nx,1)];
+else
+    rp = repmat(MeshStructure.cellcenters.x', 1, Ntetta+1);
+    % in this case, ghost cells have values
+    faceGrad.xvalue = (phi(2:Nx+2,2:Ntetta+1)-phi(1:Nx+1,2:Ntetta+1))/dx;
+    faceGrad.yvalue = (phi(2:Nx+1,2:Ntetta+2)-phi(2:Nx+1,1:Ntetta+1))./(dtetta*rp);
 end
 
-% define the new masked matrix of coefficients
-M_masked = sparse(i,i,1, M_size(1), M_size(2));
-RHS_masked = zeros(length(RHS),1);
-RHS_masked(i) = cellValue;
 
-% zero the masked rows in the original matrix
-M(i, :) = 0;
-RHS(i) = 0;
-
-% add the new masked matrix to the modifed original
-M_out = M+M_masked;
-RHS_out = RHS + RHS_masked;

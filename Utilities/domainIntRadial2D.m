@@ -1,9 +1,9 @@
-function [M_out, RHS_out] = maskCells(meshstruct, M, RHS, cellIndex, cellValue)
-% This function masks the specified cells by giving them a constant value.
-% It modifies the matrix of coefficient and the RHS vector
+function S = domainIntRadial2D(MeshStructure, phi)
+%INTEGRATE integrate the value of phi over the domain defined by the mesh
+%structure using the trapezoidal rule
 % 
 % SYNOPSIS:
-%   [M_out, RHS_out] = maskCells(meshstruct, M, RHS, cellIndex, cellValue)
+%   
 % 
 % PARAMETERS:
 %   
@@ -44,27 +44,12 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-% extract some data
-d = meshstruct.dimension;
-domain_size = meshstruct.numberofcells+2; % 2 is added for the ghost cells
-M_size = size(M);
-if d ==1 || d==1.5
-    i = sub2ind([domain_size 1], cellIndex(:,1));
-elseif d==2 || d==2.5 || d==2.8
-    i = sub2ind(domain_size, cellIndex(:,1), cellIndex(:,2));
-elseif d==3 || d==3.2
-    i = sub2ind(domain_size, cellIndex(:,1), cellIndex(:,2), cellIndex(:,2));
-end
+% find the cell length from the Mesh structure
+d = MeshStructure.cellsize;
+dx = d(1); dtetta = d(2);
+N = MeshStructure.numberofcells;
+Ntetta = N(2);
+r = repmat(MeshStructure.cellcenters.x', 1, Ntetta);
 
-% define the new masked matrix of coefficients
-M_masked = sparse(i,i,1, M_size(1), M_size(2));
-RHS_masked = zeros(length(RHS),1);
-RHS_masked(i) = cellValue;
-
-% zero the masked rows in the original matrix
-M(i, :) = 0;
-RHS(i) = 0;
-
-% add the new masked matrix to the modifed original
-M_out = M+M_masked;
-RHS_out = RHS + RHS_masked;
+% calculate the integral and scale by the cell size
+S = dx*dtetta*sum(sum(r.*phi));

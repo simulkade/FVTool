@@ -50,8 +50,8 @@ d = MeshStructure.dimension;
 
 if (d ==1) || (d==1.5)
 	phiFaceAverage = geometricMean1D(MeshStructure, phi);
-elseif (d == 2) || (d == 2.5)
+elseif (d == 2) || (d == 2.5) || (d==2.8)
 	phiFaceAverage = geometricMean2D(MeshStructure, phi);
-elseif d == 3
+elseif (d == 3) || (d==3.2)
     phiFaceAverage = geometricMean3D(MeshStructure, phi);
 end

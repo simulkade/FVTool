@@ -1,9 +1,10 @@
-function [M_out, RHS_out] = maskCells(meshstruct, M, RHS, cellIndex, cellValue)
-% This function masks the specified cells by giving them a constant value.
-% It modifies the matrix of coefficient and the RHS vector
+function faceGrad = gradientCellTermCylindrical3D(MeshStructure, phiface)
+% this function calculates the gradient of a variable in x and y direction
+% it checks for the availability of the ghost variables and use them, otherwise
+% estimate them, assuming a zero gradient on the boundaries
 % 
 % SYNOPSIS:
-%   [M_out, RHS_out] = maskCells(meshstruct, M, RHS, cellIndex, cellValue)
+%   
 % 
 % PARAMETERS:
 %   
@@ -44,27 +45,16 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-% extract some data
-d = meshstruct.dimension;
-domain_size = meshstruct.numberofcells+2; % 2 is added for the ghost cells
-M_size = size(M);
-if d ==1 || d==1.5
-    i = sub2ind([domain_size 1], cellIndex(:,1));
-elseif d==2 || d==2.5 || d==2.8
-    i = sub2ind(domain_size, cellIndex(:,1), cellIndex(:,2));
-elseif d==3 || d==3.2
-    i = sub2ind(domain_size, cellIndex(:,1), cellIndex(:,2), cellIndex(:,2));
-end
+% check the size of the variable and the mesh dimension
+Nxyz = MeshStructure.numberofcells;
+Nx = Nxyz(1); Ntetta = Nxyz(2); Nz = Nxyz(3);
+d = MeshStructure.cellsize;
+dx = d(1); dtetta = d(2); dz = d(3);
+rp = repmat(MeshStructure.cellcenters.x', 1, Ntetta, Nz);
 
-% define the new masked matrix of coefficients
-M_masked = sparse(i,i,1, M_size(1), M_size(2));
-RHS_masked = zeros(length(RHS),1);
-RHS_masked(i) = cellValue;
+faceGrad.xvalue = (phiface.xvalue(2:Nx+1,:,:)-phiface.xvalue(1:Nx,:,:))/dx;
+faceGrad.yvalue = (phiface.yvalue(:,2:Ntetta+1,:)-phiface.yvalue(:,1:Ntetta,:))./(dtetta*rp);
+faceGrad.zvalue = (phiface.zvalue(:,:,2:Nz+1)-phiface.zvalue(:,:,1:Nz))/dz;
 
-% zero the masked rows in the original matrix
-M(i, :) = 0;
-RHS(i) = 0;
 
-% add the new masked matrix to the modifed original
-M_out = M+M_masked;
-RHS_out = RHS + RHS_masked;
+

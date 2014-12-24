@@ -54,6 +54,11 @@ switch d
         [RHSdiv, RHSdivx, RHSdivy] = divergenceTerm2D(MeshStructure, faceVariable);
     case 2.5
         [RHSdiv, RHSdivx, RHSdivy] = divergenceTermCylindrical2D(MeshStructure, faceVariable);
+    case 2.8
+        [RHSdiv, RHSdivx, RHSdivy] = ...
+            divergenceTermRadial2D(MeshStructure, faceVariable);
     case 3
         [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTerm3D(MeshStructure, faceVariable);
+    case 3.2
+        [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTermCylindrical3D(MeshStructure, faceVariable);
 end

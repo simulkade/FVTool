@@ -49,6 +49,10 @@ if (d ==1) || (d==1.5)
 	cellGrad = gradientCellTerm1D(MeshStructure, phiface);
 elseif (d == 2) || (d == 2.5)
 	cellGrad = gradientCellTerm2D(MeshStructure, phiface);
+elseif (d==2.8)
+    cellGrad = gradientCellTermRadial2D(MeshStructure, phiface);
 elseif d == 3
     cellGrad = gradientCellTerm3D(MeshStructure, phiface);
+elseif d == 3.2
+    cellGrad = gradientCellTermCylindrical3D(MeshStructure, phiface);
 end

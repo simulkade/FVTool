@@ -42,9 +42,10 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
+x = [MeshStructure.facecenters.x(1) MeshStructure.cellcenters.x MeshStructure.facecenters.x(end)];
+y = [MeshStructure.facecenters.y(1) MeshStructure.cellcenters.y MeshStructure.facecenters.y(end)];
 
-
-pcolor(MeshStructure.cellcenters.x, MeshStructure.cellcenters.y, phi')
+pcolor(x, y, phi')
 axis equal tight
 xlabel('Cell centers [x vlaues]');
 ylabel('Cell centers [y vlaues]');
