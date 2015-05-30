@@ -1,4 +1,7 @@
 # FVTool: Finite volume toy toolbox for Matlab
+
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.18156.svg)](http://dx.doi.org/10.5281/zenodo.18156)
+
 This is a finite volume (toy) toolbox for chemical/petroleum engineers. 
 Right now, it can solve a transient convection-diffusion equation with variable velocity field/diffusion coefficients. The discretization schemes 
 include:
