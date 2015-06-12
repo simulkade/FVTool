@@ -1,17 +1,17 @@
 function FVToolStartUp()
-% 
+%
 % SYNOPSIS:
 %   FVToolStartUp()
-% 
+%
 % PARAMETERS:
 %   No perameter
-% 
+%
 % RETURNS:
 %   None
-% 
+%
 % EXAMPLE:
 %   n.a.
-% 
+%
 % SEE ALSO:
 %   PVTinitialize, FVTdemo
 
@@ -19,27 +19,27 @@ function FVToolStartUp()
 Copyright (c) 2012, 2013, 2014 Ali Akbar Eftekhari
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or 
-without modification, are permitted provided that the following 
+Redistribution and use in source and binary forms, with or
+without modification, are permitted provided that the following
 conditions are met:
 
-    *   Redistributions of source code must retain the above copyright notice, 
+    *   Redistributions of source code must retain the above copyright notice,
         this list of conditions and the following disclaimer.
-    *   Redistributions in binary form must reproduce the above 
-        copyright notice, this list of conditions and the following 
-        disclaimer in the documentation and/or other materials provided 
+    *   Redistributions in binary form must reproduce the above
+        copyright notice, this list of conditions and the following
+        disclaimer in the documentation and/or other materials provided
         with the distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
-PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
-OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 try
@@ -48,6 +48,7 @@ file_name = mfilename;
 current_path = p(1:end-1-length(file_name));
 addpath([current_path '/Boundary']);
 addpath([current_path '/Calculus']);
+addpath([current_path '/Classes']);
 addpath([current_path '/Discretization']);
 addpath([current_path '/MeshGeneration']);
 addpath([current_path '/Solvers']);
@@ -103,4 +104,3 @@ disp('FiniteVolumeToolbox has started successfully.');
 catch err
     error('An error occured while tryng to start the FiniteVolumeToolbox.')
 end
-    
