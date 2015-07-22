@@ -1,25 +1,21 @@
-classdef faceVariable
+classdef FaceVariable
     properties
-        dimension
-        meshsize
+        domain
         xvalue
         yvalue
         zvalue
-        cellsize
     end
     
     methods
-        function fv = faceVariable(meshVar, faceval)
+        function fv = FaceVariable(meshVar, faceval)
             if nargin>0
-                fv.dimension = meshVar.dimension;
-                fv.meshsize = meshVar.numberofcells;
-                fv.cellsize = meshVar.cellsize;
+                fv.domain = meshVar;
                 if nargin==1
                     faceval = ones(floor(meshVar.dimension),1);
                 end
-                mn = meshVar.numberofcells;    
+                mn = meshVar.dims;    
                 if (meshVar.dimension ==1) || (meshVar.dimension==1.5)
-                    fv.xvalue = faceval.*ones(mn+1, 1);
+                    fv.xvalue = faceval(1).*ones(mn(1)+1, 1);
                 elseif (meshVar.dimension == 2) || (meshVar.dimension == 2.5)
                     fv.xvalue = faceval(1).*ones(mn(1)+1, mn(2));
                     fv.yvalue = faceval(2).*ones(mn(1), mn(2)+1);

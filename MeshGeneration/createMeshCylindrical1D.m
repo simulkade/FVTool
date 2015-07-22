@@ -1,5 +1,6 @@
-function MeshStructure = createMeshCylindrical1D(Nr, Lr)
-% MeshStructure = buildMeshCylindrical1D(Nr, Lr)
+function MS = createMeshCylindrical1D(varargin)
+% MeshStructure = createMeshCylindrical1D(Nr, Lr)
+% MeshStructure = createMeshCylindrical1D(facelocationR)
 % builds a uniform 1D mesh (1D axial symmetry):
 % Nx is the number of cells in r (radial) direction
 % Width is the domain radius in r direction
@@ -35,7 +36,7 @@ function MeshStructure = createMeshCylindrical1D(Nr, Lr)
 %     buildMeshCylindrical2D, createCellVariable, createFaceVariable
 
 %{
-Copyright (c) 2012, 2013, Ali Akbar Eftekhari
+Copyright (c) 2012, 2013,2014,215 Ali Akbar Eftekhari
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or 
@@ -62,24 +63,46 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-% mesh dimension
-MeshStructure.dimension = 1.5;
+if nargin==2
+  % uniform 1D mesh
+  Nr=varargin{1};
+  R=varargin{2};
+  % cell size is dx
+  dx = R/Nr;
+  CellSize.x= dx*ones(Nr+2,1);
+  CellSize.y= [0.0];
+  CellSize.z= [0.0];
+  CellLocation.x= [1:Nr]'*dx-dx/2;
+  CellLocation.y= [0.0];
+  CellLocation.z= [0.0];
+  FaceLocation.x= [0:Nr]'*dx;
+  FaceLocation.y= [0.0];
+  FaceLocation.z= [0.0];
+elseif nargin==1
+  % nonuniform 1D mesh
+  facelocationR=varargin{1};
+  n=size(facelocationR);
+  if n(1)==1
+      facelocationR=facelocationR';
+  end
+  Nr = length(facelocationR)-1;
+  CellSize.x= [facelocationR(2)-facelocationR(1); ...
+    facelocationR(2:end)-facelocationR(1:end-1); ...
+    facelocationR(end)-facelocationR(end-1)];
+  CellSize.y= [0.0];
+  CellSize.z= [0.0];
+  CellLocation.x= 0.5*(facelocationR(2:end)+facelocationR(1:end-1));
+  CellLocation.y= [0.0];
+  CellLocation.z= [0.0];
+  FaceLocation.x= facelocationR;
+  FaceLocation.y= [0.0];
+  FaceLocation.z= [0.0];
+end
 
-% numbering system of cells, like the single index numbering of Matlab
-% +2 is added to account for the ghost cells that are added at 
-% the boundaries
-MeshStructure.numbering = (1:(Nr+2))'; %numbering system
-
-% cell size is dx
-dx = Lr/Nr;
-
-% cell centers position
-MeshStructure.cellcenters.x = (1:Nr)*dx-dx/2;
-
-% face centers position
-MeshStructure.facecenters.x = (0:Nr)*dx;
-
-% number of cells and cell size in x direction
-MeshStructure.numberofcells = Nr;
-MeshStructure.cellsize = dx;
-
+MS=MeshStructure(1.5, ...
+  [Nr,1], ...
+  CellSize, ...
+  CellLocation, ...
+  FaceLocation, ...
+  [1], ...
+  [1]);

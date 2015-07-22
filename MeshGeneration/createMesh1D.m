@@ -1,5 +1,6 @@
-function MeshStructure = createMesh1D(Nx, Width)
-% MeshStructure = buildMesh1D(Nx, Width)
+function MS = createMesh1D(varargin)
+% MeshStructure = createMesh1D(Nx, Width)
+% MeshStructure = createMesh1D(facelocationX)
 % builds a uniform 1D mesh:
 % Nx is the number of cells in x (horizontal) direction
 % Width is the domain length in x direction
@@ -62,23 +63,46 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-% mesh dimension
-MeshStructure.dimension = 1;
+if nargin==2
+  % uniform 1D mesh
+  Nx=varargin{1};
+  Width=varargin{2};
+  % cell size is dx
+  dx = Width/Nx;
+  CellSize.x= dx*ones(Nx+2,1);
+  CellSize.y= [0.0];
+  CellSize.z= [0.0];
+  CellLocation.x= [1:Nx]'*dx-dx/2;
+  CellLocation.y= [0.0];
+  CellLocation.z= [0.0];
+  FaceLocation.x= [0:Nx]'*dx;
+  FaceLocation.y= [0.0];
+  FaceLocation.z= [0.0];
+elseif nargin==1
+  % nonuniform 1D mesh
+  facelocationX=varargin{1};
+  n=size(facelocationX);
+  if n(1)==1
+      facelocationX=facelocationX';
+  end
+  Nx = length(facelocationX)-1;
+  CellSize.x= [facelocationX(2)-facelocationX(1); ...
+    facelocationX(2:end)-facelocationX(1:end-1); ...
+    facelocationX(end)-facelocationX(end-1)];
+  CellSize.y= [0.0];
+  CellSize.z= [0.0];
+  CellLocation.x= 0.5*(facelocationX(2:end)+facelocationX(1:end-1));
+  CellLocation.y= [0.0];
+  CellLocation.z= [0.0];
+  FaceLocation.x= facelocationX;
+  FaceLocation.y= [0.0];
+  FaceLocation.z= [0.0];
+end
 
-% numbering system of cells, like the single index numbering of Matlab
-% +2 is added to account for the ghost cells that are added at 
-% the boundaries
-MeshStructure.numbering = (1:(Nx+2))'; %numbering system
-
-% cell size is dx
-dx = Width/Nx;
-
-% cell centers position
-MeshStructure.cellcenters.x = (1:Nx)*dx-dx/2;
-
-% face centers position
-MeshStructure.facecenters.x = (0:Nx)*dx;
-
-% number of cells and cell size in x direction
-MeshStructure.numberofcells = Nx;
-MeshStructure.cellsize = dx;
+MS=MeshStructure(1, ...
+  [Nx,1], ...
+  CellSize, ...
+  CellLocation, ...
+  FaceLocation, ...
+  [1], ...
+  [1]);

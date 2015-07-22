@@ -1,4 +1,4 @@
-function M = diffusionTerm1D(MeshStructure, D)
+function M = diffusionTerm1D(D)
 % This function uses the central difference scheme to discretize a 1D
 % diffusion term in the form \grad . (D \grad \phi) where u is a face vactor
 % It also returns the x and y parts of the matrix of coefficient.
@@ -46,9 +46,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % extract data from the mesh structure
-G = MeshStructure.numbering;
-Nx = MeshStructure.numberofcells;
-dx = MeshStructure.cellsize;
+Nx = D.domain.dims(1);
+G = (1:Nx+2)';
+DX = D.domain.cellsize.x;
+dx = 0.5*(DX(1:end-1)+DX(2:end));
 
 % define the vectors to store the sparse matrix data
 iix = zeros(3*(Nx+2),1);
@@ -61,12 +62,13 @@ Dx = D.xvalue;
 
 % reassign the east, west, north, and south velocity vectors for the 
 % code readability
-De = Dx(2:Nx+1);		Dw = Dx(1:Nx);
+De = Dx(2:Nx+1)./(dx(2:Nx+1).*DX(2:Nx+1));		
+Dw = Dx(1:Nx)./(dx(1:Nx).*DX(2:Nx+1));
 
 % calculate the coefficients for the internal cells
-AE = reshape(De/dx^2,Nx,1);
-AW = reshape(Dw/dx^2,Nx,1);
-APx = reshape(-(De+Dw)/dx^2,Nx,1);
+AE = reshape(De,Nx,1);
+AW = reshape(Dw,Nx,1);
+APx = -(AE+AW);
 
 % build the sparse matrix based on the numbering system
 rowx_index = reshape(G(2:Nx+1),Nx,1); % main diagonal x
