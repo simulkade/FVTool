@@ -1,4 +1,4 @@
-function [BCMatrix, BCRHS] = boundaryCondition(MeshStructure, BC)
+function [BCMatrix, BCRHS] = boundaryCondition(BC)
 % creates the matrix of coefficient and RHS vector
 % 
 % SYNOPSIS:
@@ -53,15 +53,15 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-d = MeshStructure.dimension;
+d = BC.domain.dimension;
 if (d ==1) || (d==1.5)
-	[BCMatrix, BCRHS] = boundaryCondition1D(MeshStructure, BC);
+	[BCMatrix, BCRHS] = boundaryCondition1D(BC);
 elseif (d == 2) || (d == 2.5)
-	[BCMatrix, BCRHS] = boundaryCondition2D(MeshStructure, BC);
+	[BCMatrix, BCRHS] = boundaryCondition2D(BC);
 elseif (d == 2.8)
-    [BCMatrix, BCRHS] = boundaryConditionRadial2D(MeshStructure, BC);
+    [BCMatrix, BCRHS] = boundaryConditionRadial2D(BC);
 elseif (d == 3)
-    [BCMatrix, BCRHS] = boundaryCondition3D(MeshStructure, BC);
+    [BCMatrix, BCRHS] = boundaryCondition3D(BC);
 elseif (d == 3.2)
-    [BCMatrix, BCRHS] = boundaryConditionCylindrical3D(MeshStructure, BC);
+    [BCMatrix, BCRHS] = boundaryConditionCylindrical3D(BC);
 end

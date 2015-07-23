@@ -11,7 +11,7 @@ classdef CellVariable
         function cv = CellVariable(meshVar, cellval)
             if nargin>0
                 cv.domain = meshVar;
-                cv.value = cellval.*ones(meshVar.dims);
+                cv.value = cellval; % does not do any dim check!
             end
         end
     end

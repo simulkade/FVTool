@@ -1,4 +1,4 @@
-function [BCMatrix, BCRHS] = boundaryCondition2D(MeshStructure, BC)
+function [BCMatrix, BCRHS] = boundaryCondition2D(BC)
 % It creates the matrix of coefficient based on the BC structureprovided 
 % by the user. It also generates the right hand side vector of the linear
 % system of equations
@@ -46,11 +46,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % extract data from the mesh structure
-G = MeshStructure.numbering;
-Nxy = MeshStructure.numberofcells;
+Nxy = BC.domain.dims;
 Nx = Nxy(1); Ny = Nxy(2);
-dxdy = MeshStructure.cellsize;
-dx = dxdy(1); dy = dxdy(2);
+G=reshape(1:(Nx+2)*(Ny+2), Nx+2, Ny+2);
+dx_1 = BC.domain.cellsize.x(1);
+dx_end = BC.domain.cellsize.x(end);
+dy_1 = BC.domain.cellsize.y(1);
+dy_end = BC.domain.cellsize.y(end);
 
 % number of boundary nodes:
 nb = 2*(Nx+Ny+2);
@@ -65,7 +67,7 @@ BCRHS = zeros((Nx+2)*(Ny+2), 1);
 
 % assign value to the corner nodes (useless cells)
 q = 1:4;
-ii(q) = MeshStructure.corner; jj(q) = MeshStructure.corner;
+ii(q) = BC.domain.corner; jj(q) = MeshStructure.corner;
 s(q) = max(BC.top.b/2 + BC.top.a/dy); BCRHS(MeshStructure.corner) = 0;
 
 % Assign values to the boundary condition matrix and the RHS vector based
@@ -76,18 +78,18 @@ if (BC.top.periodic ==0) && (BC.bottom.periodic ==0)
     j=Ny+2;
     i=2:Nx+1;
     q = q(end)+(1:Nx);
-    ii(q) = G(i,j);  jj(q) = G(i,j);  s(q) = BC.top.b/2 + BC.top.a/dy;
+    ii(q) = G(i,j);  jj(q) = G(i,j);  s(q) = BC.top.b/2 + BC.top.a/dy_end;
     q = q(end)+(1:Nx);
-    ii(q) = G(i,j);  jj(q) = G(i,j-1); s(q) = BC.top.b/2 - BC.top.a/dy;
+    ii(q) = G(i,j);  jj(q) = G(i,j-1); s(q) = BC.top.b/2 - BC.top.a/dy_end;
     BCRHS(G(i,j)) = BC.top.c; 
 
     % Bottom boundary
     j=1;
     i=2:Nx+1;
     q = q(end)+(1:Nx);
-    ii(q) = G(i,j);  jj(q) = G(i,j+1);  s(q) = -(BC.bottom.b/2 + BC.bottom.a/dy);
+    ii(q) = G(i,j);  jj(q) = G(i,j+1);  s(q) = -(BC.bottom.b/2 + BC.bottom.a/dy_1);
     q = q(end)+(1:Nx);
-    ii(q) = G(i,j);  jj(q) = G(i,j); s(q) = -(BC.bottom.b/2 - BC.bottom.a/dy);
+    ii(q) = G(i,j);  jj(q) = G(i,j); s(q) = -(BC.bottom.b/2 - BC.bottom.a/dy_1);
     BCRHS(G(i,j)) = -(BC.bottom.c);
 elseif (BC.top.periodic ==1) || (BC.bottom.periodic ==1) % periodic boundary
     % top boundary
@@ -96,7 +98,11 @@ elseif (BC.top.periodic ==1) || (BC.bottom.periodic ==1) % periodic boundary
     q = q(end)+(1:Nx);
     ii(q) = G(i,j);  jj(q) = G(i,j);  s(q) = 1;
     q = q(end)+(1:Nx);
-    ii(q) = G(i,j);  jj(q) = G(i,2); s(q) = -1;
+    ii(q) = G(i,j);  jj(q) = G(i,j-1);  s(q) = -1;
+    q = q(end)+(1:Nx);
+    ii(q) = G(i,j);  jj(q) = G(i,1); s(q) = dy_end/dy_1;
+    q = q(end)+(1:Nx);
+    ii(q) = G(i,j);  jj(q) = G(i,2); s(q) = -dy_end/dy_1;
     BCRHS(G(i,j)) = 0; 
 
     % Bottom boundary
@@ -105,7 +111,11 @@ elseif (BC.top.periodic ==1) || (BC.bottom.periodic ==1) % periodic boundary
     q = q(end)+(1:Nx);
     ii(q) = G(i,j);  jj(q) = G(i,j);  s(q) = 1;
     q = q(end)+(1:Nx);
+    ii(q) = G(i,j);  jj(q) = G(i,j+1);  s(q) = 1;
+    q = q(end)+(1:Nx);
     ii(q) = G(i,j);  jj(q) = G(i,Ny+1); s(q) = -1;
+    q = q(end)+(1:Nx);
+    ii(q) = G(i,j);  jj(q) = G(i,Ny+2); s(q) = -1;
     BCRHS(G(i,j)) = 0;
 end
 
@@ -115,18 +125,18 @@ if (BC.right.periodic == 0) && (BC.left.periodic == 0)
     i=Nx+2;
     j=2:Ny+1;
     q = q(end)+(1:Ny);
-    ii(q) = G(i,j);  jj(q) = G(i,j);  s(q) = BC.right.b/2 + BC.right.a/dx;
+    ii(q) = G(i,j);  jj(q) = G(i,j);  s(q) = BC.right.b/2 + BC.right.a/dx_end;
     q = q(end)+(1:Ny);
-    ii(q) = G(i,j);  jj(q) = G(i-1,j); s(q) = BC.right.b/2 - BC.right.a/dx;
+    ii(q) = G(i,j);  jj(q) = G(i-1,j); s(q) = BC.right.b/2 - BC.right.a/dx_end;
     BCRHS(G(i,j)) = BC.right.c;
 
     % Left boundary
     i = 1;
     j=2:Ny+1;
     q = q(end)+(1:Ny);
-    ii(q) = G(i,j);  jj(q) = G(i+1,j);  s(q) = -(BC.left.b/2 + BC.left.a/dx);
+    ii(q) = G(i,j);  jj(q) = G(i+1,j);  s(q) = -(BC.left.b/2 + BC.left.a/dx_1);
     q = q(end)+(1:Ny);
-    ii(q) = G(i,j);  jj(q) = G(i,j); s(q) = -(BC.left.b/2 - BC.left.a/dx);
+    ii(q) = G(i,j);  jj(q) = G(i,j); s(q) = -(BC.left.b/2 - BC.left.a/dx_1);
     BCRHS(G(i,j)) = -(BC.left.c);
 elseif (BC.right.periodic == 1) || (BC.left.periodic == 1) % periodic boundary
     % Right boundary
@@ -135,7 +145,11 @@ elseif (BC.right.periodic == 1) || (BC.left.periodic == 1) % periodic boundary
     q = q(end)+(1:Ny);
     ii(q) = G(i,j);  jj(q) = G(i,j);  s(q) = 1;
     q = q(end)+(1:Ny);
-    ii(q) = G(i,j);  jj(q) = G(2,j); s(q) = -1;
+    ii(q) = G(i,j);  jj(q) = G(i-1,j);  s(q) = -1;
+    q = q(end)+(1:Ny);
+    ii(q) = G(i,j);  jj(q) = G(1,j); s(q) = dx_end/dx_1;
+    q = q(end)+(1:Ny);
+    ii(q) = G(i,j);  jj(q) = G(2,j); s(q) = -dx_end/dx_1;
     BCRHS(G(i,j)) = 0;
 
     % Left boundary
@@ -144,7 +158,11 @@ elseif (BC.right.periodic == 1) || (BC.left.periodic == 1) % periodic boundary
     q = q(end)+(1:Ny);
     ii(q) = G(i,j);  jj(q) = G(i,j);  s(q) = 1;
     q = q(end)+(1:Ny);
+    ii(q) = G(i,j);  jj(q) = G(i+1,j);  s(q) = 1;
+    q = q(end)+(1:Ny);
     ii(q) = G(i,j);  jj(q) = G(Nx+1,j); s(q) = -1;
+    q = q(end)+(1:Ny);
+    ii(q) = G(i,j);  jj(q) = G(Nx+2,j); s(q) = -1;
     BCRHS(G(i,j)) = 0;
 end
 % Build the sparse matrix of the boundary conditions

@@ -1,5 +1,6 @@
-function MeshStructure = createMeshCylindrical3D(Nr, Ntetta, Nz, Lr, Tetta, Lz)
-% MeshStructure = buildMesh3D(Nx, Ny, Nz, Width, Height, Depth)
+function MS = createMeshCylindrical3D(varargin)
+% MeshStructure = createMesh3D(Nr, Ntheta, Nz, Radius, theta, height)
+% MeshStructure = createMesh3D(facelocationR, facelocationTheta, facelocationZ)
 % builds a uniform 3D mesh:
 % Nx is the number of cells in x (horizontal) direction
 % Ny is the number of cells in y (vertical) direction
@@ -85,44 +86,28 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-% mesh dimension
-MeshStructure.dimension = 3.2;
-
-% numbering system of cells, like the single index numbering of Matlab
-% +2 is added to account for the ghost cells that are added at 
-% the boundaries
-G = reshape(1:(Nr+2)*(Ntetta+2)*(Nz+2),Nr+2,Ntetta+2,Nz+2); %numbering system
-MeshStructure.numbering = G;
-
-% cell size is dx*dy*dz
-if Tetta>2*pi
-    warning('Tetta is higher than 2*pi. It is scaled to 2*pi');
-    Tetta = 2*pi;
+if nargin==6
+  % uniform 1D mesh
+  Nx=varargin{1};
+  Ny=varargin{2};
+  Nz=varargin{3};
+  Width=varargin{4};
+  Depth=varargin{6};
+  Tetta=varargin{5};
+  if Tetta>2*pi
+      warning('Tetta is higher than 2*pi. It is scaled to 2*pi');
+      Tetta = 2*pi;
+  end
+  MS=createMesh3D(Nx,Ny,Nz,Width, Tetta, Depth);
+elseif nargin==3
+  % nonuniform 1D mesh
+  facelocationX=varargin{1};
+  facelocationTheta=varargin{2};
+  facelocationZ=varargin{3};
+  if facelocationTheta(end)>2*pi
+      facelocationTheta = facelocationTheta/facelocationTheta(end)*2.0*pi;
+      warning('The domain size adjusted to match a maximum of 2*pi.')
+  end
+  MS=createMesh3D(facelocationX,facelocationTheta,facelocationZ);
 end
-dx = Lr/Nr;
-dy = Tetta/Ntetta;
-dz = Lz/Nz;
-
-% cell centers position
-MeshStructure.cellcenters.x = (1:Nr)*dx-dx/2;
-MeshStructure.cellcenters.y = (1:Ntetta)*dy-dy/2;
-MeshStructure.cellcenters.z = (1:Nz)*dz-dz/2;
-
-% face centers position
-MeshStructure.facecenters.x = (0:Nr)*dx;
-MeshStructure.facecenters.y = (0:Ntetta)*dy;
-MeshStructure.facecenters.z = (0:Nz)*dz;
-
-% number of cells and cell size in x and y direction
-MeshStructure.numberofcells = [Nr, Ntetta, Nz];
-MeshStructure.cellsize = [dx, dy, dz];
-
-% boundary indexes
-% corner points and edges index
-c = G([1 end], [1 end], [1 end]);
-MeshStructure.corner = c(:);
-
-e1 = G([1 end], [1 end], 2:Nz+1);
-e2 = G([1 end], 2:Ntetta+1, [1 end]);
-e3 = G(2:Nr+1, [1 end], [1 end]);
-MeshStructure.edge = [e1(:); e2(:); e3(:)];
+MS.dimension=3.2;

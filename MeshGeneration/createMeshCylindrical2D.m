@@ -1,5 +1,6 @@
-function MeshStructure = createMeshCylindrical2D(Nr, Ny, Lr, Ly)
+function MS = createMeshCylindrical2D(varargin)
 % MeshStructure = buildMeshCylindrical2D(Nr, Ny, Lr, Ly)
+% MeshStructure = buildMeshCylindrical2D(facelocationR, facelocationY)
 % builds a uniform 2D mesh on a cylindrical coordinate:
 % Nr is the number of cells in r (radial) direction
 % Ny is the number of cells in y (vertical) direction
@@ -74,32 +75,5 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-% mesh dimension
-MeshStructure.dimension = 2.5;
-
-% numbering system of cells, like the single index numbering of Matlab
-% +2 is added to account for the ghost cells that are added at 
-% the boundaries
-G = reshape(1:(Nr+2)*(Ny+2),Nr+2,Ny+2); %numbering system
-MeshStructure.numbering = G;
-
-% cell size is dx*dy
-dx = Lr/Nr;
-dy = Ly/Ny;
-
-% cell centers position
-MeshStructure.cellcenters.x = (1:Nr)*dx-dx/2;
-MeshStructure.cellcenters.y = (1:Ny)*dy-dy/2;
-
-% face centers position
-MeshStructure.facecenters.x = (0:Nr)*dx;
-MeshStructure.facecenters.y = (0:Ny)*dy;
-
-% number of cells and cell size in x and y direction
-MeshStructure.numberofcells = [Nr, Ny];
-MeshStructure.cellsize = [dx, dy];
-
-% boundary indexes
-% corner points and edges index
-c = G([1 end], [1 end]);
-MeshStructure.corner = c(:);
+MS = createMesh2D(varargin);
+MS.dimension=2.5;

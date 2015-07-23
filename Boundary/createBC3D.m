@@ -1,4 +1,4 @@
-function BC = createBC3D(MeshStructure)
+function BC = createBC3D(meshvar)
 % Creates a boundary condition structure from a mesh structure
 % for a 3D structured mesh. The default boundary conditions on 
 % all boundaries are Neumann;
@@ -50,37 +50,39 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % Extract number of cells from the mesh structure
-Nxyz = MeshStructure.numberofcells;
+Nxyz = meshvar.dims;
 Nx = Nxyz(1); Ny = Nxyz(2); Nz = Nxyz(3);
 
 % Define the top, bottom, right, and left boundary conditions 
 % (default = Neumann, i.e., a = 1, b = 0, c = 0)
-BC.top.a = ones(Nx,Nz);
-BC.top.b = zeros(Nx,Nz);
-BC.top.c = zeros(Nx,Nz);
-BC.top.periodic = 0;
+top.a = ones(Nx,Nz);
+top.b = zeros(Nx,Nz);
+top.c = zeros(Nx,Nz);
+top.periodic = 0;
 
-BC.bottom.a = ones(Nx,Nz);
-BC.bottom.b = zeros(Nx,Nz);
-BC.bottom.c = zeros(Nx,Nz);
-BC.bottom.periodic = 0;
+bottom.a = ones(Nx,Nz);
+bottom.b = zeros(Nx,Nz);
+bottom.c = zeros(Nx,Nz);
+bottom.periodic = 0;
 
-BC.right.a = ones(Ny,Nz);
-BC.right.b = zeros(Ny,Nz);
-BC.right.c = zeros(Ny,Nz);
-BC.right.periodic = 0;
+right.a = ones(Ny,Nz);
+right.b = zeros(Ny,Nz);
+right.c = zeros(Ny,Nz);
+right.periodic = 0;
 
-BC.left.a = ones(Ny,Nz);
-BC.left.b = zeros(Ny,Nz);
-BC.left.c = zeros(Ny,Nz);
-BC.left.periodic = 0;
+left.a = ones(Ny,Nz);
+left.b = zeros(Ny,Nz);
+left.c = zeros(Ny,Nz);
+left.periodic = 0;
 
-BC.front.a = ones(Nx,Ny);
-BC.front.b = zeros(Nx,Ny);
-BC.front.c = zeros(Nx,Ny);
-BC.front.periodic = 0;
+front.a = ones(Nx,Ny);
+front.b = zeros(Nx,Ny);
+front.c = zeros(Nx,Ny);
+front.periodic = 0;
 
-BC.back.a = ones(Nx,Ny);
-BC.back.b = zeros(Nx,Ny);
-BC.back.c = zeros(Nx,Ny);
-BC.back.periodic = 0;
+back.a = ones(Nx,Ny);
+back.b = zeros(Nx,Ny);
+back.c = zeros(Nx,Ny);
+back.periodic = 0;
+
+BC= BoundaryCondition(meshvar, left, right, bottom, top, back, front);
