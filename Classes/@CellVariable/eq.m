@@ -44,10 +44,10 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-if (isa(p, 'cellVariable')&&isa(q, 'cellVariable'))
+if (isa(p, 'CellVariable')&&isa(q, 'CellVariable'))
     r=p;
     r.value = p.value==q.value;
-elseif isa(p, 'cellVariable')
+elseif isa(p, 'CellVariable')
     r=p;
     r.value = p.value==q;
 else

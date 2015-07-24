@@ -1,4 +1,4 @@
-function [M, Mx, My, Mz] = diffusionTerm(MeshStructure, D)
+function [M, Mx, My, Mz] = diffusionTerm(D)
 % This function uses the central difference scheme to discretize a 2D
 % diffusion term in the form \grad . (D \grad \phi) where u is a face vactor
 % It also returns the x and y parts of the matrix of coefficient.
@@ -45,20 +45,20 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-d = MeshStructure.dimension;
+d = D.domain.dimension;
 switch d
     case 1
-        M = diffusionTerm1D(MeshStructure, D);
+        M = diffusionTerm1D(D);
     case 1.5
-        M = diffusionTermCylindrical1D(MeshStructure, D);
+        M = diffusionTermCylindrical1D(D);
     case 2
-        [M, Mx, My] = diffusionTerm2D(MeshStructure, D);
+        [M, Mx, My] = diffusionTerm2D(D);
     case 2.5
-        [M, Mx, My] = diffusionTermCylindrical2D(MeshStructure, D);
+        [M, Mx, My] = diffusionTermCylindrical2D(D);
     case 2.8
-        [M, Mx, My] = diffusionTermRadial2D(MeshStructure, D);
+        [M, Mx, My] = diffusionTermRadial2D(D);
     case 3
-        [M, Mx, My, Mz] = diffusionTerm3D(MeshStructure, D);
+        [M, Mx, My, Mz] = diffusionTerm3D(D);
     case 3.2
-        [M, Mx, My, Mz] = diffusionTermCylindrical3D(MeshStructure, D);
+        [M, Mx, My, Mz] = diffusionTermCylindrical3D(D);
 end

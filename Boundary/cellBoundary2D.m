@@ -1,4 +1,4 @@
-function phiBC = cellBoundary2D(MeshStructure, BC, phi)
+function phiBC = cellBoundary2D(phi, BC)
 % function phiBC = cellBoundary2D(MeshStructure, BC, phi)
 % It creates the matrix of coefficient based on the BC structure provided 
 % by the user. It also generates the right hand side vector of the linear
@@ -55,10 +55,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 % Note: I use a for loop here for more readability of the code!
 
 % extract data from the mesh structure
-Nxy = MeshStructure.numberofcells;
+Nxy = BC.domain.dims;
 Nx = Nxy(1); Ny = Nxy(2);
-dxdy = MeshStructure.cellsize;
-dx = dxdy(1); dy = dxdy(2);
+dx_1 = BC.domain.cellsize.x(1);
+dx_end = BC.domain.cellsize.x(end);
+dy_1 = BC.domain.cellsize.y(1);
+dy_end = BC.domain.cellsize.y(end);
 
 % define the output matrix
 phiBC = zeros(Nx+2, Ny+2);
@@ -70,13 +72,13 @@ if (BC.top.periodic==0) && (BC.bottom.periodic==0)
     j=Ny+2;
     i = 2:Nx+1;
     phiBC(i,j)= ...
-        (BC.top.c-phi(:,end).*(-BC.top.a/dy+BC.top.b/2))./(BC.top.a/dy+BC.top.b/2);
+        (BC.top.c-phi(:,end).*(-BC.top.a/dy_end+BC.top.b/2))./(BC.top.a/dy_end+BC.top.b/2);
 
     % Bottom boundary
     j=1;
     i = 2:Nx+1;
     phiBC(i,j)= ...
-        (BC.bottom.c-phi(:,1).*(BC.bottom.a/dy+BC.bottom.b/2))./(-BC.bottom.a/dy+BC.bottom.b/2);
+        (BC.bottom.c-phi(:,1).*(BC.bottom.a/dy_1+BC.bottom.b/2))./(-BC.bottom.a/dy_1+BC.bottom.b/2);
 else
     % top boundary
     j=Ny+2;
@@ -94,13 +96,13 @@ if (BC.left.periodic==0) && (BC.right.periodic==0)
     i = Nx+2;
     j = 2:Ny+1;
     phiBC(i,j)= ...
-        (BC.right.c-phi(end,:).*(-BC.right.a/dx+BC.right.b/2))./(BC.right.a/dx+BC.right.b/2);
+        (BC.right.c-phi(end,:).*(-BC.right.a/dx_end+BC.right.b/2))./(BC.right.a/dx_end+BC.right.b/2);
 
     % Left boundary
     i = 1;
     j = 2:Ny+1;
     phiBC(i,j)= ...
-        (BC.left.c-phi(1,:).*(BC.left.a/dx+BC.left.b/2))./(-BC.left.a/dx+BC.left.b/2);
+        (BC.left.c-phi(1,:).*(BC.left.a/dx_1+BC.left.b/2))./(-BC.left.a/dx_1+BC.left.b/2);
 else
     % Right boundary
     i = Nx+2;

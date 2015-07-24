@@ -1,5 +1,5 @@
 function r = atan(p)
-%UMINUS: this function calculates the atan of a x, y, and z values of 
+%atan: this function calculates the atan of a x, y, and z values of 
 % the structures that I use in the FVtool.
 % 
 % SYNOPSIS:

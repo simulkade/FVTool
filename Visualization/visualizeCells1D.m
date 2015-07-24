@@ -1,4 +1,4 @@
-function visualizeCells1D(MeshStructure, phi)
+function visualizeCells1D(phi)
 %VISUALIZECELLS plots the values of cell variable phi
 % 
 % SYNOPSIS:
@@ -43,7 +43,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-x = [MeshStructure.facecenters.x(1) MeshStructure.cellcenters.x MeshStructure.facecenters.x(end)];
-plot(x, phi')
+x = [phi.domain.facecenters.x(1) phi.domain.cellcenters.x phi.domain.facecenters.x(end)];
+plot(x, phi.value)
 xlabel('Cell centers [x vlaues]');
 ylabel('Cell values');

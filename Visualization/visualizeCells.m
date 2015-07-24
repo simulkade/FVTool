@@ -1,5 +1,5 @@
-function visualizeCells(MeshStructure, phi)
-%VISUALIZECELLS plots the values of cell variable phi
+function visualizeCells(phi)
+%VISUALIZECELLS plots the values of cell variable phi.value
 % 
 % SYNOPSIS:
 %   
@@ -43,70 +43,44 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-d = MeshStructure.dimension;
-domain_size = prod(MeshStructure.numberofcells);
-phi_size = numel(phi);
+d = phi.domain.dimension;
 switch d
     case 1
-        if domain_size==phi_size
-            visualizeCells1D(MeshStructure, phi);
-        else
-            visualizeCells1D(MeshStructure, [0.5*(phi(1)+phi(2)); phi(2:end-1); 0.5*(phi(end-1)+phi(end))]);
-        end
+        phi.value= [0.5*(phi.value(1)+phi.value(2)); phi.value(2:end-1); 0.5*(phi.value(end-1)+phi.value(end))];
+        visualizeCells1D(phi);
     case 1.5
-        if domain_size==phi_size
-            visualizeCells1D(MeshStructure, phi);
-        else            
-            visualizeCells1D(MeshStructure, [0.5*(phi(1)+phi(2)); phi(2:end-1); 0.5*(phi(end-1)+phi(end))]);
-        end
+        phi.value = [0.5*(phi.value(1)+phi.value(2)); phi.value(2:end-1); 0.5*(phi.value(end-1)+phi.value(end))];
+        visualizeCells1D(phi);
     case 2
-        if domain_size==phi_size
-            visualizeCells2D(MeshStructure, phi);
-        else
-            phi(:,1) = 0.5*(phi(:,1)+phi(:,2));
-            phi(1,:) = 0.5*(phi(1,:)+phi(2,:));
-            phi(:,end) = 0.5*(phi(:,end)+phi(:,end-1));
-            phi(end,:) = 0.5*(phi(end,:)+phi(end-1,:));
-            phi(1,1) = phi(1,2); phi(1,end) = phi(1,end-1);
-            phi(end,1) = phi(end,2); phi(end,end) = phi(end,end-1);
-            visualizeCells2D(MeshStructure, phi);
-        end
+        phi.value(:,1) = 0.5*(phi.value(:,1)+phi.value(:,2));
+        phi.value(1,:) = 0.5*(phi.value(1,:)+phi.value(2,:));
+        phi.value(:,end) = 0.5*(phi.value(:,end)+phi.value(:,end-1));
+        phi.value(end,:) = 0.5*(phi.value(end,:)+phi.value(end-1,:));
+        phi.value(1,1) = phi.value(1,2); phi.value(1,end) = phi.value(1,end-1);
+        phi.value(end,1) = phi.value(end,2); phi.value(end,end) = phi.value(end,end-1);
+        visualizeCells2D(phi);
     case 2.5
-        if domain_size==phi_size
-            visualizeCells2D(MeshStructure, phi);
-        else
-            phi(:,1) = 0.5*(phi(:,1)+phi(:,2));
-            phi(1,:) = 0.5*(phi(1,:)+phi(2,:));
-            phi(:,end) = 0.5*(phi(:,end)+phi(:,end-1));
-            phi(end,:) = 0.5*(phi(end,:)+phi(end-1,:));
-            phi(1,1) = phi(1,2); phi(1,end) = phi(1,end-1);
-            phi(end,1) = phi(end,2); phi(end,end) = phi(end,end-1);
-            visualizeCells2D(MeshStructure, phi);
-        end
+        phi.value(:,1) = 0.5*(phi.value(:,1)+phi.value(:,2));
+        phi.value(1,:) = 0.5*(phi.value(1,:)+phi.value(2,:));
+        phi.value(:,end) = 0.5*(phi.value(:,end)+phi.value(:,end-1));
+        phi.value(end,:) = 0.5*(phi.value(end,:)+phi.value(end-1,:));
+        phi.value(1,1) = phi.value(1,2); phi.value(1,end) = phi.value(1,end-1);
+        phi.value(end,1) = phi.value(end,2); phi.value(end,end) = phi.value(end,end-1);
+        visualizeCells2D(phi);
     case 2.8
-        if domain_size==phi_size
-            visualizeCellsRadial2D(MeshStructure, phi);
-        else
-            phi(:,1) = 0.5*(phi(:,1)+phi(:,2));
-            phi(1,:) = 0.5*(phi(1,:)+phi(2,:));
-            phi(:,end) = 0.5*(phi(:,end)+phi(:,end-1));
-            phi(end,:) = 0.5*(phi(end,:)+phi(end-1,:));
-            phi(1,1) = phi(1,2); phi(1,end) = phi(1,end-1);
-            phi(end,1) = phi(end,2); phi(end,end) = phi(end,end-1);
-            visualizeCellsRadial2D(MeshStructure, phi);
-        end
+        phi.value(:,1) = 0.5*(phi.value(:,1)+phi.value(:,2));
+        phi.value(1,:) = 0.5*(phi.value(1,:)+phi.value(2,:));
+        phi.value(:,end) = 0.5*(phi.value(:,end)+phi.value(:,end-1));
+        phi.value(end,:) = 0.5*(phi.value(end,:)+phi.value(end-1,:));
+        phi.value(1,1) = phi.value(1,2); phi.value(1,end) = phi.value(1,end-1);
+        phi.value(end,1) = phi.value(end,2); phi.value(end,end) = phi.value(end,end-1);
+        visualizeCellsRadial2D(phi);
     case 3
-        if domain_size==phi_size
-            visualizeCells3D(MeshStructure, phi);
-        else
-            visualizeCells3D(MeshStructure, phi(2:end-1,2:end-1,2:end-1));
-        end
+        phi.value = phi.value(2:end-1,2:end-1,2:end-1);
+        visualizeCells3D(phi);
     case 3.2
-        if domain_size==phi_size
-            visualizeCellsCylindrical3D(MeshStructure, phi);
-        else
-            visualizeCellsCylindrical3D(MeshStructure, phi(2:end-1,2:end-1,2:end-1));
-        end
+        phi.value = phi.value(2:end-1,2:end-1,2:end-1);
+        visualizeCellsCylindrical3D(phi);
 end
 
 end

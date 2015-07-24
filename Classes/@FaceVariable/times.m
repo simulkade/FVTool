@@ -44,12 +44,12 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-if (isa(p, 'faceVariable')&&isa(q, 'faceVariable'))
+if (isa(p, 'FaceVariable')&&isa(q, 'FaceVariable'))
     r=p;
     r.xvalue = p.xvalue.*q.xvalue;
     r.yvalue = p.yvalue.*q.yvalue;
     r.zvalue = p.zvalue.*q.zvalue;
-elseif isa(p, 'faceVariable')
+elseif isa(p, 'FaceVariable')
     r=p;
     r.xvalue = p.xvalue.*q;
     r.yvalue = p.yvalue.*q;

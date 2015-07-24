@@ -1,4 +1,4 @@
-function cellvar = createCellVariable(MeshStructure, cellval, varargin)
+function cellvar = createCellVariable(meshvar, cellval, varargin)
 % cellvar = createCellVariable(MeshStructure, cellval)
 % cellvar = createCellVariable(MeshStructure, cellval, BC)
 % this function creates a cell variable based on the dimension of the
@@ -62,19 +62,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % check the size of the variable and the mesh dimension
-dim = MeshStructure.dims;
-if numel(cellval)==1
-    c=cellval*ones(dim+2);
-elseif prod(size(cellval)==dim)
-    c=ones(dim+2);
-    if (d ==1) || (d==1.5)
-        cellvar = cellval.*ones(mn, 1);
-    elseif (d == 2) || (d == 2.5) || (d == 2.8)
-        cellvar = cellval.*ones(mn(1), mn(2));
-    elseif (d == 3) || (d==3.2)
-        cellvar = cellval.*ones(mn(1), mn(2), mn(3));
-    end
-
-if nargin == 3
-    cellvar = cellBoundary(MeshStructure, varargin{1}, cellvar);
+dim = meshvar.dims;
+if nargin<3
+    BC = createBC(meshvar);
+else
+    BC=varargin{3};
 end
+if numel(cellval)==1
+    c=cellval*ones(dim);
+elseif prod(size(cellval)==dim)
+    c=cellval;
+else
+    c= zeros(dim);
+end
+c=cellBoundary(c, BC);
+cellvar= CellVariable(meshvar, c);

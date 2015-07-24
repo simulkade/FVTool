@@ -55,7 +55,7 @@ dy_1 = BC.domain.cellsize.y(1);
 dy_end = BC.domain.cellsize.y(end);
 
 % number of boundary nodes:
-nb = 2*(Nx+Ny+2);
+nb = 8*(Nx+Ny+2);
 
 % define the vectors to be used for the creation of the sparse matrix
 ii = zeros(nb,1);
@@ -67,8 +67,8 @@ BCRHS = zeros((Nx+2)*(Ny+2), 1);
 
 % assign value to the corner nodes (useless cells)
 q = 1:4;
-ii(q) = BC.domain.corner; jj(q) = MeshStructure.corner;
-s(q) = max(BC.top.b/2 + BC.top.a/dy); BCRHS(MeshStructure.corner) = 0;
+ii(q) = BC.domain.corners; jj(q) = BC.domain.corners;
+s(q) = max(BC.top.b/2 + BC.top.a/dy); BCRHS(BC.domain.corners) = 0;
 
 % Assign values to the boundary condition matrix and the RHS vector based
 % on the BC structure

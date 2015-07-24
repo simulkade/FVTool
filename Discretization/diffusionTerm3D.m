@@ -1,4 +1,4 @@
-function [M, Mx, My, Mz] = diffusionTerm3D(MeshStructure, D)
+function [M, Mx, My, Mz] = diffusionTerm3D(D)
 % This function uses the central difference scheme to discretize a 2D
 % diffusion term in the form \grad . (D \grad \phi) where u is a face vactor
 % It also returns the x and y parts of the matrix of coefficient.
@@ -46,11 +46,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % extract data from the mesh structure
-G = MeshStructure.numbering;
-Nxyz = MeshStructure.numberofcells;
-Nx = Nxyz(1); Ny = Nxyz(2); Nz = Nxyz(3);
-d = MeshStructure.cellsize;
-dx = d(1); dy = d(2); dz = d(3);
+Nx = D.domain.dims(1);
+Ny = D.domain.dims(2);
+Nz = D.domain.dims(3);
+G=reshape((1:(Nx+2)*(Ny+2)*(Nz+2)), Nx+2, Ny+2, Nz+2);
+DX = repmat(D.domain.cellsize.x, 1, Ny, Nz);
+DY = repmat(D.domain.cellsize.y', Nx, 1, Nz);
+DZ = zeros(1,1,Nz+2);
+DZ(1,1,:) = D.domain.cellsize.z;
+DZ=repmat(DZ, Nx, Ny, 1);
+dx = 0.5*(DX(1:end-1,:,:)+DX(2:end,:,:));
+dy = 0.5*(DY(:,1:end-1,:)+DY(:,2:end,:));
+dz = 0.5*(DZ(:,:,1:end-1)+DZ(:,:,2:end));
 
 % define the vectors to stores the sparse matrix data
 iix = zeros(3*(Nx+2)*(Ny+2)*(Nz+2),1);	
@@ -72,20 +79,23 @@ Dz = D.zvalue;
 
 % reassign the east, west, north, and south velocity vectors for the 
 % code readability
-De = Dx(2:Nx+1,:,:);		Dw = Dx(1:Nx,:,:);
-Dn = Dy(:,2:Ny+1,:);       Ds = Dy(:,1:Ny,:);
-Df = Dz(:,:,2:Nz+1);       Db = Dz(:,:,1:Nz);
+De = Dx(2:Nx+1,:,:)./(dx(2:Nx+1,:,:).*DX(2:Nx+1,:,:));		
+Dw = Dx(1:Nx,:,:)./(dx(1:Nx,:,:).*DX(2:Nx+1,:,:));
+Dn = Dy(:,2:Ny+1,:)./(dy(:,2:Ny+1,:).*DY(:,2:Ny+1,:));       
+Ds = Dy(:,1:Ny,:)./(dy(:,1:Ny,:).*DY(:,2:Ny+1,:));
+Df = Dz(:,:,2:Nz+1)./(dz(:,:,2:Nz+1).*DZ(:,:,2:Nz+1));       
+Db = Dz(:,:,1:Nz)./(dz(:,:,1:Nz).*DZ(:,:,2:Nz+1));
 
 % calculate the coefficients for the internal cells
-AE = reshape(De/dx^2,mnx,1);
-AW = reshape(Dw/dx^2,mnx,1);
-AN = reshape(Dn/dy^2,mny,1);
-AS = reshape(Ds/dy^2,mny,1);
-AF = reshape(Df/dz^2,mnz,1);
-AB = reshape(Db/dz^2,mnz,1);
-APx = reshape(-(De+Dw)/dx^2,mnx,1);
-APy = reshape(-(Dn+Ds)/dy^2,mny,1);
-APz = reshape(-(Df+Db)/dz^2,mnz,1);
+AE = reshape(De,mnx,1);
+AW = reshape(Dw,mnx,1);
+AN = reshape(Dn,mny,1);
+AS = reshape(Ds,mny,1);
+AF = reshape(Df,mnz,1);
+AB = reshape(Db,mnz,1);
+APx = reshape(-(De+Dw),mnx,1);
+APy = reshape(-(Dn+Ds),mny,1);
+APz = reshape(-(Df+Db),mnz,1);
 
 % build the sparse matrix based on the numbering system
 rowx_index = reshape(G(2:Nx+1,2:Ny+1,2:Nz+1),mnx,1); % main diagonal x

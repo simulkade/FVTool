@@ -44,7 +44,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-if isa(p, 'cellVariable') && (~isa(q, 'cellVariable'))
+if isa(p, 'CellVariable') && (~isa(q, 'CellVariable'))
     r = (1/q)*p;
 else
     error('FVMtool: Wrong use of mrdivide for a cell variable. Try using ./ instead.');

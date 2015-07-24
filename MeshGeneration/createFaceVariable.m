@@ -1,4 +1,4 @@
-function facevar = createFaceVariable(MeshStructure, faceval)
+function facevar = createFaceVariable(meshvar, faceval)
 % this function creates a face variable based on the geometry and mesh
 % size. For instance it can be used to create a gravity field.
 % 
@@ -45,16 +45,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % check the size of the variable and the mesh dimension
-d = MeshStructure.dimension;
-mn = MeshStructure.numberofcells;
+d = meshvar.dimension;
+mn = meshvar.dims;
 
 if (d ==1) || (d==1.5)
-	facevar.xvalue = faceval.*ones(mn+1, 1);
+	xvalue = faceval.*ones(mn+1, 1);
+    yvalue=[];
+    zvalue=[];
 elseif (d == 2) || (d == 2.5) || (d == 2.8)
-	facevar.xvalue = faceval(1).*ones(mn(1)+1, mn(2));
-    facevar.yvalue = faceval(2).*ones(mn(1), mn(2)+1);
+	xvalue = faceval(1).*ones(mn(1)+1, mn(2));
+    yvalue = faceval(2).*ones(mn(1), mn(2)+1);
+    zvalue=[];
 elseif (d == 3) || (d==3.2)
-    facevar.xvalue = faceval(1).*ones(mn(1)+1, mn(2), mn(3));
-    facevar.yvalue = faceval(2).*ones(mn(1), mn(2)+1, mn(3));
-    facevar.zvalue = faceval(3).*ones(mn(1), mn(2), mn(3)+1);
+    xvalue = faceval(1).*ones(mn(1)+1, mn(2), mn(3));
+    yvalue = faceval(2).*ones(mn(1), mn(2)+1, mn(3));
+    zvalue = faceval(3).*ones(mn(1), mn(2), mn(3)+1);
 end
+facevar=FaceVariable(meshvar, xvalue, yvalue, zvalue);

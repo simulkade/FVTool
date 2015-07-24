@@ -1,4 +1,4 @@
-function M = diffusionTermCylindrical1D(MeshStructure, D)
+function M = diffusionTermCylindrical1D(D)
 % This function uses the central difference scheme to discretize a 1D
 % diffusion term in the form \grad . (D \grad \phi) where u is a face vactor
 % It also returns the x and y parts of the matrix of coefficient.
@@ -46,11 +46,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % extract data from the mesh structure
-G = MeshStructure.numbering;
-Nr = MeshStructure.numberofcells;
-dx = MeshStructure.cellsize;
-rp = MeshStructure.cellcenters.x';
-rf = MeshStructure.facecenters.x';
+Nx = D.domain.dims(1);
+G = 1:Nx+2;
+DX = D.domain.cellsize.x;
+dx = 0.5*(DX(1:end-1)+DX(2:end));
+rp = D.domain.cellcenters.x;
+rf = D.domain.facecenters.x;
 
 % define the vectors to store the sparse matrix data
 iix = zeros(3*(Nr+2),1);
@@ -63,13 +64,13 @@ Dx = D.xvalue;
 
 % reassign the east, west, north, and south velocity vectors for the 
 % code readability
-De = Dx(2:Nr+1);		Dw = Dx(1:Nr);
-re = rf(2:Nr+1);     rw = rf(1:Nr);
+De = rf(2:Nx+1).*Dx(2:Nr+1)./(rp.*dx(2:Nx+1).*DX(2:Nx+1));		
+Dw = rf(1:Nx).*Dx(1:Nr)./(rp.*dx(1:Nx).*DX(2:Nx+1));
 
 % calculate the coefficients for the internal cells
-AE = reshape(re.*De./(rp*dx^2),Nr,1);
-AW = reshape(rw.*Dw./(rp*dx^2),Nr,1);
-APx = reshape(-(re.*De+rw.*Dw)./(rp*dx^2),Nr,1);
+AE = reshape(De,Nr,1);
+AW = reshape(Dw,Nr,1);
+APx = reshape(-(De+Dw),Nr,1);
 
 % build the sparse matrix based on the numbering system
 rowx_index = reshape(G(2:Nr+1),Nr,1); % main diagonal x

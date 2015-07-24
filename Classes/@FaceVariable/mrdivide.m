@@ -44,7 +44,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-if isa(p, 'faceVariable') && (~isa(q, 'faceVariable'))
+if isa(p, 'FaceVariable') && (~isa(q, 'FaceVariable'))
     r = (1/q)*p;
 else
     error('FVMtool: Wrong use of mrdivide for a face variable. Try using ./ instead.');

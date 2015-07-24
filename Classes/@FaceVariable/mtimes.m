@@ -45,9 +45,9 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-if (isa(p, 'faceVariable')&&isa(q, 'faceVariable'))
+if (isa(p, 'FaceVariable')&&isa(q, 'FaceVariable'))
     error('FVMtool: Wrong use of mtimes for a face variable. Try using .* instead.');
-elseif isa(p, 'faceVariable')
+elseif isa(p, 'FaceVariable')
     r=p;
     r.xvalue = p.xvalue*q;
     r.yvalue = p.yvalue*q;

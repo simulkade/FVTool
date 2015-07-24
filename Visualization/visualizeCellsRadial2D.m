@@ -1,4 +1,4 @@
-function visualizeCellsRadial2D(MeshStructure, phi)
+function visualizeCellsRadial2D(phi)
 %VISUALIZECELLS plots the values of cell variable phi
 % 
 % SYNOPSIS:
@@ -42,15 +42,15 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
-L = MeshStructure.cellcenters.x(end);
-x = [MeshStructure.facecenters.x(1) MeshStructure.cellcenters.x MeshStructure.facecenters.x(end)];
-y = [MeshStructure.facecenters.y(1) MeshStructure.cellcenters.y MeshStructure.facecenters.y(end)]; 
+L = phi.domain.cellcenters.x(end);
+x = [phi.domain.facecenters.x(1) phi.domain.cellcenters.x phi.domain.facecenters.x(end)];
+y = [phi.domain.facecenters.y(1) phi.domain.cellcenters.y phi.domain.facecenters.y(end)]; 
 [TH,R] = meshgrid(y, x);
 [X,Y] = pol2cart(TH,R);
 h = polar([0 2*pi], [0 L]);
 delete(h);
 hold on
-pcolor(X,Y,phi)
+pcolor(X,Y,phi.value)
 
 % pcolor(MeshStructure.cellcenters.x, MeshStructure.cellcenters.y, phi')
 % axis equal tight

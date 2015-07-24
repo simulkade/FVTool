@@ -1,4 +1,4 @@
-function visualizeCells3D(MeshStructure, phi)
+function visualizeCells3D(phi)
 %VISUALIZECELLS plots the values of cell variable phi
 % 
 % SYNOPSIS:
@@ -44,15 +44,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % domain_length = MeshStructure.numberofcells.*MeshStructure.cellsize;
-[X,Y,Z]=meshgrid(MeshStructure.cellcenters.y, MeshStructure.cellcenters.x, ...
-    MeshStructure.cellcenters.z);
+[X,Y,Z]=meshgrid(phi.domain.cellcenters.y, phi.domain.cellcenters.x, ...
+    phi.domain.cellcenters.z);
 % Sx = 0.5*domain_length(1);
 % Sy = domain_length(2)*[0.25 0.5 0.75];
 % Sz = domain_length(3)*[0.25 0.75];
-Sx = [MeshStructure.cellcenters.x(1) MeshStructure.cellcenters.x(end)];
-Sy = [MeshStructure.cellcenters.y(1) MeshStructure.cellcenters.y(end)];
-Sz = [MeshStructure.cellcenters.z(1) MeshStructure.cellcenters.z(end)];
-slice(X,Y,Z, phi, Sy, Sx, Sz);
+Sx = [phi.domain.cellcenters.x(1) phi.domain.cellcenters.x(end)];
+Sy = [phi.domain.cellcenters.y(1) phi.domain.cellcenters.y(end)];
+Sz = [phi.domain.cellcenters.z(1) phi.domain.cellcenters.z(end)];
+slice(X,Y,Z, phi.value, Sy, Sx, Sz);
 xlabel('Cell centers [y vlaues]'); % this is correct [matrix not rotated]
 ylabel('Cell centers [x vlaues]'); % this is correct [matrix not rotated]
 zlabel('Cell centers [z vlaues]');

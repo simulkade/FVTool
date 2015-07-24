@@ -1,4 +1,4 @@
-function visualizeCells2D(MeshStructure, phi)
+function visualizeCells2D(phi)
 %VISUALIZECELLS plots the values of cell variable phi
 % 
 % SYNOPSIS:
@@ -42,10 +42,10 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
-x = [MeshStructure.facecenters.x(1) MeshStructure.cellcenters.x MeshStructure.facecenters.x(end)];
-y = [MeshStructure.facecenters.y(1) MeshStructure.cellcenters.y MeshStructure.facecenters.y(end)];
+x = [phi.domain.facecenters.x(1) phi.domain.cellcenters.x phi.domain.facecenters.x(end)];
+y = [phi.domain.facecenters.y(1) phi.domain.cellcenters.y phi.domain.facecenters.y(end)];
 
-pcolor(x, y, phi')
+pcolor(x, y, phi.value')
 axis equal tight
 xlabel('Cell centers [x vlaues]');
 ylabel('Cell centers [y vlaues]');

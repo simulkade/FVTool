@@ -1,4 +1,4 @@
-function phiBC = cellBoundary(MeshStructure, BC, phi)
+function phiBC = cellBoundary(phi, BC)
 % This function calculates the value of the boundary cells and add them
 % to the variable phi
 % 
@@ -45,16 +45,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % extract data from the mesh structure
-d = MeshStructure.dimension;
+d = BC.domain.dimension;
 
 if (d ==1) || (d==1.5)
-	phiBC = cellBoundary1D(MeshStructure, BC, phi);
+	phiBC = cellBoundary1D(phi, BC);
 elseif (d == 2) || (d == 2.5)
-	phiBC = cellBoundary2D(MeshStructure, BC, phi);
+	phiBC = cellBoundary2D(phi, BC);
 elseif (d==2.8)
-    phiBC = cellBoundaryRadial2D(MeshStructure, BC, phi);
+    phiBC = cellBoundaryRadial2D(phi, BC);
 elseif (d==3)
-    phiBC = cellBoundary3D(MeshStructure, BC, phi);
+    phiBC = cellBoundary3D(phi, BC);
 elseif (d==3.2)
-    phiBC = cellBoundaryCylindrical3D(MeshStructure, BC, phi);
+    phiBC = cellBoundaryCylindrical3D(phi, BC);
 end
