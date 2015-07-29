@@ -58,8 +58,8 @@ jjx = zeros(3*(Nx+2),1);
 sx = zeros(3*(Nx+2),1);
 
 % reassign the east, west for code readability
-ue = u.xvalue(2:Nx+1)./(DXp+DXe)
-uw = u.xvalue(1:Nx)./(DXp+DXw)
+ue = u.xvalue(2:Nx+1)./(DXp+DXe);
+uw = u.xvalue(1:Nx)./(DXp+DXw);
 
 % calculate the coefficients for the internal cells
 AE = reshape(ue,Nx,1);
