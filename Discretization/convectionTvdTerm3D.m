@@ -1,57 +1,67 @@
 function [M, RHS, Mx, My, Mz, RHSx, RHSy, RHSz] = ...
-    convectionTvdTerm3D(MeshStructure, u, phi, FL)
+    convectionTvdTerm3D(u, phi, FL)
 % This function uses the TVD scheme to discretize a 3D
 % convection term in the form \grad (u \phi) where u is a face vactor
 % It also returns the x and y parts of the matrix of coefficient.
-% 
+%
 % SYNOPSIS:
-%   
-% 
+%   [M, RHS, Mx, My, Mz, RHSx, RHSy, RHSz] = ...
+%    convectionTvdTerm3D(u, phi, FL)
+%
 % PARAMETERS:
-%   
-% 
+%
+%
 % RETURNS:
-%   
-% 
+%
+%
 % EXAMPLE:
-% 
+%
 % SEE ALSO:
-%     
+%
 
 %{
 Copyright (c) 2012, 2013, Ali Akbar Eftekhari
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or 
-without modification, are permitted provided that the following 
+Redistribution and use in source and binary forms, with or
+without modification, are permitted provided that the following
 conditions are met:
 
-    *   Redistributions of source code must retain the above copyright notice, 
+    *   Redistributions of source code must retain the above copyright notice,
         this list of conditions and the following disclaimer.
-    *   Redistributions in binary form must reproduce the above 
-        copyright notice, this list of conditions and the following 
-        disclaimer in the documentation and/or other materials provided 
+    *   Redistributions in binary form must reproduce the above
+        copyright notice, this list of conditions and the following
+        disclaimer in the documentation and/or other materials provided
         with the distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
-PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
-OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % extract data from the mesh structure
-G = MeshStructure.numbering;
-Nxyz = MeshStructure.numberofcells;
-Nx = Nxyz(1); Ny = Nxyz(2); Nz = Nxyz(3);
-d = MeshStructure.cellsize;
-dx = d(1); dy = d(2); dz = d(3);
+Nx = u.domain.dims(1);
+Ny = u.domain.dims(2);
+Nz = u.domain.dims(3);
+G=reshape((1:(Nx+2)*(Ny+2)*(Nz+2)), Nx+2, Ny+2, Nz+2);
+DXp = repmat(u.domain.cellsize.x(2:end-1), 1, Ny, Nz);
+DYp = repmat(u.domain.cellsize.y(2:end-1)', Nx, 1, Nz);
+DZ = zeros(1,1,Nz+2);
+DZ(1,1,:) = u.domain.cellsize.z;
+DZp=repmat(DZ(1,1,2:end-1), Nx, Ny, 1);
+dx=repmat(0.5*(u.domain.cellsize.x(1:end-1)+u.domain.cellsize.x(2:end)), 1, Ny, Nz);
+dy=repmat(0.5*(u.domain.cellsize.y(1:end-1)+u.domain.cellsize.y(2:end))', Nx, 1, Nz);
+dz=zeros(1, 1, Nz+1);
+dz(1,1,:)=0.5*(u.domain.cellsize.z(1:end-1)+u.domain.cellsize.z(2:end));
+dz=repmat(dz, Nx, Ny, 1);
 psiX_p = zeros(Nx+1,Ny,Nz);
 psiX_m = zeros(Nx+1,Ny,Nz);
 psiY_p = zeros(Nx,Ny+1,Nz);
@@ -60,9 +70,9 @@ psiZ_p = zeros(Nx,Ny,Nz+1);
 psiZ_m = zeros(Nx,Ny,Nz+1);
 
 % define the vectors to stores the sparse matrix data
-iix = zeros(3*(Nx+2)*(Ny+2)*(Nz+2),1);	
-jjx = zeros(3*(Nx+2)*(Ny+2)*(Nz+2),1);	
-sx = zeros(3*(Nx+2)*(Ny+2)*(Nz+2),1);	
+iix = zeros(3*(Nx+2)*(Ny+2)*(Nz+2),1);
+jjx = zeros(3*(Nx+2)*(Ny+2)*(Nz+2),1);
+sx = zeros(3*(Nx+2)*(Ny+2)*(Nz+2),1);
 iiy = zeros(3*(Nx+2)*(Ny+2)*(Nz+2),1);
 jjy = zeros(3*(Nx+2)*(Ny+2)*(Nz+2),1);
 sy = zeros(3*(Nx+2)*(Ny+2)*(Nz+2),1);
@@ -71,7 +81,7 @@ jjz = zeros(3*(Nx+2)*(Ny+2)*(Nz+2),1);
 sz = zeros(3*(Nx+2)*(Ny+2)*(Nz+2),1);
 mnx = Nx*Ny*Nz;	mny = Nx*Ny*Nz;   mnz = Nx*Ny*Nz;
 
-% extract the velocity data 
+% extract the velocity data
 % note: size(ux) = [1:m+1, 1:n] and size(uy) = [1:m, 1:n+1]
 ux = u.xvalue;
 uy = u.yvalue;
@@ -79,41 +89,41 @@ uz = u.zvalue;
 
 % calculate the upstream to downstream gradient ratios for u>0 (+ ratio)
 % x direction
-dphiX_p = phi(2:Nx+2, 2:Ny+1, 2:Nz+1)-phi(1:Nx+1, 2:Ny+1, 2:Nz+1);
+dphiX_p = phi.value(2:Nx+2, 2:Ny+1, 2:Nz+1)-phi.value(1:Nx+1, 2:Ny+1, 2:Nz+1);
 rX_p = dphiX_p(1:end-1,:,:)./fsign(dphiX_p(2:end,:,:));
 psiX_p(2:Nx+1,:,:) = 0.5*FL(rX_p).* ...
-    (phi(3:Nx+2,2:Ny+1,2:Nz+1)-phi(2:Nx+1,2:Ny+1,2:Nz+1));
+    (phi.value(3:Nx+2,2:Ny+1,2:Nz+1)-phi.value(2:Nx+1,2:Ny+1,2:Nz+1));
 psiX_p(1,:,:) = 0; % left boundary
 % y direction
-dphiY_p = phi(2:Nx+1, 2:Ny+2, 2:Nz+1)-phi(2:Nx+1, 1:Ny+1, 2:Nz+1);
+dphiY_p = phi.value(2:Nx+1, 2:Ny+2, 2:Nz+1)-phi.value(2:Nx+1, 1:Ny+1, 2:Nz+1);
 rY_p = dphiY_p(:,1:end-1,:)./fsign(dphiY_p(:,2:end,:));
 psiY_p(:,2:Ny+1,:) = 0.5*FL(rY_p).* ...
-    (phi(2:Nx+1,3:Ny+2,2:Nz+1)-phi(2:Nx+1, 2:Ny+1,2:Nz+1));
+    (phi.value(2:Nx+1,3:Ny+2,2:Nz+1)-phi.value(2:Nx+1, 2:Ny+1,2:Nz+1));
 psiY_p(:,1,:) = 0; % Bottom boundary
 % z direction
-dphiZ_p = phi(2:Nx+1, 2:Ny+1, 2:Nz+2)-phi(2:Nx+1, 2:Ny+1, 1:Nz+1);
+dphiZ_p = phi.value(2:Nx+1, 2:Ny+1, 2:Nz+2)-phi.value(2:Nx+1, 2:Ny+1, 1:Nz+1);
 rZ_p = dphiZ_p(:,:,1:end-1)./fsign(dphiZ_p(:,:,2:end));
 psiZ_p(:,:,2:Nz+1) = 0.5*FL(rZ_p).* ...
-    (phi(2:Nx+1,2:Ny+1,3:Nz+2)-phi(2:Nx+1,2:Ny+1,2:Nz+1));
+    (phi.value(2:Nx+1,2:Ny+1,3:Nz+2)-phi.value(2:Nx+1,2:Ny+1,2:Nz+1));
 psiZ_p(:,:,1) = 0; % Back boundary
 
 % calculate the upstream to downstream gradient ratios for u<0 (- ratio)
 % x direction
 rX_m = dphiX_p(2:end,:,:)./fsign(dphiX_p(1:end-1,:,:));
 psiX_m(1:Nx,:,:) = 0.5*FL(rX_m).* ...
-    (phi(1:Nx, 2:Ny+1, 2:Nz+1)-phi(2:Nx+1, 2:Ny+1, 2:Nz+1));
+    (phi.value(1:Nx, 2:Ny+1, 2:Nz+1)-phi.value(2:Nx+1, 2:Ny+1, 2:Nz+1));
 psiX_m(Nx+1,:,:) = 0; % right boundary
 % y direction
 rY_m = dphiY_p(:,2:end,:)./fsign(dphiY_p(:,1:end-1,:));
 psiY_m(:,1:Ny,:) = 0.5*FL(rY_m).* ...
-    (phi(2:Nx+1,1:Ny,2:Nz+1)-phi(2:Nx+1,2:Ny+1,2:Nz+1));
+    (phi.value(2:Nx+1,1:Ny,2:Nz+1)-phi.value(2:Nx+1,2:Ny+1,2:Nz+1));
 psiY_m(:,Ny+1,:) = 0; % top boundary
 % z direction
 rZ_m = dphiZ_p(:,:,2:end)./fsign(dphiZ_p(:,:,1:end-1));
 psiZ_m(:,:,1:Nz) = 0.5*FL(rZ_m).* ...
-    (phi(2:Nx+1,2:Ny+1,1:Nz)-phi(2:Nx+1,2:Ny+1,2:Nz+1));
+    (phi.value(2:Nx+1,2:Ny+1,1:Nz)-phi.value(2:Nx+1,2:Ny+1,2:Nz+1));
 psiZ_m(:,:,Nz+1) = 0; % front boundary
-% reassign the east, west, north, and south velocity vectors for the 
+% reassign the east, west, north, and south velocity vectors for the
 % code readability
 ue = ux(2:Nx+1,:,:);		uw = ux(1:Nx,:,:);
 vn = uy(:,2:Ny+1,:);     vs = uy(:,1:Ny,:);
@@ -128,29 +138,29 @@ wf_min = min(wf,0);	wf_max = max(wf,0);
 wb_min = min(wb,0);	wb_max = max(wb,0);
 
 % calculate the coefficients for the internal cells
-AE = ue_min/dx;
-AW = -uw_max/dx;
-AN = vn_min/dy;
-AS = -vs_max/dy;
-AF = wf_min/dz;
-AB = -wb_max/dz;
-APx = (ue_max-uw_min)/dx;
-APy = (vn_max-vs_min)/dy;
-APz = (wf_max-wb_min)/dz;
+AE = ue_min./DXp;
+AW = -uw_max./DXp;
+AN = vn_min./DYp;
+AS = -vs_max./DYp;
+AF = wf_min./DZp;
+AB = -wb_max./DZp;
+APx = (ue_max-uw_min)./DXp;
+APy = (vn_max-vs_min)./DYp;
+APz = (wf_max-wb_min)./DZp;
 
 % Also correct for the boundary cells (not the ghost cells)
 % Left boundary:
-APx(1,:,:) = APx(1,:,:)-uw_max(1,:,:)/(2*dx);   AW(1,:,:) = AW(1,:,:)/2;
+APx(1,:,:) = APx(1,:,:)-uw_max(1,:,:)/(2*DXp(1));   AW(1,:,:) = AW(1,:,:)/2;
 % Right boundary:
-AE(end,:,:) = AE(end,:,:)/2;    APx(end,:,:) = APx(end,:,:) + ue_min(end,:,:)/(2*dx);
+AE(end,:,:) = AE(end,:,:)/2;    APx(end,:,:) = APx(end,:,:) + ue_min(end,:,:)/(2*DXp(end));
 % Bottom boundary:
-APy(:,1,:) = APy(:,1,:)-vs_max(:,1,:)/(2*dy);   AS(:,1,:) = AS(:,1,:)/2;
+APy(:,1,:) = APy(:,1,:)-vs_max(:,1,:)/(2*DYp(1));   AS(:,1,:) = AS(:,1,:)/2;
 % Top boundary:
-AN(:,end,:) = AN(:,end,:)/2;    APy(:,end,:) = APy(:,end,:) + vn_min(:,end,:)/(2*dy);
+AN(:,end,:) = AN(:,end,:)/2;    APy(:,end,:) = APy(:,end,:) + vn_min(:,end,:)/(2*DYp(end));
 % Back boundary:
-APz(:,:,1) = APz(:,:,1)-wb_max(:,:,1)/(2*dz);   AB(:,:,1) = AB(:,:,1)/2;
+APz(:,:,1) = APz(:,:,1)-wb_max(:,:,1)/(2*DZp(1));   AB(:,:,1) = AB(:,:,1)/2;
 % Front boundary:
-AF(:,:,end) = AF(:,:,end)/2;    APz(:,:,end) = APz(:,:,end) + wf_min(:,:,end)/(2*dz);
+AF(:,:,end) = AF(:,:,end)/2;    APz(:,:,end) = APz(:,:,end) + wf_min(:,:,end)/(2*DZp(end));
 
 AE = reshape(AE,mnx,1);
 AW = reshape(AW,mnx,1);
@@ -177,13 +187,13 @@ sy(1:3*mny) = [AS; APy; AN];
 sz(1:3*mnz) = [AB; APz; AF];
 
 % calculate the TVD correction term
-div_x = -(1/dx)*((ue_max.*psiX_p(2:Nx+1,:,:)+ue_min.*psiX_m(2:Nx+1,:,:))- ...
+div_x = -(1./DXp).*((ue_max.*psiX_p(2:Nx+1,:,:)+ue_min.*psiX_m(2:Nx+1,:,:))- ...
               (uw_max.*psiX_p(1:Nx,:,:)+uw_min.*psiX_m(1:Nx,:,:)));
-div_y = -(1/dy)*((vn_max.*psiY_p(:,2:Ny+1,:)+vn_min.*psiY_m(:,2:Ny+1,:))- ...
+div_y = -(1./DYp).*((vn_max.*psiY_p(:,2:Ny+1,:)+vn_min.*psiY_m(:,2:Ny+1,:))- ...
               (vs_max.*psiY_p(:,1:Ny,:)+vs_min.*psiY_m(:,1:Ny,:)));
-div_z = -(1/dz)*((wf_max.*psiZ_p(:,:,2:Nz+1)+wf_min.*psiZ_m(:,:,2:Nz+1))- ...
+div_z = -(1./DZp).*((wf_max.*psiZ_p(:,:,2:Nz+1)+wf_min.*psiZ_m(:,:,2:Nz+1))- ...
               (wb_max.*psiZ_p(:,:,1:Nz)+wb_min.*psiZ_m(:,:,1:Nz)));
-          
+
 % define the RHS Vector
 RHS = zeros((Nx+2)*(Ny+2)*(Nz+2),1);
 RHSx = zeros((Nx+2)*(Ny+2)*(Nz+2),1);

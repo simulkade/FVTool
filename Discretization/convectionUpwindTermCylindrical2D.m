@@ -2,57 +2,57 @@ function [M, Mx, My] = convectionUpwindTermCylindrical2D(MeshStructure, u)
 % This function uses the upwind scheme to discretize a 2D
 % convection term in the form \grad (u \phi) where u is a face vactor
 % It also returns the x and y parts of the matrix of coefficient.
-% 
+%
 % SYNOPSIS:
-%   
-% 
+%
+%
 % PARAMETERS:
-%   
-% 
+%
+%
 % RETURNS:
-%   
-% 
+%
+%
 % EXAMPLE:
-% 
+%
 % SEE ALSO:
-%     
+%
 
 %{
 Copyright (c) 2012, 2013, Ali Akbar Eftekhari
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or 
-without modification, are permitted provided that the following 
+Redistribution and use in source and binary forms, with or
+without modification, are permitted provided that the following
 conditions are met:
 
-    *   Redistributions of source code must retain the above copyright notice, 
+    *   Redistributions of source code must retain the above copyright notice,
         this list of conditions and the following disclaimer.
-    *   Redistributions in binary form must reproduce the above 
-        copyright notice, this list of conditions and the following 
-        disclaimer in the documentation and/or other materials provided 
+    *   Redistributions in binary form must reproduce the above
+        copyright notice, this list of conditions and the following
+        disclaimer in the documentation and/or other materials provided
         with the distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
-PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
-OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % extract data from the mesh structure
-G = MeshStructure.numbering;
-Nrz = MeshStructure.numberofcells;
-Nr = Nrz(1); Nz = Nrz(2);
-dxdy = MeshStructure.cellsize;
-dx = dxdy(1); dy = dxdy(2);
-rp = repmat(MeshStructure.cellcenters.x', 1, Nz);
-rf = repmat(MeshStructure.facecenters.x', 1, Nz);
+Nr = u.domain.dims(1);
+Nz = u.domain.dims(2);
+G=reshape(1:(Nr+2)*(Nz+2), Nr+2, Nz+2);
+DRp = repmat(u.domain.cellsize.x(2:end-1), 1, Nz);
+DZp = repmat(u.domain.cellsize.y(2:end-1)', Nr, 1);
+rp = repmat(u.domain.cellcenters.x, 1, Nz);
+rf = repmat(u.domain.facecenters.x, 1, Nz);
 
 % define the vectors to stores the sparse matrix data
 iix = zeros(3*(Nr+2)*(Nz+2),1);	iiy = zeros(3*(Nr+2)*(Nz+2),1);
@@ -60,12 +60,12 @@ jjx = zeros(3*(Nr+2)*(Nz+2),1);	jjy = zeros(3*(Nr+2)*(Nz+2),1);
 sx = zeros(3*(Nr+2)*(Nz+2),1);	sy = zeros(3*(Nr+2)*(Nz+2),1);
 mnx = Nr*Nz;	mny = Nr*Nz;
 
-% extract the velocity data 
+% extract the velocity data
 % note: size(ux) = [1:m+1, 1:n] and size(uy) = [1:m, 1:n+1]
 ux = u.xvalue;
 uy = u.yvalue;
 
-% reassign the east, west, north, and south velocity vectors for the 
+% reassign the east, west, north, and south velocity vectors for the
 % code readability
 ue = ux(2:Nr+1,:);		uw = ux(1:Nr,:);
 vn = uy(:,2:Nz+1);       vs = uy(:,1:Nz);
@@ -78,22 +78,22 @@ vn_min = min(vn,0);	vn_max = max(vn,0);
 vs_min = min(vs,0);	vs_max = max(vs,0);
 
 % calculate the coefficients for the internal cells
-AE = re.*ue_min./(rp*dx);
-AW = -rw.*uw_max./(rp*dx);
-AN = vn_min/dy;
-AS = -vs_max/dy;
-APx = (re.*ue_max-rw.*uw_min)./(rp*dx);
-APy = (vn_max-vs_min)/dy;
+AE = re.*ue_min./(DRp.*rp);
+AW = -rw.*uw_max./(DRp.*rp);
+AN = vn_min./DZp;
+AS = -vs_max./DZp;
+APx = (re.*ue_max-rw.*uw_min)./(DRp.*rp);
+APy = (vn_max-vs_min)./DZp;
 
 % Also correct for the boundary cells (not the ghost cells)
 % Left boundary:
-APx(1,:) = APx(1,:)-rw(1,:).*uw_max(1,:)./(2*rp(1,:)*dx);   AW(1,:) = AW(1,:)/2;
+APx(1,:) = APx(1,:)-rw(1,:).*uw_max(1,:)./(2*rp(1,:)*DRp(1));   AW(1,:) = AW(1,:)/2;
 % Right boundary:
-AE(end,:) = AE(end,:)/2;    APx(end,:) = APx(end,:) + re(end,:).*ue_min(end,:)./(2*rp(end,:)*dx);
+AE(end,:) = AE(end,:)/2;    APx(end,:) = APx(end,:) + re(end,:).*ue_min(end,:)./(2*rp(end,:)*DRp(end));
 % Bottom boundary:
-APy(:,1) = APy(:,1)-vs_max(:,1)/(2*dy);   AS(:,1) = AS(:,1)/2;
+APy(:,1) = APy(:,1)-vs_max(:,1)/(2*DZp(1));   AS(:,1) = AS(:,1)/2;
 % Top boundary:
-AN(:,end) = AN(:,end)/2;    APy(:,end) = APy(:,end) + vn_min(:,end)/(2*dy);
+AN(:,end) = AN(:,end)/2;    APy(:,end) = APy(:,end) + vn_min(:,end)/(2*DZp(end));
 
 AE = reshape(AE,mnx,1);
 AW = reshape(AW,mnx,1);

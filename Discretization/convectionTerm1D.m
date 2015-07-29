@@ -4,7 +4,7 @@ function M = convectionTerm1D(u)
 % It also returns the x and y parts of the matrix of coefficient.
 %
 % SYNOPSIS:
-%
+%  M = convectionTerm1D(u)
 %
 % PARAMETERS:
 %
