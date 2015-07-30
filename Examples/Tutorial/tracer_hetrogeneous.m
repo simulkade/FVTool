@@ -36,13 +36,13 @@ BCp.left.c(:)=u_inj;
 BCc.left.a(:)=0.0;
 BCc.left.b(:)=1.0;
 BCc.left.c(:)=1.0;
-labda_face=harmonicMean(m, k/mu_val);
-Mdiffp=diffusionTerm(m,labda_face);
-[Mbcp, RHSp] = boundaryCondition(m,BCp);
+labda_face=harmonicMean(k/mu_val);
+Mdiffp=diffusionTerm(labda_face);
+[Mbcp, RHSp] = boundaryCondition(BCp);
 Mp= Mdiffp+Mbcp;
 p_val=solvePDE(m, Mp, RHSp);
 figure(1)
-visualizeCells(m,p_val);
+visualizeCells(p_val);
 title('Pressure profile (Pa)');
 colorbar();
 
@@ -50,30 +50,29 @@ colorbar();
 n_loop=50;
 dt=Lx/u_inj/(5*100); % (s)
 % find the velocity vector
-u=-labda_face.*gradientTerm(m, p_val); % (m/s)
+u=-labda_face.*gradientTerm(p_val); % (m/s)
 % find the matrices of coefficients
-D_face=harmonicMean(m, phi.*D);
-Mdiffc=diffusionTerm(m, D_face);
-Mconvc=convectionUpwindTerm(m, u);
-[Mbcc, RHSbcc] = boundaryCondition(m, BCc);
+D_face=harmonicMean(phi.*D);
+Mdiffc=diffusionTerm(D_face);
+Mconvc=convectionUpwindTerm(u);
+[Mbcc, RHSbcc] = boundaryCondition(BCc);
 % initialize
 c_old = createCellVariable(m, c_init, BCc);
-c.value = c_old;
-c.Old = c_old;
+c_val = c_old;
 % start the loop
 for i=1:n_loop
-    [Mtransc, RHStransc] = transientTerm(m, phi, dt, c);
+    [Mtransc, RHStransc] = transientTerm(c_old, dt, phi);
     Mc=-Mdiffc+Mconvc+Mbcc+Mtransc;
     RHSc=RHSbcc+RHStransc;
     c_val=solvePDE(m, Mc, RHSc);
-    c.Old=c_val;
+    c_old=c_val;
 end
 figure(2);
 subplot(1,2,1);
-visualizeCells(m, c_val);
+visualizeCells(c_val);
 title('concentration profile');
 colorbar();
 subplot(1,2,2);
-pcolor(k);
+visualizeCells(k);
 colorbar()
 title('perm field');

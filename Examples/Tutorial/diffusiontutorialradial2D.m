@@ -5,14 +5,14 @@
 % $$\alpha\frac{\partial c}{\partial t}+\nabla.\left(-D\nabla c\right)=0,$$
 %
 % where $c$ is the independent variable (concentration, temperature, etc)
-% , $D$ is the diffusion coefficient, and $\alpha$ is a constant. 
+% , $D$ is the diffusion coefficient, and $\alpha$ is a constant.
 clc; clear;
 
 %% Define the domain and create a mesh structure
 L = 10;  % domain length
 Nx = 10; % number of cells
 Ntetta = 20;
-m = buildMeshRadial2D(Nx,Ntetta, L,1*pi);
+m = createMeshRadial2D(Nx,Ntetta, L,1*pi);
 %% Create the boundary condition structure
 BC = createBC(m); % all Neumann boundary condition structure
 m.cellcenters.x=m.cellcenters.x+1;
@@ -29,19 +29,19 @@ D = createCellVariable(m, D_val);
 alfa = createCellVariable(m, 1);
 %% define initial values
 c_init = 0.1;
-c.Old = createCellVariable(m, c_init,BC); % initial values
-c.value = c.Old; % assign the old value of the cells to the current values
+c_old = createCellVariable(m, c_init,BC); % initial values
+c = c_old; % assign the old value of the cells to the current values
 %% loop
 dt = 0.1; % time step
 final_t = 20;
-Dave = harmonicMean(m, D);
-Mdiff = diffusionTerm(m, Dave);
-[Mbc, RHSbc] = boundaryCondition(m, BC);
+Dave = harmonicMean(D);
+Mdiff = diffusionTerm(Dave);
+[Mbc, RHSbc] = boundaryCondition(BC);
 for t=dt:dt:final_t
-    [M_trans, RHS_trans] = transientTerm(m, alfa, dt, c);
+    [M_trans, RHS_trans] = transientTerm(c_old, dt, alfa);
     M = M_trans-Mdiff+Mbc;
     RHS = RHS_trans+RHSbc;
-    c.value = solvePDE(m,M, RHS);
-    c.Old = c.value;
-    figure(1);visualizeCells(m, c.value);shading interp; drawnow;
+    c = solvePDE(m,M, RHS);
+    c_old = c;
+    figure(1); visualizeCells(c); drawnow;
 end
