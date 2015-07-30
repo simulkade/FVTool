@@ -43,7 +43,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-x = [phi.domain.facecenters.x(1) phi.domain.cellcenters.x phi.domain.facecenters.x(end)];
+x = [phi.domain.facecenters.x(1); phi.domain.cellcenters.x; phi.domain.facecenters.x(end)];
 plot(x, phi.value)
 xlabel('Cell centers [x vlaues]');
 ylabel('Cell values');

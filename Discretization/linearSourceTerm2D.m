@@ -1,9 +1,9 @@
-function RHS = sourceExplicitTerm(MeshStructure, k)
-% RHS vector for an explicit source term
-% k is a matrix of size [m, n]
+function M = linearSourceTerm2D(k)
+% Matrix of coefficients for a linear source term in the form of k \phi
+%
 % 
 % SYNOPSIS:
-%   
+%   M = linearSourceTerm2D(k)
 % 
 % PARAMETERS:
 %   
@@ -44,11 +44,12 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-d = MeshStructure.dimension;
-if (d ==1) || (d==1.5)
-	RHS = sourceExplicitTerm1D(MeshStructure, k);
-elseif (d == 2) || (d == 2.5) || (d==2.8)
-	RHS = sourceExplicitTerm2D(MeshStructure, k);
-elseif (d==3) || (d==3.2)
-    RHS = sourceExplicitTerm3D(MeshStructure, k);
-end
+% extract data from the mesh structure
+Nxy = k.domain.dims;
+Nx = Nxy(1); Ny = Nxy(2);
+G=reshape(1:(Nx+2)*(Ny+2), Nx+2, Ny+2);
+
+% rearrange the matrix of k and build the sparse matrix for internal cells
+row_index = reshape(G(2:Nx+1,2:Ny+1),Nx*Ny,1); % main diagonal (only internal cells)
+AP_diag = reshape(k.value(2:Nx+1,2:Ny+1),Nx*Ny,1);
+M = sparse(row_index, row_index, AP_diag, (Nx+2)*(Ny+2), (Nx+2)*(Ny+2));

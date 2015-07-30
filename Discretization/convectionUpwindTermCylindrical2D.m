@@ -1,4 +1,4 @@
-function [M, Mx, My] = convectionUpwindTermCylindrical2D(MeshStructure, u)
+function [M, Mx, My] = convectionUpwindTermCylindrical2D(u)
 % This function uses the upwind scheme to discretize a 2D
 % convection term in the form \grad (u \phi) where u is a face vactor
 % It also returns the x and y parts of the matrix of coefficient.

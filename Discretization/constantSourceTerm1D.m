@@ -1,8 +1,8 @@
-function RHS = sourceExplicitTerm3D(MeshStructure, phi)
+function RHS = constantSourceTerm1D(phi)
 % RHS vector for a Explicit source term 
 % 
 % SYNOPSIS:
-%   
+%   RHS = constantSourceTerm1D(phi)
 % 
 % PARAMETERS:
 %   
@@ -44,15 +44,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % extract data from the mesh structure
-G = MeshStructure.numbering;
-Nxyz = MeshStructure.numberofcells;
-Nx = Nxyz(1); Ny = Nxyz(2); Nz = Nxyz(3);
+Nx = phi.domain.dims(1);
+G = 1:Nx+2;
 
 % rearrange the matrix of k and build the sparse matrix for internal cells
-row_index = reshape(G(2:Nx+1,2:Ny+1,2:Nz+1),Nx*Ny*Nz,1); % main diagonal (only internal cells)
+row_index = reshape(G(2:Nx+1),Nx,1); % main diagonal (only internal cells)
 
 % define the RHS Vector
-RHS = zeros((Nx+2)*(Ny+2)*(Nz+2),1);
+RHS = zeros(Nx+2,1);
 
 % assign the values of the RHS vector
-RHS(row_index) = reshape(phi,Nx*Ny*Nz,1);
+RHS(row_index) = reshape(phi.value(2:Nx+1),Nx,1);

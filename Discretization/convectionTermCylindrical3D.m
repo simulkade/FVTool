@@ -80,8 +80,8 @@ mnx = Nr*Ntetta*Nz;	mny = Nr*Ntetta*Nz;   mnz = Nr*Ntetta*Nz;
 % code readability
 ue = rf(2:Nr+1,:,:).*u.xvalue(2:Nr+1,:,:)./(rp.*(DRp+DRe));
 uw = rf(1:Nr,:,:).*u.xvalue(1:Nr,:,:)./(rp.*(DRp+DRw));
-vn = u.yvalue(:,2:Ntheta+1,:)./(rp.*(DTHETAp+DTHETAn));
-vs = u.yvalue(:,1:Ntheta,:)./(rp.*(DTHETAp+DTHETAs));
+vn = u.yvalue(:,2:Ntetta+1,:)./(rp.*(DTHETAp+DTHETAn));
+vs = u.yvalue(:,1:Ntetta,:)./(rp.*(DTHETAp+DTHETAs));
 wf = u.zvalue(:,:,2:Nz+1)./(DZp+DZf);
 wb = u.zvalue(:,:,1:Nz)./(DZp+DZb);
 

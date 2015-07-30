@@ -1,4 +1,4 @@
-function faceGrad = gradientTerm3D(MeshStructure, phi)
+function faceGrad = gradientTerm3D(phi)
 % this function calculates the gradient of a variable in x and y direction
 % it checks for the availability of the ghost variables and use them, otherwise
 % estimate them, assuming a zero gradient on the boundaries
@@ -46,25 +46,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % check the size of the variable and the mesh dimension
-Nxyz = MeshStructure.numberofcells;
-Nx = Nxyz(1); Ny = Nxyz(2); Nz = Nxyz(3);
-Nxyz_phi = size(phi);
-Nx_phi = Nxyz_phi(1);
-d = MeshStructure.cellsize;
-dx = d(1); dy = d(2); dz = d(3);
-if Nx_phi == Nx
-    % define the average face variabe
-    faceGrad.xvalue = zeros(Nx+1,Ny,Nz);
-    faceGrad.yvalue = zeros(Nx,Ny+1,Nz);
-    faceGrad.zvalue = zeros(Nx,Ny,Nz+1);
-    faceGrad.xvalue(2:Nx,:,:) = (phi(2:Nx,:,:)-phi(1:Nx-1,:,:))/dx;
-    faceGrad.yvalue(:,2:Ny,:) = (phi(:,2:Ny,:)-phi(:,1:Ny-1,:))/dy;
-    faceGrad.zvalue(:,:,2:Nz) = (phi(:,:,2:Nz)-phi(:,:,1:Nz-1))/dz;    
-else
-    % in this case, ghost cells have values
-    faceGrad.xvalue = (phi(2:Nx+2,2:Ny+1,2:Nz+1)-phi(1:Nx+1,2:Ny+1,2:Nz+1))/dx;
-    faceGrad.yvalue = (phi(2:Nx+1,2:Ny+2,2:Nz+1)-phi(2:Nx+1,1:Ny+1,2:Nz+1))/dy;
-    faceGrad.zvalue = (phi(2:Nx+1,2:Ny+1,2:Nz+2)-phi(2:Nx+1,2:Ny+1,1:Nz+1))/dz;
-end
+Nx = phi.domain.dims(1);
+Ny = phi.domain.dims(2);
+Nz = phi.domain.dims(3);
+DX = repmat(phi.domain.cellsize.x, 1, Ny, Nz);
+DY = repmat(phi.domain.cellsize.y', Nx, 1, Nz);
+DZ = zeros(1,1,Nz+2);
+DZ(1,1,:) = phi.domain.cellsize.z;
+DZ=repmat(DZ, Nx, Ny, 1);
+dx = 0.5*(DX(1:end-1,:,:)+DX(2:end,:,:));
+dy = 0.5*(DY(:,1:end-1,:)+DY(:,2:end,:));
+dz = 0.5*(DZ(:,:,1:end-1)+DZ(:,:,2:end));
 
+
+% in this case, ghost cells have values
+xvalue = (phi.value(2:Nx+2,2:Ny+1,2:Nz+1)-phi.value(1:Nx+1,2:Ny+1,2:Nz+1))./dx;
+yvalue = (phi.value(2:Nx+1,2:Ny+2,2:Nz+1)-phi.value(2:Nx+1,1:Ny+1,2:Nz+1))./dy;
+zvalue = (phi.value(2:Nx+1,2:Ny+1,2:Nz+2)-phi.value(2:Nx+1,2:Ny+1,1:Nz+1))./dz;
+
+
+faceGrad=FaceVariable(phi.domain, xvalue, yvalue, zvalue);
 

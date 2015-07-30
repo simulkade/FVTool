@@ -49,6 +49,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 % Sx = 0.5*domain_length(1);
 % Sy = domain_length(2)*[0.25 0.5 0.75];
 % Sz = domain_length(3)*[0.25 0.75];
+phi.value(1)=phi.value(1)+eps; % to avoid an strange error for assigning color limits
 Sx = [phi.domain.cellcenters.x(1) phi.domain.cellcenters.x(end)];
 Sy = [phi.domain.cellcenters.y(1) phi.domain.cellcenters.y(end)];
 Sz = [phi.domain.cellcenters.z(1) phi.domain.cellcenters.z(end)];

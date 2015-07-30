@@ -1,4 +1,4 @@
-function phi = solvePDE(MeshStructure, M, RHS, varargin)
+function phi = solvePDE(MS, M, RHS, varargin)
 %SOLVEPDE solves the linear system M x \phi = RHS and returns the value of
 %\phi reshaped based on the structure of the MeshStructure variable. The
 %default solver is the matlab '\' linear solver
@@ -48,15 +48,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 x = M\RHS;
 
-n = MeshStructure.dimension;
-N = MeshStructure.numberofcells;
+n = MS.dimension;
+N = MS.dims;
 
 if (n>=2)
-    phi = reshape(x, N+2);
+    phival = reshape(x, N+2);
 else
-    phi = reshape(x, [N+2 1]);
+    phival = reshape(x, [N(1)+2 1]);
 end
 
+phi=CellVariable(MS, phival);
 
 end
 

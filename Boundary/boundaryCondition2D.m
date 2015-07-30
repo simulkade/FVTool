@@ -68,7 +68,7 @@ BCRHS = zeros((Nx+2)*(Ny+2), 1);
 % assign value to the corner nodes (useless cells)
 q = 1:4;
 ii(q) = BC.domain.corners; jj(q) = BC.domain.corners;
-s(q) = max(BC.top.b/2 + BC.top.a/dy); BCRHS(BC.domain.corners) = 0;
+s(q) = max(BC.top.b/2 + BC.top.a/dy_end); BCRHS(BC.domain.corners) = 0;
 
 % Assign values to the boundary condition matrix and the RHS vector based
 % on the BC structure

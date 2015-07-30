@@ -1,4 +1,4 @@
-function faceGrad = gradientTerm(MeshStructure, phi)
+function faceGrad = gradientTerm(phi)
 % this function calculates the gradient of a variable in x direction
 % it checks for the availability of the ghost variables and use them, otherwise
 % estimate them, assuming a zero gradient on the boundaries
@@ -45,15 +45,15 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-d = MeshStructure.dimension;
+d = phi.domain.dimension;
 if (d ==1) || (d==1.5)
-	faceGrad = gradientTerm1D(MeshStructure, phi);
+	faceGrad = gradientTerm1D(phi);
 elseif (d == 2) || (d == 2.5)
-	faceGrad = gradientTerm2D(MeshStructure, phi);
+	faceGrad = gradientTerm2D(phi);
 elseif (d==2.8)
-    faceGrad = gradientTermRadial2D(MeshStructure, phi);
+    faceGrad = gradientTermRadial2D(phi);
 elseif d == 3
-    faceGrad = gradientTerm3D(MeshStructure, phi);
+    faceGrad = gradientTerm3D(phi);
 elseif d == 3.2
-    faceGrad = gradientTermCylindrical3D(MeshStructure, phi);
+    faceGrad = gradientTermCylindrical3D(phi);
 end

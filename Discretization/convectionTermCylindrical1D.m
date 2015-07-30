@@ -47,7 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 % extract data from the mesh structure
 Nr = u.domain.dims(1);
-G = [1:Nr+2];
+G = 1:Nr+2;
 DXe = u.domain.cellsize.x(3:end);
 DXw = u.domain.cellsize.x(1:end-2);
 DXp = u.domain.cellsize.x(2:end-1);

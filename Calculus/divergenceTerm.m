@@ -1,9 +1,9 @@
-function [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTerm(MeshStructure, faceVariable)
+function [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTerm(F)
 % This function calculates the divergence of a field using its face
-% average value and the vector u, which is a face vector
+% average value and the vector F, which is a face vector
 % 
 % SYNOPSIS:
-%   
+%   [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTerm(F)
 % 
 % PARAMETERS:
 %   
@@ -44,21 +44,21 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-d = MeshStructure.dimension;
+d = F.domain.dimension;
 switch d
     case 1
-        RHSdiv = divergenceTerm1D(MeshStructure, faceVariable);
+        RHSdiv = divergenceTerm1D(F);
     case 1.5
-        RHSdiv = divergenceTermCylindrical1D(MeshStructure, faceVariable);
+        RHSdiv = divergenceTermCylindrical1D(F);
     case 2
-        [RHSdiv, RHSdivx, RHSdivy] = divergenceTerm2D(MeshStructure, faceVariable);
+        [RHSdiv, RHSdivx, RHSdivy] = divergenceTerm2D(F);
     case 2.5
-        [RHSdiv, RHSdivx, RHSdivy] = divergenceTermCylindrical2D(MeshStructure, faceVariable);
+        [RHSdiv, RHSdivx, RHSdivy] = divergenceTermCylindrical2D(F);
     case 2.8
         [RHSdiv, RHSdivx, RHSdivy] = ...
-            divergenceTermRadial2D(MeshStructure, faceVariable);
+            divergenceTermRadial2D(F);
     case 3
-        [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTerm3D(MeshStructure, faceVariable);
+        [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTerm3D(F);
     case 3.2
-        [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTermCylindrical3D(MeshStructure, faceVariable);
+        [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTermCylindrical3D(F);
 end

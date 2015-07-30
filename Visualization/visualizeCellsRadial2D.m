@@ -43,8 +43,8 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 L = phi.domain.cellcenters.x(end);
-x = [phi.domain.facecenters.x(1) phi.domain.cellcenters.x phi.domain.facecenters.x(end)];
-y = [phi.domain.facecenters.y(1) phi.domain.cellcenters.y phi.domain.facecenters.y(end)]; 
+x = [phi.domain.facecenters.x(1); phi.domain.cellcenters.x; phi.domain.facecenters.x(end)];
+y = [phi.domain.facecenters.y(1); phi.domain.cellcenters.y; phi.domain.facecenters.y(end)]; 
 [TH,R] = meshgrid(y, x);
 [X,Y] = pol2cart(TH,R);
 h = polar([0 2*pi], [0 L]);

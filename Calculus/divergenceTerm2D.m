@@ -1,4 +1,4 @@
-function [RHSdiv, RHSdivx, RHSdivy] = divergenceTerm2D(MeshStructure, faceVariable)
+function [RHSdiv, RHSdivx, RHSdivy] = divergenceTerm2D(F)
 % This function calculates the divergence of a field using its face
 % average flux vector facevariable, which is a face vector
 % 
@@ -45,28 +45,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % extract data from the mesh structure
-G = MeshStructure.numbering;
-Nxy = MeshStructure.numberofcells;
-Nx = Nxy(1); Ny = Nxy(2);
-dxdy = MeshStructure.cellsize;
-dx = dxdy(1); dy = dxdy(2);
+Nx = F.domain.dims(1);
+Ny = F.domain.dims(2);
+G=reshape(1:(Nx+2)*(Ny+2), Nx+2, Ny+2);
+DX = repmat(F.domain.cellsize.x(2:end-1), 1, Ny);
+DY = repmat(F.domain.cellsize.y(2:end-1)', Nx, 1);
 
 % define the vector of cell index
 row_index = reshape(G(2:Nx+1,2:Ny+1),Nx*Ny,1); % main diagonal (only internal cells)
 
-% calculate the flux vector in x and y direction
-% note: size(Fx) = [1:m+1, 1:n] and size(Fy) = [1:m, 1:n+1]
-Fx = faceVariable.xvalue;
-Fy = faceVariable.yvalue;
 
 % reassign the east, west, north, and south flux vectors for the 
 % code readability
-Fe = Fx(2:Nx+1,:);		Fw = Fx(1:Nx,:);
-Fn = Fy(:,2:Ny+1);       Fs = Fy(:,1:Ny);
+Fe = F.xvalue(2:Nx+1,:);		Fw = F.xvalue(1:Nx,:);
+Fn = F.yvalue(:,2:Ny+1);       Fs = F.yvalue(:,1:Ny);
 
 % compute the divergence
-div_x = (Fe - Fw)/dx;
-div_y = (Fn - Fs)/dy;
+div_x = (Fe - Fw)./DX;
+div_y = (Fn - Fs)./DY;
 
 % define the RHS Vector
 RHSdiv = zeros((Nx+2)*(Ny+2),1);

@@ -42,8 +42,8 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
-x = [phi.domain.facecenters.x(1) phi.domain.cellcenters.x phi.domain.facecenters.x(end)];
-y = [phi.domain.facecenters.y(1) phi.domain.cellcenters.y phi.domain.facecenters.y(end)];
+x = [phi.domain.facecenters.x(1); phi.domain.cellcenters.x; phi.domain.facecenters.x(end)];
+y = [phi.domain.facecenters.y(1); phi.domain.cellcenters.y; phi.domain.facecenters.y(end)];
 
 pcolor(x, y, phi.value')
 axis equal tight

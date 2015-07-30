@@ -1,10 +1,10 @@
 function [RHSdiv, RHSdivx, RHSdivy] = ...
-            divergenceTermCylindrical2D(MeshStructure, faceVariable)
+            divergenceTermCylindrical2D(F)
 % This function calculates the divergence of a field using its face
 % average value and the vector u, which is a face vector
 % 
 % SYNOPSIS:
-%   
+%   [RHSdiv, RHSdivx, RHSdivy] = divergenceTermCylindrical2D(F)
 % 
 % PARAMETERS:
 %   
@@ -46,21 +46,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % extract data from the mesh structure
-G = MeshStructure.numbering;
-Nrz = MeshStructure.numberofcells;
-Nr = Nrz(1); Nz = Nrz(2);
-dxdy = MeshStructure.cellsize;
-dx = dxdy(1); dy = dxdy(2);
-rp = repmat(MeshStructure.cellcenters.x', 1, Nz);
-rf = repmat(MeshStructure.facecenters.x', 1, Nz);
+Nr = F.domain.dims(1);
+Nz = F.domain.dims(2);
+G=reshape(1:(Nr+2)*(Nz+2), Nr+2, Nz+2);
+dr = repmat(F.domain.cellsize.x(2:end-1), 1, Nz);
+dz = repmat(F.domain.cellsize.y(2:end-1)', Nr, 1);
+rp = repmat(F.domain.cellcenters.x, 1, Nz);
+rf = repmat(F.domain.facecenters.x, 1, Nz);
 
 % define the vector of cell index
 row_index = reshape(G(2:Nr+1,2:Nz+1),Nr*Nz,1); % main diagonal (only internal cells)
 
 % calculate the flux vector
 % note: size(Fx) = [1:m+1, 1:n] and size(Fy) = [1:m, 1:n+1]
-Fx = faceVariable.xvalue;
-Fy = faceVariable.yvalue;
+Fx = F.xvalue;
+Fy = F.yvalue;
 
 % reassign the east, west, north, and south flux vectors for the 
 % code readability
@@ -69,8 +69,8 @@ Fn = Fy(:,2:Nz+1);       Fs = Fy(:,1:Nz);
 re = rf(2:Nr+1,:);         rw = rf(1:Nr,:);
 
 % compute the divergence
-div_x = (re.*Fe - rw.*Fw)./(rp*dx);
-div_y = (Fn - Fs)/dy;
+div_x = (re.*Fe-rw.*Fw)./(rp.*dr);
+div_y = (Fn-Fs)./dz;
 
 % define the RHS Vector
 RHSdiv = zeros((Nr+2)*(Nz+2),1);

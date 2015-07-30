@@ -1,10 +1,10 @@
-function faceGrad = gradientTermCylindrical3D(MeshStructure, phi)
+function faceGrad = gradientTermCylindrical3D(phi)
 % this function calculates the gradient of a variable in x and y direction
 % it checks for the availability of the ghost variables and use them, otherwise
 % estimate them, assuming a zero gradient on the boundaries
 % 
 % SYNOPSIS:
-%   
+%   faceGrad = gradientTermCylindrical3D(phi)
 % 
 % PARAMETERS:
 %   
@@ -46,28 +46,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % check the size of the variable and the mesh dimension
-Nxyz = MeshStructure.numberofcells;
-Nx = Nxyz(1); Ntetta = Nxyz(2); Nz = Nxyz(3);
-Nxyz_phi = size(phi);
-Nx_phi = Nxyz_phi(1);
-d = MeshStructure.cellsize;
-dx = d(1); dtetta = d(2); dz = d(3);
+Nr = phi.domain.dims(1);
+Ntheta = phi.domain.dims(2);
+Nz = phi.domain.dims(3);
+DR = repmat(phi.domain.cellsize.x, 1, Ntheta, Nz);
+DTHETA = repmat(phi.domain.cellsize.y', Nr, 1, Nz);
+DZ = ones(1,1,Nz+2);
+DZ = repmat(DZ, Nr, Ntheta, 1);
+dr = 0.5*(DR(1:end-1,:,:)+DR(2:end,:,:));
+dtetta = 0.5*(DTHETA(:,1:end-1,:)+DTHETA(:,2:end,:));
+dz = 0.5*(DZ(:,:,1:end-1)+DZ(:,:,2:end));
+rp = repmat(phi.domain.cellcenters.x, 1, Ntheta+1, Nz);
 
-if Nx_phi == Nx
-    % define the average face variabe
-    rp = repmat(MeshStructure.cellcenters.x', 1, Ntetta-1, Nz);
-    faceGrad.xvalue = zeros(Nx+1,Ntetta,Nz);
-    faceGrad.yvalue = zeros(Nx,Ntetta+1,Nz);
-    faceGrad.zvalue = zeros(Nx,Ntetta,Nz+1);
-    faceGrad.xvalue(2:Nx,:,:) = (phi(2:Nx,:,:)-phi(1:Nx-1,:,:))/dx;
-    faceGrad.yvalue(:,2:Ntetta,:) = (phi(:,2:Ntetta,:)-phi(:,1:Ntetta-1,:))./(dtetta*rp);
-    faceGrad.zvalue(:,:,2:Nz) = (phi(:,:,2:Nz)-phi(:,:,1:Nz-1))/dz;    
-else
-    % in this case, ghost cells have values
-    rp = repmat(MeshStructure.cellcenters.x', 1, Ntetta+1, Nz);
-    faceGrad.xvalue = (phi(2:Nx+2,2:Ntetta+1,2:Nz+1)-phi(1:Nx+1,2:Ntetta+1,2:Nz+1))/dx;
-    faceGrad.yvalue = (phi(2:Nx+1,2:Ntetta+2,2:Nz+1)-phi(2:Nx+1,1:Ntetta+1,2:Nz+1))./(dtetta*rp);
-    faceGrad.zvalue = (phi(2:Nx+1,2:Ntetta+1,2:Nz+2)-phi(2:Nx+1,2:Ntetta+1,1:Nz+1))/dz;
-end
+xvalue = (phi.value(2:Nr+2,2:Ntheta+1,2:Nz+1)-phi.value(1:Nr+1,2:Ntheta+1,2:Nz+1))./dr;
+yvalue = (phi.value(2:Nr+1,2:Ntheta+2,2:Nz+1)-phi.value(2:Nr+1,1:Ntheta+1,2:Nz+1))./(dtetta.*rp);
+zvalue = (phi.value(2:Nr+1,2:Ntheta+1,2:Nz+2)-phi.value(2:Nr+1,2:Ntheta+1,1:Nz+1))./dz;
 
+faceGrad=FaceVariable(phi.domain, xvalue, yvalue, zvalue);
 

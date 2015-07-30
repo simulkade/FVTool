@@ -1,8 +1,10 @@
-function RHS = sourceExplicitTerm1D(MeshStructure, phi)
-% RHS vector for a Explicit source term 
+function M = linearSourceTerm(k)
+% Matrix of coefficients for a linear source term in the form of k \phi
+% 
+% k is a cell variable
 % 
 % SYNOPSIS:
-%   
+%   M = linearSourceTerm(k)
 % 
 % PARAMETERS:
 %   
@@ -43,15 +45,11 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-% extract data from the mesh structure
-G = MeshStructure.numbering;
-Nx = MeshStructure.numberofcells;
-
-% rearrange the matrix of k and build the sparse matrix for internal cells
-row_index = reshape(G(2:Nx+1),Nx,1); % main diagonal (only internal cells)
-
-% define the RHS Vector
-RHS = zeros(Nx+2,1);
-
-% assign the values of the RHS vector
-RHS(row_index) = reshape(phi,Nx,1);
+d = k.domain.dimension;
+if (d ==1) || (d==1.5)
+	M = linearSourceTerm1D(k);
+elseif (d == 2) || (d == 2.5) || (d==2.8)
+	M = linearSourceTerm2D(k);
+elseif (d == 3) || (d==3.2)
+    M = linearSourceTerm3D(k);
+end

@@ -1,10 +1,10 @@
-function faceGrad = gradientTerm1D(MeshStructure, phi)
+function faceGrad = gradientTerm1D(phi)
 % this function calculates the gradient of a variable in x direction
 % it checks for the availability of the ghost variables and use them, otherwise
 % estimate them, assuming a zero gradient on the boundaries
 % 
 % SYNOPSIS:
-%   
+%   faceGrad = gradientTerm1D(phi)
 % 
 % PARAMETERS:
 %   
@@ -46,14 +46,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % check the size of the variable and the mesh dimension
-Nx = MeshStructure.numberofcells;
-NX_phi = size(phi);
-Nx_phi = NX_phi(1);
-dx = MeshStructure.cellsize;
-if Nx_phi == Nx
-	% define the average face variabe
-	faceGrad.xvalue = [0.0; (phi(2:Nx)-phi(1:Nx-1))/dx; 0.0];
-else
-	% in this case, ghost cells have values
-	faceGrad.xvalue = (phi(2:Nx+2)-phi(1:Nx+1))/dx;
-end
+Nx = phi.domain.dims(1);
+DX = phi.domain.cellsize.x;
+dx = 0.5*(DX(1:end-1)+DX(2:end));
+
+% in this case, ghost cells have values
+xvalue = (phi.value(2:Nx+2)-phi.value(1:Nx+1))./dx;
+yvalue=[];
+zvalue=[];
+
+faceGrad=FaceVariable(phi.domain, xvalue, yvalue, zvalue);

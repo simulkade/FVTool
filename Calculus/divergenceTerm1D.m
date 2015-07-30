@@ -1,12 +1,12 @@
-function RHSdiv = divergenceTerm1D(MeshStructure, faceVariable)
+function RHSdiv = divergenceTerm1D(F)
 % This function calculates the divergence of a field using its face
-% average value and the vector u, which is a face vector
+% average value 
 % 
 % SYNOPSIS:
-%   
+%   RHSdiv = divergenceTerm1D(F)
 % 
 % PARAMETERS:
-%   
+%   F: Face Variable
 % 
 % RETURNS:
 %   
@@ -45,23 +45,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
 % extract data from the mesh structure
-G = MeshStructure.numbering;
-Nx = MeshStructure.numberofcells;
-dx = MeshStructure.cellsize;
+Nx = F.domain.dims(1);
+G = 1:Nx+2;
+DX = F.domain.cellsize.x(2:end-1);
 
 % define the vector of cell index
 row_index = reshape(G(2:Nx+1),Nx,1); % main diagonal (only internal cells)
 
-% calculate the flux vector
-% note: size(Fx) = [1:m+1]
-Fx = faceVariable.xvalue;
-
-% reassign the east, west, north, and south flux vectors for the 
-% code readability
-Fe = Fx(2:Nx+1);		Fw = Fx(1:Nx);
-
 % compute the divergence
-div_x = (Fe - Fw)/dx;
+div_x = (F.xvalue(2:Nx+1)-F.xvalue(1:Nx))./DX;
 
 % define the RHS Vector
 RHSdiv = zeros(Nx+2,1);

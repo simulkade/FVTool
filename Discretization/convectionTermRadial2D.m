@@ -67,10 +67,10 @@ mnx = Nr*Ntetta;	mny = Nr*Ntetta;
 
 % reassign the east, west, north, and south velocity vectors for the
 % code readability
-ue = re.*u.xvalue[2:Nr+1,:]./(DRp+DRe);
-uw = rw.*u.xvalue[1:Nr,:]./(DRp+DRw);
-vn = u.yvalue[:,2:Ntetta+1]./(rp.*(DTHETAp+DTHETAn));
-vs = u.yvalue[:,1:Ntetta]./(rp.*(DTHETAp+DTHETAs));
+ue = re.*u.xvalue(2:Nr+1,:)./(DRp+DRe);
+uw = rw.*u.xvalue(1:Nr,:)./(DRp+DRw);
+vn = u.yvalue(:,2:Ntetta+1)./(rp.*(DTHETAp+DTHETAn));
+vs = u.yvalue(:,1:Ntetta)./(rp.*(DTHETAp+DTHETAs));
 
 % calculate the coefficients for the internal cells
 AE = reshape(ue,mnx,1);
