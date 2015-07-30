@@ -127,12 +127,22 @@ for i=1:N_mesh
     end
 end
 % visualize
-figure(3);
-for i=1:N_mesh
-    subplot(3, 3, i);
-    visualizeCells(c_trans{i});
-end
+% figure(3);
+% for i=1:N_mesh
+%     subplot(3, 3, i);
+%     visualizeCells(c_trans{i});
+% end
 disp('Transient convection-diffucion-reaction solved successfully!');
 %% Part VIII: test the utilities
-
+% only test the averaging, don't save the result
+FL=fluxLimiter();
+for i=1:N_mesh
+    linearMean(c_trans{i});
+    arithmeticMean(c_trans{i});
+    geometricMean(c_trans{i});
+    harmonicMean(c_trans{i});
+    upwindMean(c_trans{i}, f_n{i});
+    tvdMean(c_trans{i}, f_n{i}, FL);
+end
+disp('Averaging functions run smoothly!');
 %% Part IX: test the classes and operators

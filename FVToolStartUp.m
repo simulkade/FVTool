@@ -56,6 +56,7 @@ addpath([current_path '/Utilities']);
 addpath([current_path '/Visualization']);
 addpath([current_path '/Examples']);
 addpath([current_path '/Physics']);
+addpath([current_path '/Tests']);
 
 try
     addpath([current_path '/PhysicalProperties']);

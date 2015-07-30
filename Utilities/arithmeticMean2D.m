@@ -1,4 +1,4 @@
-function phiFaceAverage = arithmeticMean2D(MeshStructure, phi)
+function phiFaceAverage = arithmeticMean2D(phi)
 % This function gets the value of the field variable phi defined
 % over the MeshStructure and calculates the arithmetic average on 
 % the cell faces, for a uniform mesh.

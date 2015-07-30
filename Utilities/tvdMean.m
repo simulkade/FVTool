@@ -1,4 +1,4 @@
-function phiFaceAverage = tvdMean(MeshStructure, phi, u, FL)
+function phiFaceAverage = tvdMean(phi, u, FL)
 % This function gets the value of the field variable phi defined
 % over the MeshStructure and calculates the tvd average on 
 % the cell faces, for a uniform mesh based on the direction of the velocity
@@ -48,11 +48,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 % extract data from the mesh structure
 
-d = MeshStructure.dimension;
+d = phi.domain.dimension;
 if (d ==1) || (d==1.5)
-	phiFaceAverage = tvdMean1D(MeshStructure, phi, u, FL);
+	phiFaceAverage = tvdMean1D(phi, u, FL);
 elseif (d == 2) || (d == 2.5) || (d==2.8)
-	phiFaceAverage = tvdMean2D(MeshStructure, phi, u, FL);
+	phiFaceAverage = tvdMean2D(phi, u, FL);
 elseif (d == 3) || (d==3.2)
-    phiFaceAverage = tvdMean3D(MeshStructure, phi, u, FL);
+    phiFaceAverage = tvdMean3D(phi, u, FL);
 end

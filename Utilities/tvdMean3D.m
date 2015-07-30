@@ -1,10 +1,10 @@
-function phiFaceAverage = tvdMean3D(MeshStructure,u, phi, FL)
+function phiFaceAverage = tvdMean3D(phi, u, FL)
 % This function gets the value of the field variable phi defined
 % over the MeshStructure and calculates the upwind average on 
 % the cell faces, based on the direction of the velocity vector for a uniform mesh.
 % 
 % SYNOPSIS:
-%   
+%   phiFaceAverage = tvdMean3D(u, phi, FL)
 % 
 % PARAMETERS:
 %   
@@ -52,8 +52,14 @@ uy = u.yvalue;
 uz = u.zvalue;
 
 % check the size of the variable and the mesh dimension
-Nxyz = MeshStructure.numberofcells;
-Nx = Nxyz(1); Ny = Nxyz(2); Nz = Nxyz(3);
+Nx = u.domain.dims(1);
+Ny = u.domain.dims(2);
+Nz = u.domain.dims(3);
+dx=repmat(0.5*(u.domain.cellsize.x(1:end-1)+u.domain.cellsize.x(2:end)), 1, Ny, Nz);
+dy=repmat(0.5*(u.domain.cellsize.y(1:end-1)+u.domain.cellsize.y(2:end))', Nx, 1, Nz);
+dz=zeros(1, 1, Nz+1);
+dz(1,1,:)=0.5*(u.domain.cellsize.z(1:end-1)+u.domain.cellsize.z(2:end));
+dz=repmat(dz, Nx, Ny, 1);
 
 % define the tvd face vectors
 phiX_p = zeros(Nx+1,Ny,Nz);
@@ -65,51 +71,52 @@ phiZ_m = zeros(Nx,Ny,Nz+1);
 
 % calculate the upstream to downstream gradient ratios for u>0 (+ ratio)
 % x direction
-dphiX_p = phi(2:Nx+2, 2:Ny+1, 2:Nz+1)-phi(1:Nx+1, 2:Ny+1, 2:Nz+1);
+dphiX_p = (phi.value(2:Nx+2, 2:Ny+1, 2:Nz+1)-phi.value(1:Nx+1, 2:Ny+1, 2:Nz+1))./dx;
 rX_p = dphiX_p(1:end-1,:,:)./fsign(dphiX_p(2:end,:,:));
-phiX_p(2:Nx+1,:,:) = phi(2:Nx+1, 2:Ny+1, 2:Nz+1)+0.5*FL(rX_p).* ...
-    (phi(3:Nx+2,2:Ny+1,2:Nz+1)-phi(2:Nx+1,2:Ny+1,2:Nz+1));
-phiX_p(1,:,:) = (phi(1,2:Ny+1,2:Nz+1)+phi(2,2:Ny+1,2:Nz+1))/2; % left boundary
+phiX_p(2:Nx+1,:,:) = phi.value(2:Nx+1, 2:Ny+1, 2:Nz+1)+0.5*FL(rX_p).* ...
+    (phi.value(3:Nx+2,2:Ny+1,2:Nz+1)-phi.value(2:Nx+1,2:Ny+1,2:Nz+1));
+phiX_p(1,:,:) = (phi.value(1,2:Ny+1,2:Nz+1)+phi.value(2,2:Ny+1,2:Nz+1))/2; % left boundary
 % y direction
-dphiY_p = phi(2:Nx+1, 2:Ny+2, 2:Nz+1)-phi(2:Nx+1, 1:Ny+1, 2:Nz+1);
+dphiY_p = (phi.value(2:Nx+1, 2:Ny+2, 2:Nz+1)-phi.value(2:Nx+1, 1:Ny+1, 2:Nz+1))./dy;
 rY_p = dphiY_p(:,1:end-1,:)./fsign(dphiY_p(:,2:end,:));
-phiY_p(:,2:Ny+1,:) = phi(2:Nx+1, 2:Ny+1, 2:Nz+1)+0.5*FL(rY_p).* ...
-    (phi(2:Nx+1,3:Ny+2,2:Nz+1)-phi(2:Nx+1, 2:Ny+1,2:Nz+1));
-phiY_p(:,1,:) = (phi(2:Nx+1,1,2:Nz+1)+phi(2:Nx+1,2,2:Nz+1))/2; % Bottom boundary
+phiY_p(:,2:Ny+1,:) = phi.value(2:Nx+1, 2:Ny+1, 2:Nz+1)+0.5*FL(rY_p).* ...
+    (phi.value(2:Nx+1,3:Ny+2,2:Nz+1)-phi.value(2:Nx+1, 2:Ny+1,2:Nz+1));
+phiY_p(:,1,:) = (phi.value(2:Nx+1,1,2:Nz+1)+phi.value(2:Nx+1,2,2:Nz+1))/2; % Bottom boundary
 % z direction
-dphiZ_p = phi(2:Nx+1, 2:Ny+1, 2:Nz+2)-phi(2:Nx+1, 2:Ny+1, 1:Nz+1);
+dphiZ_p = (phi.value(2:Nx+1, 2:Ny+1, 2:Nz+2)-phi.value(2:Nx+1, 2:Ny+1, 1:Nz+1))./dz;
 rZ_p = dphiZ_p(:,:,1:end-1)./fsign(dphiZ_p(:,:,2:end));
-phiZ_p(:,:,2:Nz+1) = phi(2:Nx+1, 2:Ny+1, 2:Nz+1)+0.5*FL(rZ_p).* ...
-    (phi(2:Nx+1,2:Ny+1,3:Nz+2)-phi(2:Nx+1,2:Ny+1,2:Nz+1));
-phiZ_p(:,:,1) = (phi(2:Nx+1,2:Ny+1,1)+phi(2:Nx+1,2:Ny+1,2))/2; % Back boundary
+phiZ_p(:,:,2:Nz+1) = phi.value(2:Nx+1, 2:Ny+1, 2:Nz+1)+0.5*FL(rZ_p).* ...
+    (phi.value(2:Nx+1,2:Ny+1,3:Nz+2)-phi.value(2:Nx+1,2:Ny+1,2:Nz+1));
+phiZ_p(:,:,1) = (phi.value(2:Nx+1,2:Ny+1,1)+phi.value(2:Nx+1,2:Ny+1,2))/2; % Back boundary
 
 % calculate the upstream to downstream gradient ratios for u<0 (- ratio)
 % x direction
 rX_m = dphiX_p(2:end,:,:)./fsign(dphiX_p(1:end-1,:,:));
-phiX_m(1:Nx,:,:) = phi(2:Nx+1, 2:Ny+1, 2:Nz+1)+0.5*FL(rX_m).* ...
-    (phi(1:Nx, 2:Ny+1, 2:Nz+1)-phi(2:Nx+1, 2:Ny+1, 2:Nz+1));
-phiX_m(Nx+1,:,:) = (phi(end,2:Ny+1,2:Nz+1)+phi(end-1,2:Ny+1,2:Nz+1))/2; % right boundary
+phiX_m(1:Nx,:,:) = phi.value(2:Nx+1, 2:Ny+1, 2:Nz+1)+0.5*FL(rX_m).* ...
+    (phi.value(1:Nx, 2:Ny+1, 2:Nz+1)-phi.value(2:Nx+1, 2:Ny+1, 2:Nz+1));
+phiX_m(Nx+1,:,:) = (phi.value(end,2:Ny+1,2:Nz+1)+phi.value(end-1,2:Ny+1,2:Nz+1))/2; % right boundary
 % y direction
 rY_m = dphiY_p(:,2:end,:)./fsign(dphiY_p(:,1:end-1,:));
-phiY_m(:,1:Ny,:) = phi(2:Nx+1,2:Ny+1,2:Nz+1)+0.5*FL(rY_m).* ...
-    (phi(2:Nx+1,1:Ny,2:Nz+1)-phi(2:Nx+1,2:Ny+1,2:Nz+1));
-phiY_m(:,Ny+1,:) = (phi(2:Nx+1, end,2:Nz+1)+phi(2:Nx+1, end-1,2:Nz+1))/2; % top boundary
+phiY_m(:,1:Ny,:) = phi.value(2:Nx+1,2:Ny+1,2:Nz+1)+0.5*FL(rY_m).* ...
+    (phi.value(2:Nx+1,1:Ny,2:Nz+1)-phi.value(2:Nx+1,2:Ny+1,2:Nz+1));
+phiY_m(:,Ny+1,:) = (phi.value(2:Nx+1, end,2:Nz+1)+phi.value(2:Nx+1, end-1,2:Nz+1))/2; % top boundary
 % z direction
 rZ_m = dphiZ_p(:,:,2:end)./fsign(dphiZ_p(:,:,1:end-1));
-phiZ_m(:,:,1:Nz) = phi(2:Nx+1,2:Ny+1,2:Nz+1)+0.5*FL(rZ_m).* ...
-    (phi(2:Nx+1,2:Ny+1,1:Nz)-phi(2:Nx+1,2:Ny+1,2:Nz+1));
-phiZ_m(:,:,Nz+1) = (phi(2:Nx+1,2:Ny+1,end)+phi(2:Nx+1,2:Ny+1,end-1))/2; % front boundary
+phiZ_m(:,:,1:Nz) = phi.value(2:Nx+1,2:Ny+1,2:Nz+1)+0.5*FL(rZ_m).* ...
+    (phi.value(2:Nx+1,2:Ny+1,1:Nz)-phi.value(2:Nx+1,2:Ny+1,2:Nz+1));
+phiZ_m(:,:,Nz+1) = (phi.value(2:Nx+1,2:Ny+1,end)+phi.value(2:Nx+1,2:Ny+1,end-1))/2; % front boundary
 
 % calculate the average value
-phiFaceAverage.xvalue = (ux>0).*phiX_p+ ...
+xvalue = (ux>0).*phiX_p+ ...
                         (ux<0).*phiX_m+ ...
-                        0.5*(ux==0).*(phi(1:Nx+1,2:Ny+1,2:Nz+1)+phi(2:Nx+2,2:Ny+1,2:Nz+1));
-phiFaceAverage.yvalue = (uy>0).*phiY_p+ ...
+                        0.5*(ux==0).*(phi.value(1:Nx+1,2:Ny+1,2:Nz+1)+phi.value(2:Nx+2,2:Ny+1,2:Nz+1));
+yvalue = (uy>0).*phiY_p+ ...
                         (uy<0).*phiY_m+ ...
-                        0.5*(uy==0).*(phi(2:Nx+1,1:Ny+1,2:Nz+1)+phi(2:Nx+1,2:Ny+2,2:Nz+1));
-phiFaceAverage.zvalue = (uz>0).*phiZ_p+ ...
+                        0.5*(uy==0).*(phi.value(2:Nx+1,1:Ny+1,2:Nz+1)+phi.value(2:Nx+1,2:Ny+2,2:Nz+1));
+zvalue = (uz>0).*phiZ_p+ ...
                         (uz<0).*phiZ_m+ ...
-                        0.5*(uz==0).*(phi(2:Nx+1,2:Ny+1,1:Nz+1)+phi(2:Nx+1,2:Ny+1,2:Nz+2));
+                        0.5*(uz==0).*(phi.value(2:Nx+1,2:Ny+1,1:Nz+1)+phi.value(2:Nx+1,2:Ny+1,2:Nz+2));
+phiFaceAverage=FaceVariable(phi.domain, xvalue, yvalue, zvalue);
 end
 
 function phi_out = fsign(phi_in)
