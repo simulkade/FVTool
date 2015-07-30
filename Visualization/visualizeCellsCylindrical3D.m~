@@ -47,8 +47,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 d = phi.domain.dims;
 [TH,R,Z]=meshgrid(phi.domain.cellcenters.y, ...
     phi.domain.cellcenters.x, phi.domain.cellcenters.z);
-[X,Y,Z]=pol2cart(TH(:),R(:),Z(:)); % in Matlab: [X,Y,Z]=pol2cart(TH,R,Z);
-X=reshape(X,d(1),d(2),d(3)); % these three lines work in Matlab and Octave
+[X,Y,Z]=pol2cart(TH(:),R(:),Z(:)); % 
+X=reshape(X,d(1),d(2),d(3));
 Y=reshape(Y,d(1),d(2),d(3));
 Z=reshape(Z,d(1),d(2),d(3));
 hold on

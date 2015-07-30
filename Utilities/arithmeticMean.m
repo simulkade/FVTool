@@ -1,10 +1,10 @@
-function phiFaceAverage = arithmeticMean(MeshStructure, phi)
+function phiFaceAverage = arithmeticMean(phi)
 % This function gets the value of the field variable phi defined
 % over the MeshStructure and calculates the arithmetic average on 
 % the cell faces, for a uniform mesh.
 % 
 % SYNOPSIS:
-%   
+%   phiFaceAverage = arithmeticMean(phi)
 % 
 % PARAMETERS:
 %   
@@ -49,11 +49,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 % extract data from the mesh structure
 
-d = MeshStructure.dimension;
+d = phi.domain.dimension;
 if (d ==1) || (d==1.5)
+    dx = phi.domain.cellsize.x;
+    xvalue=(dx(1:end-1).*phi.value(1:end-1)+dx(2:end).*phi.value(2:end))./(dx(2:end)+dx(1:end-1));
+    yvalue=[];
+    zvalue=[];
 	phiFaceAverage = arithmeticMean1D(MeshStructure, phi);
 elseif (d == 2) || (d == 2.5) || (d == 2.8)
 	phiFaceAverage = arithmeticMean2D(MeshStructure, phi);
 elseif (d == 3) || (d==3.2)
     phiFaceAverage = arithmeticMean3D(MeshStructure, phi);
 end
+phiFaceAverage=FaceVariable(phi.domain, xvalue, yvalue, zvalue);
