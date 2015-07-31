@@ -15,30 +15,30 @@ BC.left.c(:)=5.0;
 BC.right.a(:)=0.0;
 BC.right.b(:)=1.0;
 BC.right.c(:)=0.0;
-[Mbc, RHSbc]= boundaryCondition(m,BC);
+[Mbc, RHSbc]= boundaryCondition(BC);
 % define the initial condition
 phi0= 0.0; % initial value
-phi.Old= createCellVariable(m, phi0, BC); % create initial cells
+phi_old= createCellVariable(m, phi0, BC); % create initial cells
 alfa=createCellVariable(m, 1.0);
-phi.value= phi.Old;
+phi= phi_old;
 % define the time steps
 dt= 0.001*L*L/D0; % a proper time step for diffusion process
 for i=1:10
     err=100;
-    [Mt, RHSt] = transientTerm(m,alfa,dt, phi);
+    [Mt, RHSt] = transientTerm(phi_old, dt, alfa);
     while err>1e-10
         % calculate the diffusion coefficient
-        Dface= harmonicMean(m,D(phi.value));
+        Dface= harmonicMean(D(phi));
         % calculate the face value of phi_0
-        phi_face= arithmeticMean(m,phi.value);
+        phi_face= arithmeticMean(phi);
         % calculate the velocity for convection term
-        u= funceval(dD, phi_face).*gradientTerm(m,phi.value);
+        u= funceval(dD, phi_face).*gradientTerm(phi);
         % diffusion term
-        Mdif= diffusionTerm(m,Dface);
+        Mdif= diffusionTerm(Dface);
         % convection term
-        Mconv= convectionTerm(m,u);
+        Mconv= convectionTerm(u);
         % divergence term on the RHS
-        RHSlin= divergenceTerm(m,u.*phi_face);
+        RHSlin= divergenceTerm(u.*phi_face);
         % matrix of coefficients
         M= Mt-Mdif-Mconv+Mbc;
         % RHS vector
@@ -46,10 +46,10 @@ for i=1:10
         % call the linear solver
         phi_new= solvePDE(m, M, RHS);
         % calculate the error
-        err= max(abs(phi_new(:)-phi.value(:)));
+        err= max(abs(phi_new.value(:)-phi.value(:)));
         % assign the new phi to the old phi
-        phi.value=phi_new;
+        phi=phi_new;
     end
-    phi.Old= phi.value;
-    visualizeCells(m,phi.value); drawnow;
+    phi_old= phi;
+    visualizeCells(phi); drawnow;
 end

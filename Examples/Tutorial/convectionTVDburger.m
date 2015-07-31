@@ -4,62 +4,61 @@ clc; clear;
 % define a 1D mesh
 W = 1;
 Nx = 600;
-mesh1 = buildMesh1D(Nx, W);
+mesh1 = createMesh1D(Nx, W);
 x = mesh1.cellcenters.x;
 % define the boundaries
 BC = createBC(mesh1); % all Neumann
 BC.left.periodic=1;
 BC.right.periodic =1;
 % Initial values
-phi.Old = createCellVariable(mesh1, 0, BC);
-phi.Old(2:floor(end/2)) = sin(x(1:floor(end/2))*2*pi());
+phi_old = createCellVariable(mesh1, 0, BC);
+phi_old.value(2:floor(end/2)) = sin(x(1:floor(end/2))*2*pi());
 % phi.Old(180:400)= sin(x(180:400)*10*pi());
-phi.value = phi.Old;
+phi = phi_old;
 phiuw = phi;
-phiinit=phi.Old;
+phiinit=phi_old;
+phiuw_old=phi;
 % velocity field
 u = 1;
 uf = createFaceVariable(mesh1, u);
 % uf.xvalue = linspace(0.4,0.2, Nx+1)';
 % transient term coefficient
-alfa = ones(Nx,1);
+alfa = createCellVariable(mesh1,1);
 % matrix of coefficients
-Mconvuw = convectionUpwindTerm1D(mesh1, uf);
+Mconvuw = convectionUpwindTerm1D(uf);
 % define the BC term
-[Mbc, RHSbc] = boundaryCondition(mesh1, BC);
+[Mbc, RHSbc] = boundaryCondition(BC);
 % choose a flux limiter
-FL = fluxLimiter('MUSCL');
-phi_face = arithmeticMean(mesh1, phi.value);
+FL = fluxLimiter('Superbee');
+phi_face = linearMean(phi);
 % solver
 dt = 0.001;
 t = 0;
 for i = 1:100000
     t = t+dt;
     % define the transient term
+    [Mt, RHSt] = transientTerm(phi_old, dt, alfa);
     for j = 1:10
-        [Mt, RHSt] = transientTerm(mesh1, alfa, dt, phi);
-        phi_face = tvdMean(mesh1, phi.value, uf, FL);
+        phi_face = tvdMean(phi, uf, FL);
         uf = phi_face;
-        [Mconv, RHSconv] = convectionTvdTerm(mesh1, uf, phi.value, FL);
-        RHSdiv = divergenceTerm(mesh1, 0.5*phi_face.*phi_face);
+        [Mconv, RHSconv] = convectionTvdTerm(uf, phi, FL);
+        RHSdiv = divergenceTerm(0.5*phi_face.*phi_face);
     %     Mconv = convectionUpwindTerm1D(mesh1, uf);
         M = Mconv+Mt+Mbc;
         RHS = RHSt+RHSbc+RHSconv+RHSdiv;
-        PHI = M\RHS;
-        phi.value = reshape(PHI, Nx+2, 1);
+        phi = solvePDE(mesh1, M, RHS);
     end
+    [Mtuw, RHStuw] = transientTerm(phiuw_old, dt, alfa);
     for j = 1:5
-        [Mtuw, RHStuw] = transientTerm(mesh1, alfa, dt, phiuw);
-        phi_face = upwindMean(mesh1, uf, phiuw.value);
+        phi_face = upwindMean(phiuw, uf);
         uf = phi_face;
-        Mconvuw = convectionUpwindTerm1D(mesh1, uf);
-        RHSdiv = divergenceTerm(mesh1, 0.5*phi_face.*phi_face);
+        Mconvuw = convectionUpwindTerm1D(uf);
+        RHSdiv = divergenceTerm(0.5*phi_face.*phi_face);
         Muw = Mconvuw+Mtuw+Mbc;
         RHSuw = RHStuw+RHSbc+RHSdiv;
-        PHI = Muw\RHSuw;
-        phiuw.value = reshape(PHI, Nx+2, 1);
+        phiuw = solvePDE(mesh1, Muw, RHSuw);
     end
-    phiuw.Old = phiuw.value;
-    phi.Old = phi.value;
-    figure(1);plot(x, phiinit(2:Nx+1), x, phi.value(2:Nx+1), '-o', x, phiuw.value(2:Nx+1)); drawnow;
+    phiuw_old = phiuw;
+    phi_old = phi;
+    figure(1);plot(x, phiinit.value(2:Nx+1), x, phi.value(2:Nx+1), '-o', x, phiuw.value(2:Nx+1)); drawnow;
 end

@@ -5,14 +5,14 @@
 % $$\alpha\frac{\partial c}{\partial t}+\nabla.\left(-D\nabla c\right)=0,$$
 %
 % where $c$ is the independent variable (concentration, temperature, etc)
-% , $D$ is the diffusion coefficient, and $\alpha$ is a constant. 
+% , $D$ is the diffusion coefficient, and $\alpha$ is a constant.
 clc; clear;
 
 %% Define the domain and create a mesh structure
 L = 10;  % domain length
 Nx = 20; % number of cells
 Ntetta = 21;
-m = buildMeshRadial2D(Nx,Ntetta, L,2*pi);
+m = createMeshRadial2D(Nx,Ntetta, L,2*pi);
 %% Create the boundary condition structure
 BC = createBC(m); % all Neumann boundary condition structure
 m.cellcenters.x=m.cellcenters.x+1;
@@ -31,21 +31,21 @@ u_val=1;
 u = createFaceVariable(m, [u_val, 0]);
 %% define initial values
 c_init = 0.1;
-c.Old = createCellVariable(m, c_init,BC); % initial values
-c.value = c.Old; % assign the old value of the cells to the current values
+c_old = createCellVariable(m, c_init,BC); % initial values
+c = c_old; % assign the old value of the cells to the current values
 %% loop
 dt = 0.1; % time step
 final_t = 7;
-Dave = harmonicMean(m, D);
-Mdiff = diffusionTerm(m, Dave);
-[Mbc, RHSbc] = boundaryCondition(m, BC);
-FL = fluxLimiter('MUSCL');
-Mconv = convectionUpwindTerm(m, u);
+Dave = harmonicMean(D);
+Mdiff = diffusionTerm(Dave);
+[Mbc, RHSbc] = boundaryCondition(BC);
+FL = fluxLimiter('Superbee');
+Mconv = convectionUpwindTerm(u);
 for t=dt:dt:final_t
-    [M_trans, RHS_trans] = transientTerm(m, alfa, dt, c);
+    [M_trans, RHS_trans] = transientTerm(c, dt, alfa);
     M = M_trans+Mconv-Mdiff+Mbc;
     RHS = RHS_trans+RHSbc;
-    c.value = solvePDE(m,M, RHS);
-    c.Old = c.value;
-    figure(1);visualizeCells(m, c.value);shading interp; drawnow;
+    c = solvePDE(m,M, RHS);
+    c_old = c.value;
+    figure(1);visualizeCells(c);shading interp; drawnow;
 end

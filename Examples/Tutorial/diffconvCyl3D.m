@@ -5,13 +5,13 @@
 % $$\alpha\frac{\partial c}{\partial t}+\nabla.\left(-D\nabla c\right)=0,$$
 %
 % where $c$ is the independent variable (concentration, temperature, etc)
-% , $D$ is the diffusion coefficient, and $\alpha$ is a constant. 
+% , $D$ is the diffusion coefficient, and $\alpha$ is a constant.
 clc; clear;
 
 %% Define the domain and create a mesh structure
 L = 50;  % domain length
 Nx = 10; % number of cells
-m = buildMeshCylindrical3D(Nx,Nx+3,Nx+6, L/2,2*pi,L);
+m = createMeshCylindrical3D(Nx,Nx+3,Nx+6, L/2,2*pi,L);
 %% Create the boundary condition structure
 BC = createBC(m); % all Neumann boundary condition structure
 % BC.left.a(:) = 0; BC.left.b(:)=1; BC.left.c(:)=0; % left boundary
@@ -28,22 +28,22 @@ alfa = createCellVariable(m, 1);
 u = createFaceVariable(m, [0,0,0.1]);
 %% define initial values
 c_init = 1;
-c.Old = createCellVariable(m, c_init,BC); % initial values
-c.value = c.Old; % assign the old value of the cells to the current values
+c_old = createCellVariable(m, c_init,BC); % initial values
+c = c_old; % assign the old value of the cells to the current values
 %% loop
-Dave = harmonicMean(m, D);
-Mdiff = diffusionTerm(m, Dave);
-[Mbc, RHSbc] = boundaryCondition(m, BC);
-FL = fluxLimiter('MUSCL');
-Mconv = convectionTvdTerm(m, u, c.value, FL);
+Dave = harmonicMean(D);
+Mdiff = diffusionTerm(Dave);
+[Mbc, RHSbc] = boundaryCondition(BC);
+FL = fluxLimiter('Superbee');
+Mconv = convectionTvdTerm(u, c, FL);
 dt = 1; % time step
 final_t = 50;
 for t=dt:dt:final_t
-    [M_trans, RHS_trans] = transientTerm(m, alfa, dt, c);
+    [M_trans, RHS_trans] = transientTerm(c, dt, alfa);
     M = M_trans-Mdiff+Mbc+Mconv;
     RHS = RHS_trans+RHSbc;
-    c.value = solvePDE(m,M, RHS);
-    c.Old = c.value;
+    c = solvePDE(m,M, RHS);
+    c_old = c;
 end
 %% visualization
- figure(1);visualizeCells(m, c.value);
+ figure(1);visualizeCells(c);
