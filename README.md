@@ -8,7 +8,7 @@ include:
   * central difference diffusion term
   * central difference convection term
   * upwind convection term
-  * TVD convection term
+  * TVD convection term with various flux limiters
   * transient term
   * Dirichlet, Neumann, Robin, and periodic boundary conditions
 
@@ -61,7 +61,7 @@ M = Mdiff + Mbc; % matrix of cefficients for the PDE
 c = solvePDE(m,M, RHSbc); % send M and RHS to the solver
 visualizeCells(m, c); % visualize the results
 ```
-change the third line to `m = createMesh2D(Nx,Nx, L,L);` or `m = createMesh3D(Nx,Nx,Nx, L,L,L);` and see the outcome for yourself.
+change the third line to `m = createMesh2D(Nx,Nx, L,L);` or `m = createMesh3D(Nx,Nx,Nx, L,L,L);` and see the outcome for yourself. The above code will not work in the new (more object oriented) development version of `FVTool`.  
 
 ## Examples
 There are a few simple examples in the [Tutorial] (https://github.com/simulkade/FVTool/tree/master/Examples/Tutorial) folder. 
@@ -72,14 +72,8 @@ fully implicit solution) in the [Advanced] (https://github.com/simulkade/FVTool/
 comming soon
 
 ## But Matlab is not a free software?
-You can use the code in [octave] (http://www.gnu.org/software/octave/). 
-It's not fully compatible because you cannot overload operators for octave builtin types. 
-If you avoid using the overloaded operators, it works fine. I've written/am writing the code in [Julia] (http://julialang.org/). It goes well, but 
-the visualization and sparse solvers of Julia are not mature yet.
-
-## Other codes
-I have a PVT tool (phase equilibrium calculations) in matlab, which is not ready to be shared yet. The code must be commented and revised.
-That's the reason that you get a warning when you run the FVToolStartUp script.
+You can use the code in [octave](http://www.gnu.org/software/octave/). The new (object oriented) version of the code works in Octave 4.0 (with the new `classdef` function).  
+I've re-written the code in [Julia](http://julialang.org/). It works fine, but the visualization on Windows OS has still some issues.
 
 ## Questions and bug reports
-You can ask your questions by creating a new issue here, or by writing a comment in [my blog] (http://fvtool.simulkade.com). You can aslo ask your question in the [Matlab file exchange page] (http://www.mathworks.com/matlabcentral/fileexchange/46637-a-simple-finite-volume-solver-for-matlab) of this code. I truly appreciate your feedback and/or contribution.
+You can ask your questions by creating a new issue here, or by writing a comment in [my blog] (http://fvt.simulkade.com). You can aslo ask your question in the [Matlab file exchange page] (http://www.mathworks.com/matlabcentral/fileexchange/46637-a-simple-finite-volume-solver-for-matlab) of this code. I truly appreciate your feedback and/or contribution.
