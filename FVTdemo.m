@@ -1,9 +1,5 @@
 %% Apparently it must be here!
-<<<<<<< HEAD
 % Copyright (c) 2012, 2013, 2014, 2015; Ali Akbar Eftekhari
-=======
-% Copyright (c) 2012, 2013, 2014, Ali Akbar Eftekhari
->>>>>>> d896e54139152df42339ce7ede84608e77db5635
 % All rights reserved.
 %
 % Redistribution and use in source and binary forms, with or
