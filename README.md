@@ -12,6 +12,7 @@ include:
   * transient term
   * Dirichlet, Neumann, Robin, and periodic boundary conditions
 
+![diffusion pde](Tests/diff_pde.jpg)
 ## Which equation do we solve?
 We an solve the following equation:
 
@@ -54,14 +55,15 @@ BC.left.a(:) = 0; BC.left.b(:)=1; BC.left.c(:)=1; % Dirichlet for the left bound
 BC.right.a(:) = 0; BC.right.b(:)=1; BC.right.c(:)=0; % right boundary
 D_val = 1; % value of the diffusion coefficient
 D = createCellVariable(m, D_val); % assign the diffusion coefficient to the cells
-D_face = harmonicMean(m, D); % calculate harmonic average of the diffusion coef on the cell faces
-Mdiff = diffusionTerm(m, D_face); % matrix of coefficients for the diffusion term
-[Mbc, RHSbc] = boundaryCondition(m, BC); % matix of coefficients and RHS vector for the BC
+D_face = harmonicMean(D); % calculate harmonic average of the diffusion coef on the cell faces
+Mdiff = diffusionTerm(D_face); % matrix of coefficients for the diffusion term
+[Mbc, RHSbc] = boundaryCondition(BC); % matix of coefficients and RHS vector for the BC
 M = Mdiff + Mbc; % matrix of cefficients for the PDE
 c = solvePDE(m,M, RHSbc); % send M and RHS to the solver
-visualizeCells(m, c); % visualize the results
+visualizeCells(c); % visualize the results
 ```
 change the third line to `m = createMesh2D(Nx,Nx, L,L);` or `m = createMesh3D(Nx,Nx,Nx, L,L,L);` and see the outcome for yourself. The above code will not work in the new (more object oriented) development version of `FVTool`.  
+![diff 3D](Tests/diff_pde_3d.jpg)
 
 ## Examples
 There are a few simple examples in the [Tutorial] (https://github.com/simulkade/FVTool/tree/master/Examples/Tutorial) folder. 

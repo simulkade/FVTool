@@ -127,11 +127,11 @@ for i=1:N_mesh
     end
 end
 % visualize
-% figure(3);
-% for i=1:N_mesh
-%     subplot(3, 3, i);
-%     visualizeCells(c_trans{i});
-% end
+ figure(3);
+ for i=1:N_mesh
+     subplot(3, 3, i);
+     visualizeCells(c_trans{i});
+ end
 disp('Transient convection-diffucion-reaction solved successfully!');
 %% Part VIII: test the utilities
 % only test the averaging, don't save the result
