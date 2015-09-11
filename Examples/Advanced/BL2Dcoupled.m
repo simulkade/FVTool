@@ -21,7 +21,7 @@ k0 = 2e-12; % [m^2] average reservoir permeability
 phi0 = 0.2; % average porosity
 clx=0.05;
 cly=0.05;
-V_dp=0.6; % Dykstra-Parsons coef.
+V_dp=0.5; % Dykstra-Parsons coef.
 perm_val= field2d(Nx,Ny,k0,V_dp,clx,cly);
 k=createCellVariable(m, perm_val);
 phi=createCellVariable(m, phi0);
@@ -131,5 +131,5 @@ while (t<t_end)
     t=t+dt;
     p_old = p;
     sw_old = sw;
-    figure(1);visualizeCells(sw);shading interp
+    figure(1);visualizeCells(sw);shading interp; drawnow;
 end
