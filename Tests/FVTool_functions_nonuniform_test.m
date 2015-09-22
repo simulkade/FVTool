@@ -92,8 +92,10 @@ end
 % disp('Convection-Diffusion equation solved and visualized successfully');
 %% Part VII: test the calculus fanctions
 grad_c=cell(N_mesh, 1);
+grad_cell=cell(N_mesh, 1);
 for i=1:N_mesh
     grad_c{i}=gradientTerm(c_dif{i});
+    grad_cell{i}=gradientCellTerm(c_dif{i});
 end
 div_c=cell(N_mesh, 1);
 for i=1:N_mesh
