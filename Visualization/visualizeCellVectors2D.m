@@ -26,4 +26,4 @@ quiver(x,y,phi_cell.xvalue, phi_cell.yvalue);
 axis equal tight
 xlabel('Cell centers [x vlaues]');
 ylabel('Cell centers [y vlaues]');
-colorbar
+%colorbar

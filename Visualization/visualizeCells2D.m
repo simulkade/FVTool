@@ -1,4 +1,4 @@
-function visualizeCellVectors2D(phi_cell)
+function visualizeCells2D(phi)
 %VISUALIZECELLS plots the values of cell variable phi
 %
 % SYNOPSIS:
