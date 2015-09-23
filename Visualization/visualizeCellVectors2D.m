@@ -19,10 +19,10 @@ function visualizeCellVectors2D(phi_cell)
 Copyright (c) 2012, 2013, 2014, 2015 Ali Akbar Eftekhari
 All rights reserved.
 %}
-x = [phi.domain.facecenters.x(1); phi.domain.cellcenters.x; phi.domain.facecenters.x(end)];
-y = [phi.domain.facecenters.y(1); phi.domain.cellcenters.y; phi.domain.facecenters.y(end)];
+x = phi_cell.domain.cellcenters.x;
+y = phi_cell.domain.cellcenters.y;
 
-pcolor(x, y, phi.value')
+quiver(x,y,phi_cell.xvalue, phi_cell.yvalue);
 axis equal tight
 xlabel('Cell centers [x vlaues]');
 ylabel('Cell centers [y vlaues]');

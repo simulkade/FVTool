@@ -1,6 +1,7 @@
-function cellvec = createCellVector(meshvar, cellval)
-% this function creates a vector field based on the geometry and mesh
-% size. For instance it can be used to create a gravity field.
+function r = mtimes(p,q)
+%TIMES this function multiplies the x, y, and z values of the structures that I use in
+% the FVtool.
+% reassign the scalar to new variable a and the struct to new variable b
 %
 % SYNOPSIS:
 %
@@ -14,7 +15,7 @@ function cellvec = createCellVector(meshvar, cellval)
 % EXAMPLE:
 %
 % SEE ALSO:
-%     cellBoundary
+%
 
 %{
 Copyright (c) 2012, 2013, Ali Akbar Eftekhari
@@ -44,33 +45,16 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-% check the size of the variable and the mesh dimension
-d = meshvar.dimension;
-mn = meshvar.dims;
-
-if (d ==1) || (d==1.5)
-	xvalue = cellval(1).*ones(mn(1),1);
-    yvalue=[];
-    zvalue=[];
-elseif (d == 2) || (d == 2.5) || (d == 2.8)
-    if numel(cellval)==2
-        xvalue = cellval(1).*ones(mn(1), mn(2));
-        yvalue = cellval(2).*ones(mn(1), mn(2));
-        zvalue=[];
-    else
-        xvalue = cellval(1).*ones(mn(1), mn(2));
-        yvalue = cellval(1).*ones(mn(1), mn(2));
-        zvalue=[];
-    end
-elseif (d == 3) || (d==3.2)
-    if numel(cellval)==3
-        xvalue = cellval(1).*ones(mn(1), mn(2), mn(3));
-        yvalue = cellval(2).*ones(mn(1), mn(2), mn(3));
-        zvalue = cellval(3).*ones(mn(1), mn(2), mn(3));
-    else
-        xvalue = cellval(1).*ones(mn(1), mn(2), mn(3));
-        yvalue = cellval(1).*ones(mn(1), mn(2), mn(3));
-        zvalue = cellval(1).*ones(mn(1), mn(2), mn(3));
-    end
+if (isa(p, 'CellVector')&&isa(q, 'CellVector'))
+    error('FVMtool: Wrong use of mtimes for a cell vector. Try using .* instead.');
+elseif isa(p, 'CellVector')
+    r=p;
+    r.xvalue = p.xvalue*q;
+    r.yvalue = p.yvalue*q;
+    r.zvalue = p.zvalue*q;
+else
+    r=q;
+    r.xvalue = p*q.xvalue;
+    r.yvalue = p*q.yvalue;
+    r.zvalue = p*q.zvalue;
 end
-cellvec=CellVector(meshvar, xvalue, yvalue, zvalue);

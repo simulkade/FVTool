@@ -1,5 +1,6 @@
-function visualizeGradsRadial2D(phi)
-%VISUALIZECELLS plots the values of cell variable phi
+function r = minus(p,q)
+%MINUS: this function subtracts the x, y, and z values of the structures that I use in
+% the FVtool.
 %
 % SYNOPSIS:
 %
@@ -42,20 +43,18 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
-phi_face=gradientCellTerm(phi);
-L = phi.domain.cellcenters.x(end);
-x = phi.domain.cellcenters.x;
-y = phi.domain.cellcenters.y;
-[TH,R] = meshgrid(y, x);
-[X,Y] = pol2cart(TH,R);
-h = polar([0 2*pi], [0 L]);
-delete(h);
-hold on
-quiver(X,Y,phi_face.xvalue, phi_face.yvalue)
 
-% pcolor(MeshStructure.cellcenters.x, MeshStructure.cellcenters.y, phi')
-% axis equal tight
-% xlabel('Cell centers [x vlaues]');
-% ylabel('Cell centers [y vlaues]');
-%colorbar
-hold off
+% First implementation:
+% m = size(p.xvalue);
+% d = ndims(p.xvalue);
+% if (min(m) == 1) % 1D: only x value
+%     r.xvalue = p.xvalue-q.xvalue;
+% elseif (d == 2) % 2D: x and y values
+%     r.xvalue = p.xvalue-q.xvalue;
+%     r.yvalue = p.yvalue-q.yvalue;
+% else % 3D:x, y, and z values
+%     r.xvalue = p.xvalue-q.xvalue;
+%     r.yvalue = p.yvalue-q.yvalue;
+%     r.zvalue = p.zvalue-q.zvalue;
+% end
+r = p+(-q);

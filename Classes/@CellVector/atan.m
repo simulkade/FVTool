@@ -1,8 +1,6 @@
-function phi = transientCellVariable(phiold, phicurrent)
-% this function is indeed a very simple tool to create a transient cell
-% structure from the values of a cell variable at the previous and current
-% time steps. It is used to simplify the procedure for defining a
-% nonlinear system of algebraic equations.
+function r = atan(p)
+%UMINUS: this function calculates the atan of a x, y, and z values of 
+% the structures that I use in the FVtool.
 % 
 % SYNOPSIS:
 %   
@@ -16,7 +14,7 @@ function phi = transientCellVariable(phiold, phicurrent)
 % EXAMPLE:
 % 
 % SEE ALSO:
-%     cellBoundary
+%     
 
 %{
 Copyright (c) 2012, 2013, Ali Akbar Eftekhari
@@ -46,6 +44,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-% define the structure
-phi.Old = phiold;
-phi.value = phicurrent;
+r = p;
+r.xvalue = atan(p.xvalue);
+r.yvalue = atan(p.yvalue);
+r.zvalue = atan(p.zvalue);
