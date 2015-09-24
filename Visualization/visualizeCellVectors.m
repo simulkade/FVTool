@@ -31,7 +31,7 @@ switch d
     case 2.5
         visualizeCellVectors2D(phi_cell);
     case 2.8
-        visualizeCellVectors2D(phi_cell);
+        visualizeCellVectorsRadial2D(phi_cell);
     case 3
         visualizeCellVectors3D(phi_cell);
     case 3.2

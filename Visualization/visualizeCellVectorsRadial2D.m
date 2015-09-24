@@ -21,11 +21,11 @@ All rights reserved. Please see the license file.
 %}
 
 % phi_cell=gradientCellTerm(phi);
-L = phi.domain.cellcenters.x(end);
-x = phi.domain.cellcenters.x;
-y = phi.domain.cellcenters.y;
+L = phi_cell.domain.cellcenters.x(end);
+x = phi_cell.domain.cellcenters.x;
+y = phi_cell.domain.cellcenters.y;
 [TH,R] = meshgrid(y, x);
 [X,Y] = pol2cart(TH,R);
 h = polar([0 2*pi], [0 L]);
 delete(h);
-quiver(X,Y,phi_cell.xvalue, phi_cell.yvalue)
+quiver(X,Y,phi_cell.xvalue.*cos(TH)-phi_cell.yvalue.*sin(TH), phi_cell.xvalue.*sin(TH)+phi_cell.yvalue.*cos(TH))
