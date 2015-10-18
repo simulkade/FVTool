@@ -37,7 +37,7 @@ COMPUTE_FLAG=1;
 %% User Input
 % Create the mesh
 m=createMesh2D(50,3,2,2);
-%visualizeMesh2D(m); % uncomment if mesh should be displayed
+ visualizeMesh2D(m); % uncomment if mesh should be displayed
 
 % Thermophysical properties of the phase change material (PCM)
 rho_L=1000;         % density of the liquid phase [kg/m^3]
@@ -86,7 +86,7 @@ if COMPUTE_FLAG==3
 end
 
 % Solver settings
-dt = 3500; % time step size
+dt = 36000; % time step size
 final_t = 2000000; % final time
 convergence_tolerance=1e-8;
 relaxation_coeff=0.7;
@@ -112,7 +112,7 @@ for t=dt:dt:final_t
     % update loop for each time step. So the liquid fraction of the last
     % time step is used.
     rho_c_mix=createMixCellVar(m,liquidFraction,rho_L.*c_L,rho_S.*c_S);
-    [M_trans, RHS_trans] = transientTerm(Temp, dt, rho_c_mix);
+    [M_trans, RHS_trans] = transientTerm(Temp, 1, rho_c_mix);
     
     RHS_liquidFraction_old=RHS_liquidFraction;
     
@@ -136,8 +136,8 @@ for t=dt:dt:final_t
         u_rho_mix_face.yvalue=rho_mix_face.yvalue.*u_face.yvalue;
 
         % calculate the matrix M
-        Mdiff = diffusionTerm(k_mix_face);
-        Mconv =  convectionTerm(u_rho_mix_face);
+        Mdiff = dt*diffusionTerm(k_mix_face);
+        Mconv =  dt*convectionTerm(u_rho_mix_face);
         M = M_trans-Mdiff+Mbc+Mconv;
         
         % calculate the right hand side vector
@@ -161,13 +161,13 @@ for t=dt:dt:final_t
                                                 T_S,...
                                                 relaxation_coeff);
         
-        RHS_liquidFraction=1/dt*constantSourceTerm(liquidFraction);
+        RHS_liquidFraction=constantSourceTerm(liquidFraction);
     end
     
     if COMPUTE_FLAG==1
         
         % extract 1D data from solution for the plot
-        numSol.T=Temp.value(:,3);
+        numSol.T=liquidFraction.value(:,3);
         
         % now interpolate over the ghost cell and first internal cell
         values_temp(1)=(numSol.T(1)+numSol.T(2))/2;
@@ -195,18 +195,22 @@ for t=dt:dt:final_t
         if t==dt
             h_fig=figure('NumberTitle','Off');
             set(h_fig,'Name',sprintf('Stefan Problem: %d s (%.2f h)',t,t/3600));
-            h1=plot(numSol.x,numSol.T,'x','color',[0 0 1]);
+            h1=plot(numSol.x,numSol.T,'-x','color',[0 0 1]);
             hold on;
-            h2=plot(analSol.x,analSol.T,'-','color',[1 0 0]);
-            h3=plot([analSol.InterfacePos analSol.InterfacePos],[T_Solid T_Liquid],'--','color',[0 0 0]);
-            legend([h1 h2 h3],'Numerical Solution: Temperature','Analytical Solution: Temperature','Analytical Solution: Phase Interface');
+            %h2=plot(analSol.x,analSol.T,'-','color',[1 0 0]);
+            h3=plot([analSol.InterfacePos analSol.InterfacePos],[0 1],'--','color',[0 0 0]);
+            legend([h1 h3],'Numerical Solution: Liquid fraction','Analytical Solution: Phase Interface');
+            xlabel('x [m]');
+            ylabel('Liquid fraction');
             hold off;
         else
             set(h1,'XData',numSol.x,'YData',numSol.T);
-            set(h2,'XData',analSol.x,'YData',analSol.T);
+            %set(h2,'XData',analSol.x,'YData',analSol.T);
             set(h3,'XData',[analSol.InterfacePos analSol.InterfacePos]);
             set(h_fig,'Name',sprintf('Stefan Problem: %d s (%.2f h)',t,t/3600));
         end
+        xlim([0 0.5]);
+        saveas(h_fig,['figureSaveGamma/fig_',num2str(t),'.eps'],'epsc');
         drawnow;
     elseif COMPUTE_FLAG==2 || COMPUTE_FLAG==3
         if COMPUTE_FLAG==2

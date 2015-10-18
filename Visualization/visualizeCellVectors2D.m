@@ -22,8 +22,8 @@ All rights reserved.
 x = phi_cell.domain.cellcenters.x;
 y = phi_cell.domain.cellcenters.y;
 
-quiver(x,y,phi_cell.xvalue, phi_cell.yvalue);
+quiver(x,y,phi_cell.xvalue', phi_cell.yvalue');
 axis equal tight
-xlabel('Cell centers [x vlaues]');
-ylabel('Cell centers [y vlaues]');
+xlabel('Cell centers [x values]');
+ylabel('Cell centers [y values]');
 %colorbar
