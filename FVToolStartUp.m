@@ -62,7 +62,7 @@ try
     addpath([current_path '/PhysicalProperties']);
     addpath([current_path '/FieldGeology']);
 catch
-    warning(['Some of the physical functions are not available in this copy.' ...
+    disp(['Some of the physical functions are not available in this copy.' ...
     ' It does not affect the functionality of the FVMtool']);
 end
 
@@ -77,7 +77,7 @@ end
         addpath([pwd '/AGMG_3.0']);
         disp('AGMG 3.0 linear solver is available.');
     else
-        disp('AGMG 3.x linear solver is NOT available.');
+        disp('AGMG 3.x linear solver is NOT available (Not necessary).');
     end
     % check for Factorize availability
     if exist('Factorize', 'dir') == 7
@@ -96,10 +96,10 @@ if exist('PVTtoolbox', 'dir') == 7
         cd(current_path);
         disp('PVTtoolbox has started successfully.');
     else
-        warning('PVTtoolbox is found but cannot be initialized.');
+        disp('PVTtoolbox is found but cannot be initialized.');
     end
 else
-    warning('PVTtoolbox could not be found; Please run PVTinitialize.m manually');
+    disp('PVTtoolbox is NOT available (Not necessary).');
 end
 disp('FiniteVolumeToolbox has started successfully.');
 catch err
