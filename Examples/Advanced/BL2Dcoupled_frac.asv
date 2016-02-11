@@ -58,8 +58,8 @@ k.value(:,1:2)=k_frac;
 k.value(:,end-1:end)=k_frac;
 %k.value(1:2,:)=k_frac;
 phi=createCellVariable(m, phi0);
-krw0 = 0.4;
-kro0 = 0.8;
+krw0 = 1;
+kro0 = 1;
 nw = 1;
 no = 1;
 krw = @(sw)(krw0*sw.^nw);
@@ -81,7 +81,7 @@ BCp.right.a(end-5:end)=0; BCp.right.b(end-5:end)=1; BCp.right.c(end-5:end)=p0;
 % change the left boundary to constant saturation (Dirichlet)
 BCs.left.a(1:5)=0; BCs.left.b(1:5)=1; BCs.left.c(1:5)=1;
 %% define the time step and solver properties
-dt = 100; % [s] time step
+dt = 1000; % [s] time step
 t_end = 1000*dt; % [s] final time
 eps_p = 1e-5; % pressure accuracy
 eps_sw = 1e-5; % saturation accuracy
@@ -165,8 +165,9 @@ while (t<t_end)
     t=t+dt;
     p_old = p;
     sw_old = sw;
-    figure(1);visualizeCells(sw);shading interp; drawnow;
-    sw_tot=sw.value.*X.*Y/(W*H);
-    oil_prod=(sum(sum(sw_tot(2:end-1,2:end-1))));
-    figure(2);semilogx(t, oil_prod, 'o'); drawnow;
+    %figure(1);visualizeCells(sw);shading interp; drawnow;
+    sw_tot=sw.value.*X.*Y/;
+    oil_prod=phi0*(1-sum(sum(sw_tot(2:end-1,2:end-1))));
+    rec_oil=oil_prod/(phi0*W*H);
+    semilogx(t, oil_prod, 'o'); drawnow;
 end
