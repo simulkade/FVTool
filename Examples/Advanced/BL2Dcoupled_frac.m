@@ -4,12 +4,12 @@
 % Prepared for educational purposes by ** AAE **
 clc; clear;
 %% define the geometry
-Nx = 100; % number of cells in x direction
-Ny = 50; % number of cells in y direction
+Nx = 50; % number of cells in x direction
+Ny = 30; % number of cells in y direction
 W = 50; % [m] length of the domain in x direction
 H = 30; % [m] length of the domain in y direction
 x1=linspace(0,W, Nx);
-x2=x1+0.01;
+x2=x1+0.001;
 x=zeros(2*Nx,1);
 j=0;
 for i=1:Nx
@@ -39,24 +39,29 @@ mu_oil = 10e-3; % [Pa.s] oil viscosity
 mu_water = 1e-3; % [Pa.s] water viscosity
 % reservoir
 k0 = 2e-12; % [m^2] average reservoir permeability
-k_frac=1e-9; % [m^2] fracture permeability
+k_frac=10000e-12; % [m^2] fracture permeability
 phi0 = 0.2; % average porosity
 clx=0.05;
 cly=0.05;
 V_dp=0.1; % Dykstra-Parsons coef.
 perm_val= field2d(2*Nx,2*Ny,k0,V_dp,clx,cly);
-k=createCellVariable(m, perm_val);
-for i=2:2:2*Nx
-    k.value(i,:)=k_frac;
+k=createCellVariable(m, k0);
+for i=4:2:2*Nx
+    k.value(i,3:end-2)=k_frac;
 end
-for j=2:2:2*Ny
-    k.value(:,j)=k_frac;
+for j=4:2:2*Ny
+    k.value(3:end-2,j)=k_frac;
 end
+k.value(1:2,:)=k_frac;
+k.value(end-1:end,:)=k_frac;
+k.value(:,1:2)=k_frac;
+k.value(:,end-1:end)=k_frac;
+%k.value(1:2,:)=k_frac;
 phi=createCellVariable(m, phi0);
 krw0 = 1;
 kro0 = 1;
-nw = 2;
-no = 2;
+nw = 1;
+no = 1;
 krw = @(sw)(krw0*sw.^nw);
 dkrwdsw = @(sw)(krw0*nw*sw.^(nw-1));
 kro = @(sw)(kro0*(1-sw).^no);
@@ -71,12 +76,12 @@ dLodsw = @(sw)(k/mu_oil*dkrodsw(sw));
 BCp = createBC(m); % Neumann BC for pressure
 BCs = createBC(m); % Neumann BC for saturation
 % change the left and right boandary to constant pressure (Dirichlet)
-BCp.left.a(:)=0; BCp.left.b(:)=1; BCp.left.c(:)=pin;
-BCp.right.a(:)=0; BCp.right.b(:)=1; BCp.right.c(:)=p0;
+BCp.left.a(1:5)=0; BCp.left.b(1:5)=1; BCp.left.c(1:5)=pin;
+BCp.right.a(end-5:end)=0; BCp.right.b(end-5:end)=1; BCp.right.c(end-5:end)=p0;
 % change the left boundary to constant saturation (Dirichlet)
-BCs.left.a(:)=0; BCs.left.b(:)=1; BCs.left.c(:)=1;
+BCs.left.a(1:5)=0; BCs.left.b(1:5)=1; BCs.left.c(1:5)=1;
 %% define the time step and solver properties
-dt = 1; % [s] time step
+dt = 100; % [s] time step
 t_end = 1000*dt; % [s] final time
 eps_p = 1e-5; % pressure accuracy
 eps_sw = 1e-5; % saturation accuracy
