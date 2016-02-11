@@ -4,11 +4,32 @@
 % Prepared for educational purposes by ** AAE **
 clc; clear;
 %% define the geometry
-Nx = 200; % number of cells in x direction
-Ny = 150; % number of cells in y direction
+Nx = 100; % number of cells in x direction
+Ny = 50; % number of cells in y direction
 W = 50; % [m] length of the domain in x direction
 H = 30; % [m] length of the domain in y direction
-m = createMesh2D(Nx, Ny, W, H); % creates a 2D mesh
+x1=linspace(0,W, Nx);
+x2=x1+0.01;
+x=zeros(2*Nx,1);
+j=0;
+for i=1:Nx
+    j=j+1;
+    x(j)=x1(i);
+    j=j+1;
+    x(j)=x2(i);
+end
+y1=linspace(0,H, Ny);
+y2=y1+0.01;
+y=zeros(2*Ny,1);
+j=0;
+for i=1:Ny
+    j=j+1;
+    y(j)=y1(i);
+    j=j+1;
+    y(j)=y2(i);
+end
+m = createMesh2D(x, y); % creates a 2D mesh
+visualizeMesh2D(m);
 %% define the physical parametrs
 p0 = 1e5; % [bar] pressure
 pin = 50e5; % [bar] injection pressure at the left boundary
@@ -18,12 +39,19 @@ mu_oil = 10e-3; % [Pa.s] oil viscosity
 mu_water = 1e-3; % [Pa.s] water viscosity
 % reservoir
 k0 = 2e-12; % [m^2] average reservoir permeability
+k_frac=1e-9; % [m^2] fracture permeability
 phi0 = 0.2; % average porosity
 clx=0.05;
 cly=0.05;
-V_dp=0.3; % Dykstra-Parsons coef.
-perm_val= field2d(Nx,Ny,k0,V_dp,clx,cly);
+V_dp=0.1; % Dykstra-Parsons coef.
+perm_val= field2d(2*Nx,2*Ny,k0,V_dp,clx,cly);
 k=createCellVariable(m, perm_val);
+for i=2:2:2*Nx
+    k.value(i,:)=k_frac;
+end
+for j=2:2:2*Ny
+    k.value(:,j)=k_frac;
+end
 phi=createCellVariable(m, phi0);
 krw0 = 1;
 kro0 = 1;
@@ -48,7 +76,7 @@ BCp.right.a(:)=0; BCp.right.b(:)=1; BCp.right.c(:)=p0;
 % change the left boundary to constant saturation (Dirichlet)
 BCs.left.a(:)=0; BCs.left.b(:)=1; BCs.left.c(:)=1;
 %% define the time step and solver properties
-dt = 1000; % [s] time step
+dt = 1; % [s] time step
 t_end = 1000*dt; % [s] final time
 eps_p = 1e-5; % pressure accuracy
 eps_sw = 1e-5; % saturation accuracy
@@ -119,8 +147,8 @@ while (t<t_end)
         x = M\RHS;
         % x = agmg(M, RHS, [], 1e-10, 500, [], [p.value(:); sw.value(:)]);
         % separate the variables from the solution
-        p_new = reshapeCell(m,full(x(1:(Nx+2)*(Ny+2))));
-        sw_new = reshapeCell(m,full(x((Nx+2)*(Ny+2)+1:end)));
+        p_new = reshapeCell(m,full(x(1:(2*Nx+1)*(2*Ny+1))));
+        sw_new = reshapeCell(m,full(x((2*Nx+1)*(2*Ny+1)+1:end)));
         % calculate error values
         error_p = max(abs((p_new(:)-p.value(:))./p_new(:)));
         error_sw = max(abs(sw_new(:)-sw.value(:)));
