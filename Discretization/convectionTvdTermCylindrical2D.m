@@ -77,22 +77,22 @@ uy = u.yvalue;
 % x direction
 dphiX_p = (phi.value(2:Nr+2, 2:Nz+1)-phi.value(1:Nr+1, 2:Nz+1))./dr;
 rX_p = dphiX_p(1:end-1,:)./fsign(dphiX_p(2:end,:));
-psiX_p(2:Nr+1,:) = 0.5*FL(rX_p).*(phi(3:Nr+2,2:Nz+1)-phi(2:Nr+1, 2:Nz+1));
+psiX_p(2:Nr+1,:) = 0.5*FL(rX_p).*(phi.value(3:Nr+2,2:Nz+1)-phi.value(2:Nr+1, 2:Nz+1));
 psiX_p(1, :) = 0; % left boundary will be handled in the main matrix
 % y direction
 dphiY_p = (phi.value(2:Nr+1, 2:Nz+2)-phi.value(2:Nr+1, 1:Nz+1))./dz;
 rY_p = dphiY_p(:,1:end-1)./fsign(dphiY_p(:,2:end));
-psiY_p(:,2:Nz+1) = 0.5*FL(rY_p).*(phi(2:Nr+1,3:Nz+2)-phi(2:Nr+1, 2:Nz+1));
+psiY_p(:,2:Nz+1) = 0.5*FL(rY_p).*(phi.value(2:Nr+1,3:Nz+2)-phi.value(2:Nr+1, 2:Nz+1));
 psiY_p(:,1) = 0; % Bottom boundary will be handled in the main matrix
 
 % calculate the upstream to downstream gradient ratios for u<0 (- ratio)
 % x direction
 rX_m = dphiX_p(2:end,:)./fsign(dphiX_p(1:end-1,:));
-psiX_m(1:Nr,:) = 0.5*FL(rX_m).*(phi(1:Nr, 2:Nz+1)-phi(2:Nr+1, 2:Nz+1));
+psiX_m(1:Nr,:) = 0.5*FL(rX_m).*(phi.value(1:Nr, 2:Nz+1)-phi.value(2:Nr+1, 2:Nz+1));
 psiX_m(Nr+1,:) = 0; % right boundary
 % y direction
 rY_m = dphiY_p(:,2:end)./fsign(dphiY_p(:,1:end-1));
-psiY_m(:,1:Nz) = 0.5*FL(rY_m).*(phi(2:Nr+1, 1:Nz)-phi(2:Nr+1, 2:Nz+1));
+psiY_m(:,1:Nz) = 0.5*FL(rY_m).*(phi.value(2:Nr+1, 1:Nz)-phi.value(2:Nr+1, 2:Nz+1));
 psiY_m(:, Nz+1) = 0; % top boundary will be handled in the main matrix
 
 % reassign the east, west, north, and south velocity vectors for the

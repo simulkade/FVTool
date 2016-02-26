@@ -77,10 +77,12 @@ M_bc=cell(N_mesh, 1);
 M_dif=cell(N_mesh, 1);
 M_conv=cell(N_mesh, 1);
 RHS_bc=cell(N_mesh, 1);
+FL=fluxLimiter('SUPERBEE');
 for i=1:N_mesh
     [M_bc{i}, RHS_bc{i}]= boundaryCondition(BC_n{i});
     M_dif{i}=diffusionTerm(f_n{i});
     M_conv{i}=convectionTerm(0.1*f_n{i});
+    convectionTvdTerm(0.1*f_n{i}, c_dif{i}, FL); % just to test TVD
     c_conv{i}=solvePDE(mesh_nonuniform{i}, M_conv{i}-M_dif{i}+M_bc{i}, RHS_bc{i});
 end
 % visualize
