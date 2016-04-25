@@ -23,7 +23,7 @@ fm = @(sw)(1+fmmob*(0.5+atan(epdry.*(sw-fmdry))/pi()));
 krg = @(sw)(kr(sw)./fm(sw));
 krw = @(sw)(krw0*sws(sw).^nw);
 dkrwdsw = @(sw)(nw*krw0*(1/(1-sgr-swc))*sws(sw).^(nw-1));
-dkrdsw = @(sw)((krg0*ng*(1-sws(sw)).^(ng-1))/(-swc-sgr+1));
+dkrdsw = @(sw)((-krg0*ng*(1-sws(sw)).^(ng-1))/(-swc-sgr+1));
 % fm = @(sw)((sw>fmdry).*(1+fmmob*(0.5+atan(epdry.*(sw-fmdry))/pi()))+(sw<=fmdry));
 dfmdsw = @(sw)(((epdry*fmmob)./(pi*(epdry^2*(sw-fmdry).^2+1))));
 % dfmdsw = @(sw)((epdry*fmmob)./(pi*(epdry^2*(sw-fmdry).^2+1)));
@@ -49,7 +49,7 @@ xt_s = u/phi*dfwdsw(s);
 xt_shock = u/phi*dfwdsw(sw_shock);
 subplot(2,2,3);
 plot(xt_s, s, '--', ...
-    [xt_s1 xt_shock xt_shock max(xt_s)], [s1 sw_shock sw_end sw_end]) 
+    [xt_s1 xt_shock xt_shock max(xt_s)], [s1 sw_shock sw_end sw_end])
 xlabel('x/t [m/s]'); ylabel('S_w');
 subplot(2,2,4);
 plot([xt_s1 xt_shock xt_shock 10*xt_shock], [s1 sw_shock sw_end sw_end])
@@ -65,9 +65,8 @@ for i =1:length(t)
     x = 0:0.001:L;
     xt = x/t(i);
     dp(i) = trapz(x, u./(k*(krg(sw(xt))/mug+krw(sw(xt))/muw)));
-    
+
 end
 figure(2);plot(t/60, dp/1e5, '.')
 xlabel('time [min]'); ylabel('pressure drop [bar]');
 end
-
