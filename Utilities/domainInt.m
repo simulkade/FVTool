@@ -1,4 +1,4 @@
-function S = domainInt(MeshStructure, phi)
+function S = domainInt(phi)
 %INTEGRATE integrate the value of phi over the domain defined by the mesh
 %structure using the trapezoidal rule
 % 
@@ -44,20 +44,6 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %}
 
-d = MeshStructure.dimension;
-switch d
-    case 1
-        S = domainInt1D(MeshStructure, phi(2:end-1));
-    case 1.5
-        S = domainIntCylindrical1D(MeshStructure, phi(2:end-1));
-    case 2
-        S = domainInt2D(MeshStructure, phi(2:end-1,2:end-1));
-    case 2.5
-        S = domainIntCylindrical2D(MeshStructure, phi(2:end-1,2:end-1));
-    case 2.8
-        S = domainIntRadial2D(MeshStructure, phi(2:end-1,2:end-1));
-    case 3
-        S = domainInt3D(MeshStructure, phi(2:end-1,2:end-1,2:end-1));
-    case 3.2
-        S = domainIntCylindrical3D(MeshStructure, phi(2:end-1,2:end-1,2:end-1));
-end
+v=internalCells(cellVolume(phi.domain));
+c=internalCells(phi);
+S=sum(v(:).*c(:));

@@ -8,6 +8,7 @@ Nx = 100; % number of cells in x direction
 Ny = 30; % number of cells in y direction
 W = 300; % [m] length of the domain in x direction
 H = 30; % [m] length of the domain in y direction
+m = createMesh1D(Nx, W);
 m = createMesh2D(Nx, Ny, W, H); % creates a 2D mesh
 %% define the physical parametrs
 krw0 = 1.0;
@@ -31,12 +32,20 @@ mu_water = 1e-3; % [Pa.s] water viscosity
 % reservoir
 k0 = 2e-12; % [m^2] average reservoir permeability
 phi0 = 0.2; % average porosity
-clx=1.2;
+teta_ow=deg2rad(30);
+gama_ow=0.03; % N/m
+labda=10.0;
+eps1=1e-6;
+clx=0.2;
 cly=0.2;
 V_dp=0.7; % Dykstra-Parsons coef.
 perm_val= field2d(Nx,Ny,k0,V_dp,clx,cly);
 k=createCellVariable(m, perm_val);
 phi=createCellVariable(m, phi0);
+pce=gama_ow*cos(teta_ow)*(phi./k).^0.5;
+pc=@(sw)(pce.*(sws(sw)+eps1).^(-1/labda)); % it can also be defined for each block
+% sw_plot=linspace(0,1, 10000);
+% plot(sw_plot, pc(sw_plot))
 lw = geometricMean(k)/mu_water;
 lo = geometricMean(k)/mu_oil;
 Lw = @(sw)(krw(sw));
@@ -55,7 +64,7 @@ BCp.right.a(:)=0; BCp.right.b(:)=1; BCp.right.c(:)=p0;
 BCs.left.a(:)=0; BCs.left.b(:)=1; BCs.left.c(:)=1;
 %% define the time step and solver properties
 % dt = 1000; % [s] time step
-dt=(W/Nx)/u_in/10; % [s]
+dt=(W/Nx)/u_in/20; % [s]
 t_end = 1000*dt; % [s] final time
 eps_p = 1e-5; % pressure accuracy
 eps_sw = 1e-5; % saturation accuracy
@@ -77,6 +86,7 @@ while (t<t_end)
     while ((error_p>eps_p) || (error_sw>eps_sw))
         % calculate parameters
         pgrad = gradientTerm(p);
+        pcgrad=gradientTerm(pc(sw));
         sw_face = upwindMean(sw, -pgrad); % average value of water saturation
         labdao = lo.*funceval(kro, sw_face);
         labdaw = lw.*funceval(krw, sw_face);
@@ -87,18 +97,20 @@ while (t<t_end)
         % compute [Jacobian] matrices
         Mdiffp1 = diffusionTerm(-labda);
         Mdiffp2 = diffusionTerm(-labdaw);
-        Mconvsw1 = convectionUpwindTerm(-dlabdadsw.*pgrad);
+%         Mconvsw1 = convectionUpwindTerm(-dlabdadsw.*pgrad); % without capillary
+        Mconvsw1 = convectionUpwindTerm(-dlabdawdsw.*pgrad-dlabdaodsw.*(pgrad+pcgrad)); % with capillary
         Mconvsw2 = convectionUpwindTerm(-dlabdawdsw.*pgrad);
         [Mtranssw2, RHStrans2] = transientTerm(sw_old, dt, phi);
         % Compute RHS values
-        RHS1 = divergenceTerm(-dlabdadsw.*sw_face.*pgrad);
+        RHSpc1=divergenceTerm(labdao.*pcgrad);
+        RHS1 = divergenceTerm((-dlabdawdsw.*pgrad-dlabdaodsw.*(pgrad+pcgrad)).*sw_face); % with capillary
         RHS2 = divergenceTerm(-dlabdawdsw.*sw_face.*pgrad);
         % include boundary conditions
         [Mbcp, RHSbcp] = boundaryCondition(BCp);
         [Mbcsw, RHSbcsw] = boundaryCondition(BCs);
         % Couple the equations; BC goes into the block on the main diagonal
         M = [Mdiffp1+Mbcp Mconvsw1; Mdiffp2 Mconvsw2+Mtranssw2+Mbcsw];
-        RHS = [RHS1+RHSbcp; RHS2+RHStrans2+RHSbcsw];
+        RHS = [RHS1+RHSpc1+RHSbcp; RHS2+RHStrans2+RHSbcsw];
         % solve the linear system of equations
         x = M\RHS;
         % x = agmg(M, RHS, [], 1e-10, 500, [], [p.value(:); sw.value(:)]);
