@@ -2,7 +2,8 @@ function Vr = DuanMollerWeare(Tr,Pr)
 % This is the EOS of Duan-Moller-Weare for the CO2-Methane-water system
 % This version calculates the density of the CO2-water and the
 % CO2-water-NaCl system
-
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 
 % constants
 a_CH4 = [8.72553928e-2, -7.52599476e-1, 3.75419887e-1, 1.07291342e-2, ...
@@ -28,4 +29,3 @@ F = @(alfa,Tr)(alfa/Tr^3);
 Z = @(Vr,a, alfa_c, beta_c, gama_c, Tr)(1+B(a,Tr)/Vr+C(a,Tr)/Vr^2+ ...
     D(a,Tr)/Vr^4+E(a,Tr)/Vr^5+ ...
     F(alfa,Tr)/Vr^2*(beta_c+gama_c/Vr^2)*exp(-gama_c/Vr^2));
-

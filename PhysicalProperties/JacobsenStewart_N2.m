@@ -5,7 +5,8 @@ function molar_dens = JacobsenStewart_N2(p_pa, T)
 %bar
 %   Detailed explanation goes here
 % molar_dens: [mol/m^3] gas phase molar density
-
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 p = p_pa/101325; % convert Pa to atm
 
 % constants
@@ -43,7 +44,7 @@ N = [0.136097243686983e-2
      0.610368224362452e-7];
  R = 0.0820562; % liter.atm/(mol.K)
  labda = 0.0056;
- 
+
  f = @(rho)(-p+rho*R*T ...
         + rho^2*(N(1)*T+N(2)*T^0.5+N(3)+N(4)/T+N(5)/T^2)+ ...
         + rho^3*(N(6)*T+N(7)+N(8)/T+N(9)/T^2) ...

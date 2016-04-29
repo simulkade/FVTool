@@ -15,10 +15,8 @@ function visualizeCells1D(phi)
 % SEE ALSO:
 %
 
-%{
-Copyright (c) 2012, 2013, Ali Akbar Eftekhari
-All rights reserved.
-%}
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 
 x = [phi.domain.facecenters.x(1); phi.domain.cellcenters.x; phi.domain.facecenters.x(end)];
 plot(x, phi.value)

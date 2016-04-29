@@ -1,7 +1,8 @@
 function mu = N2viscosity(p_pa, T)
 % this function calculates the viscosity of N2 as a function of temperature
 % T [K] and pressure p [Pa] using the formulation of Lemmon and Jacobsen
-
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 Tc = 126.192; % [K] critical temperature
 rho_c = 11.1839; % mol/dm^3
 % pc = 3.3958; % [MPa] critical pressure
@@ -36,4 +37,3 @@ eta_r = sum(N.*tau.^t.*delta.^d.*exp(-gama.*delta.^l));
 eta = eta0 + eta_r; % eta is viscosity in [micro Pa.s]
 
 mu = eta*1e-6; % viscosity in Pa.s
-

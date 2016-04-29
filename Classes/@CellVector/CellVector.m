@@ -1,4 +1,6 @@
 classdef CellVector
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
     properties
         domain
         xvalue

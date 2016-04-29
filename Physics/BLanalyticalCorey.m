@@ -1,8 +1,10 @@
 function [xt_prf, sw_prf, rec_fact] = BLanalyticalCorey(muw, muo)
 %BLANALYTICAL Analytical solution of Buckley-Leverett equation
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 %muw = 10e-3;
 %muo = 10e-3;
-pv_inj=5; % injected pore volume 
+pv_inj=5; % injected pore volume
 L=1.0; % m core length
 u = 1e-4;
 phi = 0.2;
@@ -38,7 +40,7 @@ xt_s = u/phi*dfwdsw(s);
 xt_shock = u/phi*dfwdsw(sw_shock);
 subplot(2,2,3);
 plot(xt_s, s, '--', ...
-    [xt_s1 xt_shock xt_shock max(xt_s)], [s1 sw_shock sw_end sw_end]) 
+    [xt_s1 xt_shock xt_shock max(xt_s)], [s1 sw_shock sw_end sw_end])
 sw_prf = [s1 sw_shock sw_end sw_end];
 xt_prf = [xt_s1 xt_shock xt_shock+eps 2*xt_shock];
 
@@ -56,7 +58,7 @@ while(true)
 end
 % calculate the recovery factor
 x = linspace(0,L,1000);
-xt_int=[xt_prf L/eps]; 
+xt_int=[xt_prf L/eps];
 sw_int=[sw_prf sw_end];
 t_inj=pv_inj*phi*L/u;
 t = linspace(eps(),t_inj, 100); % [s] time
@@ -70,4 +72,3 @@ end
 subplot(2,2,4);
 plot(t/(phi*L/u), rec_fact); xlabel('PV'); ylabel('recovery factor');
 end
-

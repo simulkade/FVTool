@@ -1,49 +1,24 @@
 function [BCMatrix, BCRHS] = boundaryCondition2D(BC)
-% It creates the matrix of coefficient based on the BC structureprovided 
+% It creates the matrix of coefficient based on the BC structureprovided
 % by the user. It also generates the right hand side vector of the linear
 % system of equations
-% 
+%
 % SYNOPSIS:
-%   
-% 
+%
+%
 % PARAMETERS:
-%   
-% 
+%
+%
 % RETURNS:
-%   
-% 
+%
+%
 % EXAMPLE:
-% 
+%
 % SEE ALSO:
-%     
+%
 
-%{
-Copyright (c) 2012, 2013, Ali Akbar Eftekhari
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or 
-without modification, are permitted provided that the following 
-conditions are met:
-
-    *   Redistributions of source code must retain the above copyright notice, 
-        this list of conditions and the following disclaimer.
-    *   Redistributions in binary form must reproduce the above 
-        copyright notice, this list of conditions and the following 
-        disclaimer in the documentation and/or other materials provided 
-        with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
-PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
-OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-%}
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 
 % extract data from the mesh structure
 Nxy = BC.domain.dims;
@@ -81,7 +56,7 @@ if (BC.top.periodic ==0) && (BC.bottom.periodic ==0)
     ii(q) = G(i,j);  jj(q) = G(i,j);  s(q) = BC.top.b/2 + BC.top.a/dy_end;
     q = q(end)+(1:Nx);
     ii(q) = G(i,j);  jj(q) = G(i,j-1); s(q) = BC.top.b/2 - BC.top.a/dy_end;
-    BCRHS(G(i,j)) = BC.top.c; 
+    BCRHS(G(i,j)) = BC.top.c;
 
     % Bottom boundary
     j=1;
@@ -103,7 +78,7 @@ elseif (BC.top.periodic ==1) || (BC.bottom.periodic ==1) % periodic boundary
     ii(q) = G(i,j);  jj(q) = G(i,1); s(q) = dy_end/dy_1;
     q = q(end)+(1:Nx);
     ii(q) = G(i,j);  jj(q) = G(i,2); s(q) = -dy_end/dy_1;
-    BCRHS(G(i,j)) = 0; 
+    BCRHS(G(i,j)) = 0;
 
     % Bottom boundary
     j=1;

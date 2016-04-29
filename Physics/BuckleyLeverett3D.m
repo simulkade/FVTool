@@ -1,8 +1,9 @@
 function [sw, p] = BuckleyLeverett3D(MeshStructure, BCp, BCs, ...
 			perm, mu_oil, mu_water, sw0, p0, dt, s, eps1)
-% This function solves the continuity equation for an incompressible fluid 
+% This function solves the continuity equation for an incompressible fluid
 % flow in a porous medium, where Darcy's law is applicable.
- 
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file 
 % extract the mesh data
 mn = MeshStructure.numberofcells;
 m = mn(1); n = mn(2); w = mn(3);
@@ -32,7 +33,7 @@ while error1>eps1
     sw_ave = arithmeticMean(MeshStructure, sw.value);
     Lw = Lw_ave.*krw(sw_ave);
     Lo = Lo_ave.*kro(sw_ave);
-    
+
     % step 2) calculate the pressure profile
     L_ave = Lo+Lw;
     Meq = diffusionTerm(MeshStructure, L_ave);
@@ -43,7 +44,7 @@ while error1>eps1
     RHSp = BCRHSp - RHSs; % the whole continuity is multiplied by a minus sign
     P = Mp\RHSp;
     p.value = reshape(full(P), m+2, n+2, w+2);
-    
+
     pgrad = gradientTerm(MeshStructure, p.value);
     sw_ave = upwindMean(MeshStructure, -pgrad, sw.value);
     Lw = Lw_ave.*krw(sw_ave);

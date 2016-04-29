@@ -1,6 +1,8 @@
 classdef CellVariable
     %CELLVARIABLE Summary of this class goes here
     %   Detailed explanation goes here
+    % Copyright (c) 2012-2016 Ali Akbar Eftekhari
+    % See the license file
 
     properties
         domain

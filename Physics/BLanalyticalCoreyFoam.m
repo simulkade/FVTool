@@ -1,5 +1,7 @@
 function sw = BLanalyticalCoreyFoam(mug, muw)
 %BLANALYTICAL Analytical solution of Buckley-Leverett equation
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 %muw = 10e-3;
 %muo = 10e-3;
 u = 1e-6/(pi()*0.038^2/4)/60;

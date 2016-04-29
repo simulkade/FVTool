@@ -15,10 +15,9 @@ function visualizeCellVectors2D(phi_cell)
 % SEE ALSO:
 %
 
-%{
-Copyright (c) 2012, 2013, 2014, 2015 Ali Akbar Eftekhari
-All rights reserved.
-%}
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
+
 x = phi_cell.domain.cellcenters.x;
 y = phi_cell.domain.cellcenters.y;
 

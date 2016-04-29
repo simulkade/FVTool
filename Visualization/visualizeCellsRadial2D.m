@@ -15,10 +15,9 @@ function visualizeCellsRadial2D(phi)
 % SEE ALSO:
 %
 
-%{
-Copyright (c) 2012, 2013, Ali Akbar Eftekhari
-All rights reserved.
-%}
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
+
 L = phi.domain.cellcenters.x(end);
 x = [phi.domain.facecenters.x(1); phi.domain.cellcenters.x; phi.domain.facecenters.x(end)];
 y = [phi.domain.facecenters.y(1); phi.domain.cellcenters.y; phi.domain.facecenters.y(end)];

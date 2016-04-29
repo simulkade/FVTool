@@ -6,8 +6,10 @@ clc; clear;
 %% define the geometry
 Nx = 50; % number of cells in x direction
 Ny = 50; % number of cells in y direction
-W = 0.1; % [m] length of the domain in x direction
-H = 0.2; % [m] length of the domain in y direction
+Nxin=Nx-19;
+Nyin=Ny-19;
+W = 0.5; % [m] length of the domain in x direction
+H = 0.5; % [m] length of the domain in y direction
 % m = createMesh1D(Nx, W);
 m = createMesh2D(Nx, Ny, W, H); % creates a 2D mesh
 %% define the physical parametrs
@@ -25,25 +27,34 @@ dkrodsw=@(sw)((sw>=swc).*(-kro0*no*(1-sws(sw)).^(no-1))/(-swc-sor+1)+(sw<swc).*(
 p0 = 100e5; % [bar] pressure
 pin = 150e5; % [bar] injection pressure at the left boundary
 u_in= 1.0/(24*3600); % [m/s] equal to 1 m/day
-sw0 = swc+0.1; % initial water saturation
+sw0=ones(Nx, Ny);
+sw0(10:end-10, 10:end-10)=swc+0.2;
+% sw0 = swc+0.1; % initial water saturation
 sw_in = 1;
 mu_oil = 2e-3; % [Pa.s] oil viscosity
 mu_water = 1e-3; % [Pa.s] water viscosity
 % reservoir
-k0 = 1e-12; % [m^2] average reservoir permeability
+k0 = 0.1e-12; % [m^2] average reservoir permeability
+k0_frac=0.5e-12; % [m^2]
 phi0 = 0.2; % average porosity
+phi0_frac=1.0;
 teta_ow=deg2rad(30);
 gama_ow=0.03; % N/m
 labda=10.0;
 eps1=1e-6;
-clx=0.2;
-cly=0.2;
-V_dp=0.7; % Dykstra-Parsons coef.
-perm_val= k0;%field2d(Nx,Ny,k0,V_dp,clx,cly);
+clx=0.05;
+cly=0.05;
+V_dp=0.1; % Dykstra-Parsons coef.
+perm_valin= field2d(Nxin,Nyin,k0,V_dp,clx,cly);
+perm_val=k0_frac*ones(Nx, Ny);
+perm_val(10:end-10, 10:end-10)=perm_valin;
 k=createCellVariable(m, perm_val);
-phi=createCellVariable(m, phi0);
+phi_val=phi0_frac*ones(Nx, Ny);
+phi_val(10:end-10, 10:end-10)=phi0;
+phi=createCellVariable(m, phi_val);
 pce=gama_ow*cos(teta_ow)*(phi./k).^0.5;
 pce_face=gama_ow*cos(teta_ow)*(arithmeticMean(phi)./geometricMean(k)).^0.5;
+sco=swc+0.01;
 pc=@(sw)(pce.*(sws(sw)+eps).^(-1/labda)); % it can also be defined for each block
 dpc=@(sw)((-1/labda)*(1/(1-sor-swc)).*pce_face.*(sws(sw)+eps).^(-1/labda-1));
 dpcdk=@(sw)(0.5*gama_ow*cos(teta_ow)*(geometricMean(k)./arithmeticMean(phi)).^0.5.*(sws(sw)+eps).^(-1/labda));
@@ -64,17 +75,17 @@ BCs = createBC(m); % Neumann BC for saturation
 % change the right boandary to constant pressure (Dirichlet)
 % BCp.left.a(:)=0; BCp.left.b(:)=1; BCp.left.c(:)=p0;
 % BCp.right.a(:)=0; BCp.right.b(:)=1; BCp.right.c(:)=p0;
-% BCp.top.a(:)=0; BCp.top.b(:)=1; BCp.top.c(:)=p0;
-% BCp.bottom.a(:)=0; BCp.bottom.b(:)=1; BCp.bottom.c(:)=p0;
+BCp.top.a(:)=0; BCp.top.b(:)=1; BCp.top.c(:)=p0;
+% BCp.bottom.a(:)=0; BCp.bottom.b(:)=1; BCp.bottom.c(:)=p0+100;
 % change the left boundary to constant saturation (Dirichlet)
-BCs.left.a(:)=0; BCs.left.b(:)=1; BCs.left.c(:)=1.0;
-BCs.right.a(:)=0; BCs.right.b(:)=1; BCs.right.c(:)=1.0;
-BCs.top.a(:)=0; BCs.top.b(:)=1; BCs.top.c(:)=1.0;
-BCs.bottom.a(:)=0; BCs.bottom.b(:)=1; BCs.bottom.c(:)=1.0;
+% BCs.left.a(:)=0; BCs.left.b(:)=1; BCs.left.c(:)=1.0-sor;
+% BCs.right.a(:)=0; BCs.right.b(:)=1; BCs.right.c(:)=1.0-sor;
+% BCs.top.a(:)=0; BCs.top.b(:)=1; BCs.top.c(:)=1.0;
+% BCs.bottom.a(:)=0; BCs.bottom.b(:)=1; BCs.bottom.c(:)=1.0;
 %% define the time step and solver properties
 % dt = 1000; % [s] time step
 % dt=(W/Nx)/u_in/20; % [s]
-dt=100;
+dt=0.1;
 t_end = 1000*dt; % [s] final time
 eps_p = 1e-7; % pressure accuracy
 eps_sw = 1e-7; % saturation accuracy
@@ -140,5 +151,5 @@ while (t<t_end)
     t=t+dt;
     p_old = p;
     sw_old = sw;
-    figure(1);visualizeCells(sw); drawnow;
+    figure(1);visualizeCells(1-sw); caxis([0 1]); drawnow;
 end

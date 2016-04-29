@@ -15,10 +15,9 @@ function visualizeCells2D(phi)
 % SEE ALSO:
 %
 
-%{
-Copyright (c) 2012, 2013, 2014, 2015 Ali Akbar Eftekhari
-All rights reserved.
-%}
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
+
 x = [phi.domain.facecenters.x(1); phi.domain.cellcenters.x; phi.domain.facecenters.x(end)];
 y = [phi.domain.facecenters.y(1); phi.domain.cellcenters.y; phi.domain.facecenters.y(end)];
 

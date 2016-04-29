@@ -2,48 +2,23 @@ function M = diffusionTermCylindrical1D(D)
 % This function uses the central difference scheme to discretize a 1D
 % diffusion term in the form \grad . (D \grad \phi) where u is a face vactor
 % It also returns the x and y parts of the matrix of coefficient.
-% 
+%
 % SYNOPSIS:
-%   
-% 
+%
+%
 % PARAMETERS:
-%   
-% 
+%
+%
 % RETURNS:
-%   
-% 
+%
+%
 % EXAMPLE:
-% 
+%
 % SEE ALSO:
-%     
+%
 
-%{
-Copyright (c) 2012, 2013, Ali Akbar Eftekhari
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or 
-without modification, are permitted provided that the following 
-conditions are met:
-
-    *   Redistributions of source code must retain the above copyright notice, 
-        this list of conditions and the following disclaimer.
-    *   Redistributions in binary form must reproduce the above 
-        copyright notice, this list of conditions and the following 
-        disclaimer in the documentation and/or other materials provided 
-        with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
-PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
-OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-%}
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 
 % extract data from the mesh structure
 Nx = D.domain.dims(1);
@@ -58,13 +33,13 @@ iix = zeros(3*(Nx+2),1);
 jjx = zeros(3*(Nx+2),1);
 sx = zeros(3*(Nx+2),1);
 
-% extract the velocity data 
+% extract the velocity data
 % note: size(Dx) = [1:m+1, 1:n] and size(Dy) = [1:m, 1:n+1]
 Dx = D.xvalue;
 
-% reassign the east, west, north, and south velocity vectors for the 
+% reassign the east, west, north, and south velocity vectors for the
 % code readability
-De = rf(2:Nx+1).*Dx(2:Nx+1)./(rp.*dx(2:Nx+1).*DX(2:Nx+1));		
+De = rf(2:Nx+1).*Dx(2:Nx+1)./(rp.*dx(2:Nx+1).*DX(2:Nx+1));
 Dw = rf(1:Nx).*Dx(1:Nx)./(rp.*dx(1:Nx).*DX(2:Nx+1));
 
 % calculate the coefficients for the internal cells

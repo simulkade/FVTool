@@ -5,8 +5,9 @@ function FL = fluxLimiter(varargin)
 % 'VanAlbada1', 'VanAlbada2', 'MinMod', 'SUPERBEE', 'Sweby', 'Koren',
 % 'QUICK', 'MC', and 'UMIST'. Default limiter is 'SUPERBEE'. See
 % <http://en.wikipedia.org/wiki/Flux_limiter>
-
-% beta constant for Sweby and Osher 
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
+% beta constant for Sweby and Osher
 if nargin == 2
     b = varargin{2};
 else
@@ -48,7 +49,7 @@ if nargin == 1
     elseif strcmpi(varargin{1}, 'UMIST')
         FL = @(r)(max(0, min(2, min(2*r, min((1+3*r)/4, (3+r)/4)))));
     else
-        warning(['The flux limiter of your choice is not available. ' ... 
+        warning(['The flux limiter of your choice is not available. ' ...
             'The SUPERBEE flux limiter is used instead.']);
         FL = @(r)(max(0, max(min(2*r,1), min(r,2))));
     end

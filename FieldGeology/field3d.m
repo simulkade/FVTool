@@ -1,4 +1,6 @@
 function perm=field3d(Nx,Ny,Nz,k_avg,V_dp,clx,cly,clz)
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 Lx=1.0; % domain length
 x=linspace(-Lx/2.0,Lx/2.0,Nx);
 y=linspace(-Lx/2.0,Lx/2.0,Ny);

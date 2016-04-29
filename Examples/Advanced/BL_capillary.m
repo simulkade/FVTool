@@ -1,3 +1,5 @@
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 % Coupled nonlinear PDE's
 % Buckley Leverett equation
 % dependent variables: pressure and water saturation
@@ -60,7 +62,7 @@ dLodsw = @(sw)(k/mu_oil*dkrodsw(sw));
 BCp = createBC(m); % Neumann BC for pressure
 BCs = createBC(m); % Neumann BC for saturation
 % left boundary pressure gradient
-BCp.left.a(:)=(krw(sw_in)*lw.xvalue(1,:)+kro(sw_in)*lo.xvalue(1,:)); BCp.left.b(:)=0; BCp.left.c(:)=-u_in;
+BCp.left.a(:)=(krw(sw_in)*lw.xvalue(1,:)+kro(sw_in)*lo.xvalue(1,:)); BCp.left.b(:)=0; BCp.left.c(:)=-u_in*0;
 % change the right boandary to constant pressure (Dirichlet)
 % BCp.left.a(:)=0; BCp.left.b(:)=1; BCp.left.c(:)=pin;
 BCp.right.a(:)=0; BCp.right.b(:)=1; BCp.right.c(:)=p0;

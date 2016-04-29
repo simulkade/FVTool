@@ -1,3 +1,5 @@
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 % Coupled nonlinear PDE's
 % Buckley Leverett equation
 % dependent variables: pressure and water saturation

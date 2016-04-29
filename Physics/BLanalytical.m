@@ -1,5 +1,7 @@
 function [xt_prf, sw_prf] = BLanalytical(muw, muo)
 %BLANALYTICAL Analytical solution of Buckley-Leverett equation
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 %muw = 10e-3;
 %muo = 10e-3;
 u = 1e-3;
@@ -29,8 +31,7 @@ xt_s = u/phi*dfwdsw(s);
 xt_shock = u/phi*dfwdsw(sw_shock);
 subplot(2,2,3);
 plot(xt_s, s, '--', ...
-    [xt_s1 xt_shock xt_shock max(xt_s)], [s1 sw_shock sw_end sw_end]) 
+    [xt_s1 xt_shock xt_shock max(xt_s)], [s1 sw_shock sw_end sw_end])
 sw_prf = [s1 sw_shock sw_end sw_end];
 xt_prf = [xt_s1 xt_shock xt_shock max(xt_s)];
 end
-

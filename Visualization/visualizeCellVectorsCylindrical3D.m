@@ -15,10 +15,8 @@ function visualizeCellVectorsCylindrical3D(phi_cell)
 % SEE ALSO:
 %
 
-%{
-Copyright (c) 2012, 2013, Ali Akbar Eftekhari
-All rights reserved.
-%}
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 
 % domain_length = MeshStructure.numberofcells.*MeshStructure.cellsize;
 d = phi_cell.domain.dims;

@@ -1,20 +1,20 @@
 function phiBC = cellBoundaryCylindrical3D(phi, BC)
 % function phiBC = cellBoundary2D(MeshStructure, BC, phi)
-% It creates the matrix of coefficient based on the BC structure provided 
+% It creates the matrix of coefficient based on the BC structure provided
 % by the user. It also generates the right hand side vector of the linear
 % system of equations
-% 
+%
 % SYNOPSIS:
 %   phiBC = cellBoundary2D(MeshStructure, BC, phi)
-% 
+%
 % PARAMETERS:
 %   MeshStructure: a mesh structure created by buildMesh* functions
 %   BC: boundary condition structure created by createBC function
 %   phi: cell variable created by createCellVariable
-% 
+%
 % RETURNS:
 %   phiBC: a cell variable including the values of the ghost cells
-% 
+%
 % EXAMPLE:
 %   m = buildMesh2D(3,4,1,1);
 %   phi = createCellVariable(m,1);
@@ -22,43 +22,18 @@ function phiBC = cellBoundaryCylindrical3D(phi, BC)
 %   phi_with_ghost = cellBoundary(m,bc,phi)
 %
 % SEE ALSO:
-%   
+%
 
-%{
-Copyright (c) 2012, 2013, 2014, Ali Akbar Eftekhari
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or 
-without modification, are permitted provided that the following 
-conditions are met:
-
-    *   Redistributions of source code must retain the above copyright notice, 
-        this list of conditions and the following disclaimer.
-    *   Redistributions in binary form must reproduce the above 
-        copyright notice, this list of conditions and the following 
-        disclaimer in the documentation and/or other materials provided 
-        with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
-PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
-OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-%}
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 
 % extract data from the mesh structure
 Nxyz = BC.domain.dims;
 Nx = Nxyz(1); Ntetta = Nxyz(2); Nz = Nxyz(3);
-dx_1 = BC.domain.cellsize.x(1); 
-dx_end = BC.domain.cellsize.x(end); 
-dtetta_1 = BC.domain.cellsize.y(1); 
-dtetta_end = BC.domain.cellsize.y(end); 
+dx_1 = BC.domain.cellsize.x(1);
+dx_end = BC.domain.cellsize.x(end);
+dtetta_1 = BC.domain.cellsize.y(1);
+dtetta_end = BC.domain.cellsize.y(end);
 dz_1 = BC.domain.cellsize.z(1);
 dz_end = BC.domain.cellsize.z(end);
 rp = repmat(BC.domain.cellcenters.x, 1, Nz);
@@ -120,7 +95,7 @@ else
     i = 1;
     j = 2:Ntetta+1;
     k = 2:Nz+1;
-    phiBC(i,j,k)= phi(end,:,:);    
+    phiBC(i,j,k)= phi(end,:,:);
 end
 
 if (BC.bottom.periodic==0) && (BC.top.periodic==0)
@@ -148,5 +123,5 @@ else
     i = 2:Nx+1;
     j = 2:Ntetta+1;
     k = 1;
-    phiBC(i,j,k)= phi(:,:,end);    
+    phiBC(i,j,k)= phi(:,:,end);
 end

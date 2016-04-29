@@ -5,7 +5,8 @@ function [rho, rhob] = DuanLiquidDensity(T, p, x_CO2, x_salt)
 % T in K
 % p in Pa
 % x_CO2, x_salt: mole fractions of CO2 and NaCl in the liquid phase
-
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 % constants
 % molecular mass (kg/mol):
 Mwater = 0.0180153;
@@ -43,4 +44,3 @@ else
     M = x_CO2*MCO2 + x_water*Mwater+ x_salt*MNaCl;
     rho = M/V; % kg/m^3
 end
-    

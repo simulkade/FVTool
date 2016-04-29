@@ -15,10 +15,8 @@ function visualizeCells3D(phi)
 % SEE ALSO:
 %
 
-%{
-Copyright (c) 2012, 2013, Ali Akbar Eftekhari
-All rights reserved.
-%}
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 
 % domain_length = MeshStructure.numberofcells.*MeshStructure.cellsize;
 [X,Y,Z]=meshgrid(phi.domain.cellcenters.y, phi.domain.cellcenters.x, ...

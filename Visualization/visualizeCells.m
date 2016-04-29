@@ -15,10 +15,8 @@ function visualizeCells(phi)
 % SEE ALSO:
 %
 
-%{
-Copyright (c) 2012, 2013, Ali Akbar Eftekhari
-All rights reserved.
-%}
+% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% See the license file
 
 d = phi.domain.dimension;
 switch d
