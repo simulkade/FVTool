@@ -20,7 +20,6 @@ function phi = solvePDE(MS, M, RHS, varargin)
 % Copyright (c) 2012-2016 Ali Akbar Eftekhari
 % See the license file
 
-
 x = M\RHS;
 
 n = MS.dimension;
