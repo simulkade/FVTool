@@ -1,5 +1,3 @@
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 % Coupled nonlinear PDE's
 % Buckley Leverett equation
 % dependent variables: pressure and water saturation
@@ -11,7 +9,7 @@ Ny = 30; % number of cells in y direction
 W = 300; % [m] length of the domain in x direction
 H = 30; % [m] length of the domain in y direction
 m = createMesh1D(Nx, W);
-m = createMesh2D(Nx, Ny, W, H); % creates a 2D mesh
+% m = createMesh2D(Nx, Ny, W, H); % creates a 2D mesh
 %% define the physical parametrs
 krw0 = 1.0;
 kro0 = 0.76;
@@ -41,7 +39,7 @@ eps1=1e-6;
 clx=0.2;
 cly=0.2;
 V_dp=0.7; % Dykstra-Parsons coef.
-perm_val= field2d(Nx,Ny,k0,V_dp,clx,cly);
+perm_val= k0;%field2d(Nx,Ny,k0,V_dp,clx,cly);
 k=createCellVariable(m, perm_val);
 phi=createCellVariable(m, phi0);
 pce=gama_ow*cos(teta_ow)*(phi./k).^0.5;
@@ -70,7 +68,7 @@ BCp.right.a(:)=0; BCp.right.b(:)=1; BCp.right.c(:)=p0;
 BCs.left.a(:)=0; BCs.left.b(:)=1; BCs.left.c(:)=1;
 %% define the time step and solver properties
 % dt = 1000; % [s] time step
-dt=(W/Nx)/u_in/20; % [s]
+dt=(W/Nx)/u_in/100; % [s]
 t_end = 1000*dt; % [s] final time
 eps_p = 1e-5; % pressure accuracy
 eps_sw = 1e-5; % saturation accuracy
@@ -86,10 +84,12 @@ uw = -gradientTerm(p_old); % an estimation of the water velocity
 
 t = 0;
 while (t<t_end)
+% for i=1:5
     error_p = 1e5;
     error_sw = 1e5;
     % Implicit loop
-    while ((error_p>eps_p) || (error_sw>eps_sw))
+%     while ((error_p>eps_p) || (error_sw>eps_sw))
+    for j=1:1
         % calculate parameters
         pgrad = gradientTerm(p);
 %         pcgrad=gradientTerm(pc(sw));
@@ -97,44 +97,34 @@ while (t<t_end)
         sw_grad=gradientTerm(sw);
         sw_ave=arithmeticMean(sw);
         pcgrad=dpc(sw_ave).*sw_grad+dpcdk(sw_ave).*grad_phik;
+        % solve for pressure at known Sw
         labdao = lo.*funceval(kro, sw_face);
         labdaw = lw.*funceval(krw, sw_face);
-        dlabdaodsw = lo.*funceval(dkrodsw, sw_face);
-        dlabdawdsw = lw.*funceval(dkrwdsw, sw_face);
+%         dlabdaodsw = lo.*funceval(dkrodsw, sw_face);
+%         dlabdawdsw = lw.*funceval(dkrwdsw, sw_face);
         labda = labdao+labdaw;
-        dlabdadsw = dlabdaodsw+dlabdawdsw;
         % compute [Jacobian] matrices
         Mdiffp1 = diffusionTerm(-labda);
-        Mdiffp2 = diffusionTerm(-labdaw);
-%         Mconvsw1 = convectionUpwindTerm(-dlabdadsw.*pgrad); % without capillary
-        Mconvsw1 = convectionUpwindTerm(-dlabdawdsw.*pgrad-dlabdaodsw.*(pgrad+pcgrad)); % with capillary
-        Mconvsw2 = convectionUpwindTerm(-dlabdawdsw.*pgrad);
-        [Mtranssw2, RHStrans2] = transientTerm(sw_old, dt, phi);
-        % Compute RHS values
         RHSpc1=divergenceTerm(labdao.*pcgrad);
-        RHS1 = divergenceTerm((-dlabdawdsw.*pgrad-dlabdaodsw.*(pgrad+pcgrad)).*sw_face); % with capillary
-        RHS2 = divergenceTerm(-dlabdawdsw.*sw_face.*pgrad);
-        % include boundary conditions
         [Mbcp, RHSbcp] = boundaryCondition(BCp);
+        RHS1 = RHSpc1+RHSbcp; % with capillary
+        p_new=solvePDE(m, Mdiffp1+Mbcp, RHS1);
+        
+        % solve for Sw
+        pgrad = gradientTerm(p_new);
+        uw=-labdaw.*pgrad;
         [Mbcsw, RHSbcsw] = boundaryCondition(BCs);
-        % Couple the equations; BC goes into the block on the main diagonal
-        M = [Mdiffp1+Mbcp Mconvsw1; Mdiffp2 Mconvsw2+Mtranssw2+Mbcsw];
-        RHS = [RHS1+RHSpc1+RHSbcp; RHS2+RHStrans2+RHSbcsw];
-        % solve the linear system of equations
-        x = M\RHS;
-        % x = agmg(M, RHS, [], 1e-10, 500, [], [p.value(:); sw.value(:)]);
-        % separate the variables from the solution
-        p_new = reshapeCell(m,full(x(1:(Nx+2)*(Ny+2))));
-        sw_new = reshapeCell(m,full(x((Nx+2)*(Ny+2)+1:end)));
-        % calculate error values
-        error_p = max(abs((p_new(:)-p.value(:))./p_new(:)));
-        error_sw = max(abs(sw_new(:)-sw.value(:)));
+        RHS_sw=-divergenceTerm(uw);
+        sw_new=solveExplicitPDE(sw_old, dt, RHS_sw, BCs, phi);
+
+        error_p = max(abs((p_new.value(:)-p.value(:))./p_new.value(:)))
+        error_sw = max(abs(sw_new.value(:)-sw.value(:)))
         % assign new values of p and sw
-        p.value = p_new;
-        sw.value = sw_new;
+        p = p_new;
+        sw = sw_new;
     end
     t=t+dt;
     p_old = p;
     sw_old = sw;
-    figure(1);visualizeCells(sw); drawnow;
+    figure(1);visualizeCells(1-sw); drawnow;
 end
