@@ -44,11 +44,13 @@ else
     BC=varargin{1};
 end
 if numel(cellval)==1
-    c=cellval*ones(dim);
+    c=cellBoundary(cellval*ones(dim), BC);
 elseif prod(size(cellval)==dim)
+    c=cellBoundary(cellval, BC);
+elseif prod(size(cellval)==dim+2)
     c=cellval;
-else
-    c= zeros(dim);
+else    
+    c= cellBoundary(zeros(dim), BC);
 end
-c=cellBoundary(c, BC);
+
 cellvar= CellVariable(meshvar, c);
