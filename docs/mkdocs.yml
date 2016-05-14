@@ -1,0 +1,5 @@
+site_name: FVTool documents
+Pages:
+  - Domain: index.md
+  - About: about.md
+theme: 'material'
