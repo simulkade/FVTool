@@ -28,7 +28,6 @@ DRp = repmat(u.domain.cellsize.x(2:end-1), 1, Ntetta);
 DTHETAp = repmat(u.domain.cellsize.y(2:end-1)', Nr, 1);
 rp = repmat(u.domain.cellcenters.x, 1, Ntetta);
 rf = repmat(u.domain.facecenters.x, 1, Ntetta);
-re = rf(2:Nr+1,:);         rw = rf(1:Nr,:);
 
 % define the vectors to stores the sparse matrix data
 iix = zeros(3*(Nr+2)*(Ntetta+2),1);	iiy = zeros(3*(Nr+2)*(Ntetta+2),1);
