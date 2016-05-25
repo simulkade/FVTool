@@ -1,0 +1,60 @@
+% data1: sea-water Pc, table 4, reservoir
+data{1}=[0.073 249
+0.085 45
+0.09 15
+0.131 8
+0.197 3.33
+0.23 2.22
+0.25 1.79
+0.328 0.6
+0.38 0
+0.5 -0.1
+0.6 -0.3
+0.7 -0.7
+0.8 -2.5
+0.831 -5.8
+0.84 -10
+0.856 -20
+0.863 -32.2
+0.867 -43
+0.869 -49.1
+0.87 -54.3
+0.882 -92.8
+0.893 -126.9
+0.895 -142.5
+0.899 -167.7
+0.901 -250];
+% zero sulphate Pc, table 3
+data{2}=[0.056 200
+0.058 36.9
+0.073 9.3
+0.112 5.06
+0.137 3.56
+0.176 1.46
+0.232 0.5
+0.28 0
+0.503 -0.8
+0.606 -1.13
+0.698 -2
+0.768 -3
+0.793 -4
+0.81 -5
+0.827 -13
+0.84 -31.4
+0.857 -79.3];
+% fit model to data
+pc1=data{1}(:,2)/14.7*1e5; % Pa
+sw1=data{1}(:,1);
+% sw_plot=linspace(0,1,5000);
+% pc_plot=interp1(sw, pc, sw_plot, 'linear', 'extrap');
+% plot(sw, pc, 'o', sw_plot, pc_plot)
+% plot(diff(pc_plot)./diff(sw_plot))
+% log(pc)=log(pce)-(1/labda)*log((sw-sw0)/(1-sw0-sor))
+% ind0=find(pc==0, 1);
+% p1=polyfit(sw(1:ind0-1), log(pc(1:ind0-1)), 1)
+% plot(sw(1:ind0-1), log(pc(1:ind0-1)), 'o')
+
+pc=@(sw, cwi, coi, awi, aoi, swc, sor)(cwi./((sw-swc)/(1-swc)).^awi+coi./((1-sw-sor)/(1-sor)).^aoi);
+f=@(x, sw)pc(sw, x(1), x(2), x(3), x(4), 0.07, 0.09);
+x=lsqcurvefit(f, [1e3, -1e3, 2, 3],sw1, pc1)
+plot(sw1, pc1, 'o', sw1, f(x, sw1))
