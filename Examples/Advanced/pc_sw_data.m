@@ -45,7 +45,7 @@ data{2}=[0.056 200
 % fit model to data
 pc1=data{1}(:,2)/14.7*1e5; % Pa
 sw1=data{1}(:,1);
-% sw_plot=linspace(0,1,5000);
+sw_plot=linspace(min(sw1),max(sw1),5000);
 % pc_plot=interp1(sw, pc, sw_plot, 'linear', 'extrap');
 % plot(sw, pc, 'o', sw_plot, pc_plot)
 % plot(diff(pc_plot)./diff(sw_plot))
@@ -55,6 +55,14 @@ sw1=data{1}(:,1);
 % plot(sw(1:ind0-1), log(pc(1:ind0-1)), 'o')
 
 pc=@(sw, cwi, coi, awi, aoi, swc, sor)(cwi./((sw-swc)/(1-swc)).^awi+coi./((1-sw-sor)/(1-sor)).^aoi);
-f=@(x, sw)pc(sw, x(1), x(2), x(3), x(4), 0.07, 0.09);
+swc0=0.06;
+sor0=0.09;
+f=@(x, sw)pc(sw, x(1), x(2), x(3), x(4), swc0, sor0);
+fw=@(x, sw)pc(sw, x(1), 0.0 , x(3), x(4), swc0, sor0);
+fo=@(x, sw)pc(sw, 0.0, x(2), x(3), x(4), swc0, sor0);
 x=lsqcurvefit(f, [1e3, -1e3, 2, 3],sw1, pc1)
-plot(sw1, pc1, 'o', sw1, f(x, sw1))
+x=patternsearch(@(x)(sum(abs(f(x, sw1)-pc1))), x)
+plot(sw1, pc1, 'o', sw_plot, f(x, sw_plot), ...
+sw_plot, fw(x, sw_plot), '--', ...
+sw_plot, fo(x, sw_plot), '-.'); 
+grid;
