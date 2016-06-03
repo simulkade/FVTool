@@ -1,6 +1,6 @@
 % capillary pressure curve for drainage
 function res=pc_drain(sw, pce, swc, labda)
-pc0=1.0e9;
+pc0=1.0e7;
 res=zeros(size(sw));
 for i=1:numel(sw)  
   sw0=swc(i)+(1-labda*log(pc0/pce(i))+sqrt((-1+labda*log(pc0/pce(i)))^2+...

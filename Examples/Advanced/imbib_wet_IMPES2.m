@@ -23,7 +23,9 @@ sor_ww=0.1;
 sor_ow=0.12;
 swc_ww=0.09;
 swc_ow=0.09;
-SF=createFaceVariable(m, 0.0); % 1 is water wet, 0 is oil wet
+SF0=0.0; % oil-wet
+SF=createFaceVariable(m, SF0); % 1 is water wet, 0 is oil wet
+SF_cell=createCellVariable(m, SF0);
 krw0=krw0_ww*SF+krw0_ow*(1-SF);
 kro0=kro0_ww*SF+kro0_ow*(1-SF);
 sor=sor_ww*SF+sor_ow*(1-SF);
@@ -42,10 +44,10 @@ sw0 = swc_ww+0.01;
 % sw0(10:end-10, 10:end-10)=swc+0.2;
 % sw0 = swc+0.1; % initial water saturation
 sw_in = 1;
-mu_oil = 2e-3; % [Pa.s] oil viscosity
+mu_oil = 3e-3; % [Pa.s] oil viscosity
 mu_water = 1e-3; % [Pa.s] water viscosity
 % reservoir
-k0 = 0.005e-12; % [m^2] average reservoir permeability
+k0 = 0.001e-12; % [m^2] average reservoir permeability
 phi0 = 0.45; % average porosity
 
 eps1=1e-6;
@@ -62,13 +64,15 @@ gama_ow=0.03; % N/m
 labda=2.4; % for Ekofisk chalk
 b=0.7;
 r_ave=sqrt(k0/phi0); %  meter average pore diameter
-pce0=2*gama_ow*cos(teta_ww)/r_ave; % Pa capillary entry pressure
+pce0= 2e2; %2*gama_ow*cos(teta_ww)/r_ave; % Pa capillary entry pressure
 % pc0=1.0e9;
 teta=teta_ww*SF+teta_ow*(1-SF);
 pce=createFaceVariable(m, pce0);
 % sw0=swc+(1-labda*log(pc0/pce)+sqrt((-1+labda*log(pc0/pce))^2+4*swc/(1-swc)))/2*(1-swc);
 dpc=@(sw, pce, swc, sor, teta)dpc_imb(sw, pce, swc, sor, teta, labda, b);
-
+pc1=@(sw, pce, swc, sor, teta)pc_imb(sw, pce, swc, sor, teta, labda, b);
+pc= @(sw)celleval(pc1, sw, createCellVariable(m, pce0), swc_ww*SF_cell+swc_ow*(1-SF_cell),...
+    sor_ww*SF_cell+sor_ow*(1-SF_cell), teta_ww*SF_cell+teta_ow*(1-SF_cell));
 % pce=gama_ow*cos(teta_ow)*(phi./k).^0.5;
 % pce_face=0.05*gama_ow*cos(teta_ow)*(arithmeticMean(phi)./geometricMean(k)).^0.5;
 sco=swc+0.01;
@@ -103,7 +107,7 @@ BCs.bottom.a(:)=0; BCs.bottom.b(:)=1; BCs.bottom.c(:)=1.0;
 % dt = 1000; % [s] time step
 % dt=(W/Nx)/u_in/20; % [s]
 dt=1;
-t_end = 10*3600*24; % [s] final time
+t_end = 50*3600*24; % [s] final time
 eps_p = 1e-7; % pressure accuracy
 eps_sw = 1e-7; % saturation accuracy
 %% define the variables
@@ -120,7 +124,7 @@ rec_fact=0;
 t_day=0;
 t = 0;
 dt0=dt;
-dsw_alwd= 0.01;
+dsw_alwd= 0.05;
 dp_alwd= 100; % Pa
 while (t<t_end)
 % for i=1:5
@@ -135,7 +139,9 @@ while (t<t_end)
         sw_face = upwindMean(sw, -pgrad); % average value of water saturation
         sw_grad=gradientTerm(sw);
         sw_ave=arithmeticMean(sw);
-        pcgrad=funceval(dpc, sw_ave, pce, swc, sor, teta);
+        pcval=pc(sw);
+        pcgrad=gradientTerm(pcval);
+%         pcgrad=funceval(dpc, sw_ave, pce, swc, sor, teta).*sw_grad;
         % solve for pressure at known Sw
         labdao = lo.*funceval(kro, sw_face, kro0, sor, swc, no);
         labdaw = lw.*funceval(krw, sw_face, krw0, sor, swc, nw);
@@ -154,8 +160,8 @@ while (t<t_end)
         RHS_sw=-divergenceTerm(uw);
         sw_new=solveExplicitPDE(sw_old, dt, RHS_sw, BCs, phi);
 
-        error_p = max(abs((p_new.value(:)-p.value(:))./p_new.value(:)))
-        error_sw = max(abs(sw_new.value(:)-sw.value(:)))
+        error_p = max(abs((p_new.value(:)-p.value(:))./p_new.value(:)));
+        error_sw = max(abs(sw_new.value(:)-sw.value(:)));
         dt_new=dt*min(dp_alwd/error_p, dsw_alwd/error_sw);
         % assign new values of p and sw
         if error_sw>dsw_alwd

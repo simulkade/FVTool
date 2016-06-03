@@ -64,10 +64,11 @@ sw_plot=linspace(min(sw1),max(sw1),5000);
 pc=@(sw, cwi, coi, awi, aoi, swc, sor)(cwi./((sw-swc)/(1-swc)).^awi+coi./((1-sw-sor)/(1-sor)).^aoi);
 swc0=0.0789;
 sor0=0.2529;
-f=@(x, sw)pc(sw, x(1), x(2), x(3), x(4), swc0, sor0);
+labda=2.4;
+f=@(x, sw)pc(sw, x(1), x(2), 1/labda, 1/labda, swc0, sor0);
 fw=@(x, sw)pc(sw, x(1), 0.0 , x(3), x(4), swc0, sor0);
 fo=@(x, sw)pc(sw, 0.0, x(2), x(3), x(4), swc0, sor0);
-x=lsqcurvefit(f, [1e3, -1e3, 2, 3],sw1, pc1)
+x=lsqcurvefit(f, [1e3, -1e3],sw1, pc1)
 x=patternsearch(@(x)(sum(abs(f(x, sw1)-pc1))), x)
 plot(sw1, pc1, 'o', sw_plot, f(x, sw_plot))%, ...
 % sw_plot, fw(x, sw_plot), '--', ...

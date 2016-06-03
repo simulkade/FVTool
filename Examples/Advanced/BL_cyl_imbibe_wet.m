@@ -124,7 +124,7 @@ while (t<t_end)
             sw_face = upwindMean(sw, -pgrad); % average value of water saturation
             sw_grad=gradientTerm(sw);
             sw_ave=arithmeticMean(sw);
-            pcgrad=funceval(dpc, sw_ave, pce, swc, sor, teta);
+            pcgrad=funceval(dpc, sw_face, pce, swc, sor, teta).*sw_grad;
             % solve for pressure at known Sw
             labdao = lo.*funceval(kro, sw_face, kro0, sor, swc, no);
             labdaw = lw.*funceval(krw, sw_face, krw0, sor, swc, nw);
@@ -145,8 +145,8 @@ while (t<t_end)
             RHS_sw=-divergenceTerm(uw);
             sw_new=solveExplicitPDE(sw_old, dt, RHS_sw, BCs, phi);
 
-            error_p = max(abs((p_new.value(:)-p_old.value(:))./p_new.value(:)))
-            error_sw = max(abs(sw_new.value(:)-sw_old.value(:)))
+            error_p = max(abs((p_new.value(:)-p_old.value(:))./p_new.value(:)));
+            error_sw = max(abs(sw_new.value(:)-sw.value(:)));
             
             p=p_new;
             sw=sw_new;
@@ -156,14 +156,15 @@ while (t<t_end)
             p=p_old;
             sw=sw_old;
         else
+            t=t+dt;
             p = p_new;
             sw = sw_new;
-            dt=min(dt*(dsw_alwd/error_sw), 10*dt);
+            p_old = p;
+            sw_old = sw;
+            dt=min(dt*(dsw_alwd/error_sw), 100*dt)
             break;
         end
     end
-    t=t+dt;
-    p_old = p;
-    sw_old = sw;
+    
     figure(1);visualizeCells(1-sw); drawnow;
 end
