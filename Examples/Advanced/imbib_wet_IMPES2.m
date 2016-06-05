@@ -23,7 +23,7 @@ sor_ww=0.1;
 sor_ow=0.12;
 swc_ww=0.09;
 swc_ow=0.09;
-SF0=0.0; % oil-wet
+SF0=0.2; % oil-wet
 SF=createFaceVariable(m, SF0); % 1 is water wet, 0 is oil wet
 SF_cell=createCellVariable(m, SF0);
 krw0=krw0_ww*SF+krw0_ow*(1-SF);
@@ -64,7 +64,7 @@ gama_ow=0.03; % N/m
 labda=2.4; % for Ekofisk chalk
 b=0.7;
 r_ave=sqrt(k0/phi0); %  meter average pore diameter
-pce0= 2e2; %2*gama_ow*cos(teta_ww)/r_ave; % Pa capillary entry pressure
+pce0= 2e3; %2*gama_ow*cos(teta_ww)/r_ave; % Pa capillary entry pressure
 % pc0=1.0e9;
 teta=teta_ww*SF+teta_ow*(1-SF);
 pce=createFaceVariable(m, pce0);
@@ -100,9 +100,11 @@ BCp.top.a(:)=0; BCp.top.b(:)=1; BCp.top.c(:)=p0;
 BCp.bottom.a(:)=0; BCp.bottom.b(:)=1; BCp.bottom.c(:)=p0;
 % change the left boundary to constant saturation (Dirichlet)
 % BCs.left.a(:)=0; BCs.left.b(:)=1; BCs.left.c(:)=1.0-sor;
-BCs.right.a(:)=0; BCs.right.b(:)=1; BCs.right.c(:)=1.0;
-BCs.top.a(:)=0; BCs.top.b(:)=1; BCs.top.c(:)=1.0;
-BCs.bottom.a(:)=0; BCs.bottom.b(:)=1; BCs.bottom.c(:)=1.0;
+sw_pc0=sw_zero_pc_imb(swc_ww*SF0+swc_ow*(1-SF0), sor_ww*SF0+sor_ow*(1-SF0),...
+    teta_ww*SF0+teta_ow*(1-SF0), labda, b);
+BCs.right.a(:)=0; BCs.right.b(:)=1; BCs.right.c(:)=sw_pc0;
+BCs.top.a(:)=0; BCs.top.b(:)=1; BCs.top.c(:)=sw_pc0;
+BCs.bottom.a(:)=0; BCs.bottom.b(:)=1; BCs.bottom.c(:)=sw_pc0;
 %% define the time step and solver properties
 % dt = 1000; % [s] time step
 % dt=(W/Nx)/u_in/20; % [s]
@@ -124,7 +126,7 @@ rec_fact=0;
 t_day=0;
 t = 0;
 dt0=dt;
-dsw_alwd= 0.05;
+dsw_alwd= 0.01;
 dp_alwd= 100; % Pa
 while (t<t_end)
 % for i=1:5
@@ -140,8 +142,8 @@ while (t<t_end)
         sw_grad=gradientTerm(sw);
         sw_ave=arithmeticMean(sw);
         pcval=pc(sw);
-        pcgrad=gradientTerm(pcval);
-%         pcgrad=funceval(dpc, sw_ave, pce, swc, sor, teta).*sw_grad;
+%         pcgrad=gradientTerm(pcval);
+        pcgrad=funceval(dpc, sw_ave, pce, swc, sor, teta).*sw_grad;
         % solve for pressure at known Sw
         labdao = lo.*funceval(kro, sw_face, kro0, sor, swc, no);
         labdaw = lw.*funceval(krw, sw_face, krw0, sor, swc, nw);
