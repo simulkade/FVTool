@@ -6,10 +6,10 @@ clc; clear;
 %% define the geometry
 Nx = 100; % number of cells in x direction
 Ny = 30; % number of cells in y direction
-W = 300; % [m] length of the domain in x direction
-H = 30; % [m] length of the domain in y direction
-m = createMesh1D(Nx, W);
-% m = createMesh2D(Nx, Ny, W, H); % creates a 2D mesh
+W = 200; % [m] length of the domain in x direction
+H = 50; % [m] length of the domain in y direction
+% m = createMesh1D(Nx, W);
+m = createMesh2D(Nx, Ny, W, H); % creates a 2D mesh
 %% define the physical parametrs
 krw0_ww = 0.3;
 krw0_ow = 1.0;
@@ -39,15 +39,15 @@ sw_in = 1;
 mu_oil = 2e-3; % [Pa.s] oil viscosity
 mu_water = 1e-3; % [Pa.s] water viscosity
 % reservoir
-k0 = 2e-12; % [m^2] average reservoir permeability
-phi0 = 0.2; % average porosity
+k0 = 0.005e-12; % [m^2] average reservoir permeability
+phi0 = 0.3; % average porosity
 teta_ow=deg2rad(30);
 gama_ow=0.03; % N/m
 labda=10.0;
 eps1=1e-7;
-clx=0.2;
-cly=0.2;
-V_dp=0.7; % Dykstra-Parsons coef.
+clx=1;
+cly=0.1;
+V_dp=0.6; % Dykstra-Parsons coef.
 if m.dimension<2 % 1D model
     perm_val=k0;
 elseif m.dimension<3 % 2D model
@@ -172,8 +172,8 @@ while (t<t_end)
     sw_old = sw;
     rec_fact=[rec_fact (oil_init-domainInt(1-sw))/oil_init];
     t_day=[t_day t];
-%     figure(1);visualizeCells(1-sw);
-    plot(t_day/3600/60, rec_fact)
+    figure(2);visualizeCells(1-sw);caxis([0,1]); shading flat;
+    figure(1);plot(t_day/3600/60, rec_fact)
     xlabel('time [day]');
     ylabel('recovery factor');
     title([num2str(t/3600/24) ' day']); drawnow;

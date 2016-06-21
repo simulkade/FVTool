@@ -100,7 +100,7 @@ BCp.top.a(:)=0; BCp.top.b(:)=1; BCp.top.c(:)=p0;
 BCp.bottom.a(:)=0; BCp.bottom.b(:)=1; BCp.bottom.c(:)=p0;
 % change the left boundary to constant saturation (Dirichlet)
 % BCs.left.a(:)=0; BCs.left.b(:)=1; BCs.left.c(:)=1.0-sor;
-sw_pc0=sw_zero_pc_imb(swc_ww*SF0+swc_ow*(1-SF0), sor_ww*SF0+sor_ow*(1-SF0),...
+sw_pc0= sw_zero_pc_imb(swc_ww*SF0+swc_ow*(1-SF0), sor_ww*SF0+sor_ow*(1-SF0),...
     teta_ww*SF0+teta_ow*(1-SF0), labda, b);
 BCs.right.a(:)=0; BCs.right.b(:)=1; BCs.right.c(:)=sw_pc0;
 BCs.top.a(:)=0; BCs.top.b(:)=1; BCs.top.c(:)=sw_pc0;
@@ -181,7 +181,7 @@ while (t<t_end)
     
     rec_fact=[rec_fact (oil_init-domainInt(1-sw))/oil_init];
     t_day=[t_day t];
-    figure(1);visualizeCells(1-sw); drawnow;
+    figure(1);visualizeCells(1-sw); caxis([0,1]); shading interp; drawnow;
     figure(2); plot(t_day/3600/24, rec_fact)
     xlabel('time [day]');
     ylabel('recovery factor');
