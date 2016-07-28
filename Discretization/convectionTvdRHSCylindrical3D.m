@@ -33,6 +33,11 @@ DZ(1,1,:) = u.domain.cellsize.z;
 DZp=repmat(DZ(1,1,2:end-1), Nr, Ntetta, 1);
 rp = repmat(u.domain.cellcenters.x, 1, Ntetta, Nz);
 rf = repmat(u.domain.facecenters.x, 1, Ntetta, Nz);
+dx=repmat(0.5*(u.domain.cellsize.x(1:end-1)+u.domain.cellsize.x(2:end)), 1, Ntetta, Nz);
+dy=repmat(0.5*(u.domain.cellsize.y(1:end-1)+u.domain.cellsize.y(2:end))', Nr, 1, Nz);
+dz=zeros(1, 1, Nz+1);
+dz(1,1,:)=0.5*(u.domain.cellsize.z(1:end-1)+u.domain.cellsize.z(2:end));
+dz=repmat(dz, Nr, Ntetta, 1);
 psiX_p = zeros(Nr+1,Ntetta,Nz);
 psiX_m = zeros(Nr+1,Ntetta,Nz);
 psiY_p = zeros(Nr,Ntetta+1,Nz);
@@ -51,19 +56,19 @@ uz = u.zvalue;
 
 % calculate the upstream to downstream gradient ratios for u>0 (+ ratio)
 % x direction
-dphiX_p = (phi.value(2:Nr+2, 2:Ntetta+1, 2:Nz+1)-phi.value(1:Nr+1, 2:Ntetta+1, 2:Nz+1))./DRp;
+dphiX_p = (phi.value(2:Nr+2, 2:Ntetta+1, 2:Nz+1)-phi.value(1:Nr+1, 2:Ntetta+1, 2:Nz+1))./dx;
 rX_p = dphiX_p(1:end-1,:,:)./fsign(dphiX_p(2:end,:,:));
 psiX_p(2:Nr+1,:,:) = 0.5*FL(rX_p).* ...
     (phi.value(3:Nr+2,2:Ntetta+1,2:Nz+1)-phi.value(2:Nr+1,2:Ntetta+1,2:Nz+1));
 psiX_p(1,:,:) = 0; % left boundary
 % y direction
-dphiY_p = (phi.value(2:Nr+1, 2:Ntetta+2, 2:Nz+1)-phi.value(2:Nr+1, 1:Ntetta+1, 2:Nz+1))./DTHETAp;
+dphiY_p = (phi.value(2:Nr+1, 2:Ntetta+2, 2:Nz+1)-phi.value(2:Nr+1, 1:Ntetta+1, 2:Nz+1))./dy;
 rY_p = dphiY_p(:,1:end-1,:)./fsign(dphiY_p(:,2:end,:));
 psiY_p(:,2:Ntetta+1,:) = 0.5*FL(rY_p).* ...
     (phi.value(2:Nr+1,3:Ntetta+2,2:Nz+1)-phi.value(2:Nr+1, 2:Ntetta+1,2:Nz+1));
 psiY_p(:,1,:) = 0; % Bottom boundary
 % z direction
-dphiZ_p = (phi.value(2:Nr+1, 2:Ntetta+1, 2:Nz+2)-phi.value(2:Nr+1, 2:Ntetta+1, 1:Nz+1))./DZp;
+dphiZ_p = (phi.value(2:Nr+1, 2:Ntetta+1, 2:Nz+2)-phi.value(2:Nr+1, 2:Ntetta+1, 1:Nz+1))./dz;
 rZ_p = dphiZ_p(:,:,1:end-1)./fsign(dphiZ_p(:,:,2:end));
 psiZ_p(:,:,2:Nz+1) = 0.5*FL(rZ_p).* ...
     (phi.value(2:Nr+1,2:Ntetta+1,3:Nz+2)-phi.value(2:Nr+1,2:Ntetta+1,2:Nz+1));
