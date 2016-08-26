@@ -40,7 +40,7 @@ mu_oil = 1e-3; % [Pa.s] oil viscosity
 mu_water = 1e-3; % [Pa.s] water viscosity
 % reservoir
 k0 = 2e-12; % [m^2] average reservoir permeability
-k_frac=10000e-12; % [m^2] fracture permeability
+k_frac=100e-12; % [m^2] fracture permeability
 phi0 = 0.2; % average porosity
 clx=0.05;
 cly=0.05;

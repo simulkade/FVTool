@@ -6,8 +6,8 @@
 % Prepared for educational purposes by ** AAE **
 clc; clear;
 %% define the geometry
-Nx = 50; % number of cells in x direction
-Ny = 30; % number of cells in y direction
+Nx = 30; % number of cells in x direction
+Ny = 20; % number of cells in y direction
 W = 50; % [m] length of the domain in x direction
 H = 30; % [m] length of the domain in y direction
 x1=linspace(0,W, Nx);
@@ -41,7 +41,7 @@ mu_oil = 10e-3; % [Pa.s] oil viscosity
 mu_water = 1e-3; % [Pa.s] water viscosity
 % reservoir
 k0 = 2e-12; % [m^2] average reservoir permeability
-k_frac=10000e-12; % [m^2] fracture permeability
+k_frac=1000e-12; % [m^2] fracture permeability
 phi0 = 0.2; % average porosity
 clx=0.05;
 cly=0.05;

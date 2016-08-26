@@ -64,6 +64,7 @@ BCp.left.a(:)=(krw(sw_in)*lw.xvalue(1,:)+kro(sw_in)*lo.xvalue(1,:)); BCp.left.b(
 % change the right boandary to constant pressure (Dirichlet)
 % BCp.left.a(:)=0; BCp.left.b(:)=1; BCp.left.c(:)=pin;
 BCp.right.a(:)=0; BCp.right.b(:)=1; BCp.right.c(:)=p0;
+% BCs.right.a(:)=0; BCs.right.b(:)=1; BCs.right.c(:)=0.8; % end effect
 % change the left boundary to constant saturation (Dirichlet)
 BCs.left.a(:)=0; BCs.left.b(:)=1; BCs.left.c(:)=1;
 %% define the time step and solver properties

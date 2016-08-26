@@ -81,7 +81,7 @@ BCp.top.a(:)=0; BCp.top.b(:)=1; BCp.top.c(:)=p0;
 % BCs.left.a(:)=0; BCs.left.b(:)=1; BCs.left.c(:)=1.0-sor;
 % BCs.right.a(:)=0; BCs.right.b(:)=1; BCs.right.c(:)=1.0-sor;
 % BCs.top.a(:)=0; BCs.top.b(:)=1; BCs.top.c(:)=1.0;
-BCs.bottom.a(:)=0; BCs.bottom.b(:)=1; BCs.bottom.c(:)=1.0;
+BCs.bottom.a(:)=0; BCs.bottom.b(:)=1; BCs.bottom.c(:)=0.5;
 %% define the time step and solver properties
 % dt = 1000; % [s] time step
 % dt=(W/Nx)/u_in/20; % [s]

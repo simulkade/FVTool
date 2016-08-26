@@ -23,7 +23,8 @@ sor_ww=0.1;
 sor_ow=0.12;
 swc_ww=0.09;
 swc_ow=0.09;
-SF=createFaceVariable(m, 0.0); % 1 is water wet, 0 is oil wet
+SF0=0.3;
+SF=createFaceVariable(m, SF0); % 1 is water wet, 0 is oil wet
 krw0=krw0_ww*SF+krw0_ow*(1-SF);
 kro0=kro0_ww*SF+kro0_ow*(1-SF);
 sor=sor_ww*SF+sor_ow*(1-SF);
@@ -87,9 +88,11 @@ BCp.top.a(:)=0; BCp.top.b(:)=1; BCp.top.c(:)=p0;
 BCp.bottom.a(:)=0; BCp.bottom.b(:)=1; BCp.bottom.c(:)=p0+100;
 % change the left boundary to constant saturation (Dirichlet)
 % BCs.left.a(:)=0; BCs.left.b(:)=1; BCs.left.c(:)=1.0-sor;
-BCs.right.a(:)=0; BCs.right.b(:)=1; BCs.right.c(:)=1.0-sor_ww;
-BCs.top.a(:)=0; BCs.top.b(:)=1; BCs.top.c(:)=1.0;
-BCs.bottom.a(:)=0; BCs.bottom.b(:)=1; BCs.bottom.c(:)=1.0;
+sw_pc0= sw_zero_pc_imb(swc_ww*SF0+swc_ow*(1-SF0), sor_ww*SF0+sor_ow*(1-SF0),...
+    teta_ww*SF0+teta_ow*(1-SF0), labda, b);
+BCs.right.a(:)=0; BCs.right.b(:)=1; BCs.right.c(:)=sw_pc0;
+BCs.top.a(:)=0; BCs.top.b(:)=1; BCs.top.c(:)=sw_pc0;
+BCs.bottom.a(:)=0; BCs.bottom.b(:)=1; BCs.bottom.c(:)=sw_pc0;
 %% define the time step and solver properties
 % dt = 1000; % [s] time step
 % dt=(W/Nx)/u_in/20; % [s]
@@ -124,7 +127,7 @@ while (t<t_end)
             sw_face = upwindMean(sw, -pgrad); % average value of water saturation
             sw_grad=gradientTerm(sw);
             sw_ave=arithmeticMean(sw);
-            pcgrad=funceval(dpc, sw_face, pce, swc, sor, teta).*sw_grad;
+            pcgrad=funceval(dpc, sw_ave, pce, swc, sor, teta).*sw_grad;
             % solve for pressure at known Sw
             labdao = lo.*funceval(kro, sw_face, kro0, sor, swc, no);
             labdaw = lw.*funceval(krw, sw_face, krw0, sor, swc, nw);
