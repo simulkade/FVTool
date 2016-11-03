@@ -104,6 +104,7 @@ eps_sw = 1e-7; % saturation accuracy
 sw_old = createCellVariable(m, sw0, BCs);
 p_old = createCellVariable(m, p0, BCp);
 sw = sw_old;
+oil_init=domainInt(1-sw_old);
 p = p_old;
 uw = -gradientTerm(p_old); % an estimation of the water velocity
 %% start the main loop
@@ -112,6 +113,7 @@ uw = -gradientTerm(p_old); % an estimation of the water velocity
 
 t = 0;
 dsw_alwd= 0.01;
+rec_fact=0.0;
 
 while (t<t_end)
 % for i=1:5
@@ -168,6 +170,6 @@ while (t<t_end)
             break;
         end
     end
-    
-    figure(1);visualizeCells(1-sw); drawnow;
+    rec_fact=[rec_fact, (oil_init-domainInt(1-sw))/oil_init];
+    %figure(1);visualizeCells(1-sw); drawnow;
 end
