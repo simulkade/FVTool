@@ -49,7 +49,7 @@ i=1;
 while(true)
   if (i+1)==length(xt_prf)
     break
-  elseif xt_prf(i)==xt_prf(i+1)
+  elseif xt_prf(i)>=xt_prf(i+1)
     xt_prf(i+1)=[];
     sw_prf(i+1)=[];
   else
