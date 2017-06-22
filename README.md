@@ -60,13 +60,13 @@ M = Mdiff + Mbc; % matrix of cefficients for the PDE
 c = solvePDE(m,M, RHSbc); % send M and RHS to the solver
 visualizeCells(c); % visualize the results
 ```
-change the third line to `m = createMesh2D(Nx,Nx, L,L);` or `m = createMesh3D(Nx,Nx,Nx, L,L,L);` and see the outcome for yourself. The above code will not work in the new (more object oriented) development version of `FVTool`.  
+change the third line to `m = createMesh2D(Nx,Nx, L,L);` or `m = createMesh3D(Nx,Nx,Nx, L,L,L);` and see the outcome for yourself.  
 ![diff 3D](Tests/diff_pde_3d.jpg)
 
 ## Examples
-There are a few simple examples in the [Tutorial] (https://github.com/simulkade/FVTool/tree/master/Examples/Tutorial) folder.
+There are a few simple examples in the [Tutorial](https://github.com/simulkade/FVTool/tree/master/Examples/Tutorial) folder.
 You can also find a few more advanced examples (water injection into a heterogeneous oil field, two nonlinear PDE's, coupled
-fully implicit solution) in the [Advanced] (https://github.com/simulkade/FVTool/tree/master/Examples/Advanced) folder.
+fully implicit solution) in the [Advanced](https://github.com/simulkade/FVTool/tree/master/Examples/Advanced) folder.
 
 ## Documents
 comming soon
