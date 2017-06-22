@@ -2,8 +2,8 @@
 
 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.18156.svg)](http://dx.doi.org/10.5281/zenodo.18156)
 
-This is a finite volume (toy) toolbox for chemical/petroleum engineers. 
-Right now, it can solve a transient convection-diffusion equation with variable velocity field/diffusion coefficients. The discretization schemes 
+This is a finite volume (toy) toolbox for chemical/petroleum engineers.
+Right now, it can solve a transient convection-diffusion equation with variable velocity field/diffusion coefficients. The discretization schemes
 include:
   * central difference diffusion term
   * central difference convection term
@@ -13,31 +13,32 @@ include:
   * Dirichlet, Neumann, Robin, and periodic boundary conditions
 
 ![diffusion pde](Tests/diff_pde.jpg)
-## Which equation do we solve?
-We an solve the following equation:
 
-$$ \alpha\frac{\partial\phi}{\partial t}+\nabla.\left(\mathbf{u}\phi\right)+\nabla.\left(-D\nabla\phi\right)+\beta\phi=\gamma $$
+## Which equation do you solve?
+You can solve the following PDE (or a subset of it):  
+![advection diffusion](pde.png)
 
-with the boundary condition:
+with the following boundary conditions:  
+![boundary condition](boundarycond.png)
 
-$$a\nabla\phi.\mathbf{n}+b\phi=c$$
+Believe it or not, the above equations describe the majority of the transport phenomena in chemical and petroleum engineering and similar fields.
 
 ## How to start
 Download the package, start matlab, and run
    `FVToolStartUp`
 
 ## Inspiration
-I started writing this tool after playing with [FiPy] (http://www.ctcms.nist.gov/fipy/), an amazing python-based finite volume solver. 
+I started writing this tool after playing with [FiPy] (http://www.ctcms.nist.gov/fipy/), an amazing python-based finite volume solver.
 This matlab solver is not a clone, and indeed very limited compared to FiPy.
-I wrote it to have a very handy tool for testing new ideas (new mathematical models) by solving them in 1D uniform Cartesian grids. 
-Then I extended the code to 
+I wrote it to have a very handy tool for testing new ideas (new mathematical models) by solving them in 1D uniform Cartesian grids.
+Then I extended the code to
   * 1D axisymmetric (radial)
   * 2D radial (r, theta)
   * 2D Cartesian
   * 3D Cartesian
   * 2D axisymmetric (cylindrical, r, z)
   * 3D cylindrical (r, theta, z)
-  
+
 I have overloaded some of the matlab operators to simplify the switch from 1D codes to 2D and 3D.
 
 ### A simple example
@@ -63,8 +64,8 @@ change the third line to `m = createMesh2D(Nx,Nx, L,L);` or `m = createMesh3D(Nx
 ![diff 3D](Tests/diff_pde_3d.jpg)
 
 ## Examples
-There are a few simple examples in the [Tutorial] (https://github.com/simulkade/FVTool/tree/master/Examples/Tutorial) folder. 
-You can also find a few more advanced examples (water injection into a heterogeneous oil field, two nonlinear PDE's, coupled 
+There are a few simple examples in the [Tutorial] (https://github.com/simulkade/FVTool/tree/master/Examples/Tutorial) folder.
+You can also find a few more advanced examples (water injection into a heterogeneous oil field, two nonlinear PDE's, coupled
 fully implicit solution) in the [Advanced] (https://github.com/simulkade/FVTool/tree/master/Examples/Advanced) folder.
 
 ## Documents
