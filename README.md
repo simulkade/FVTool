@@ -77,3 +77,18 @@ I've re-written the code in [Julia](http://julialang.org/). It works fine, but t
 
 ## Questions and bug reports
 You can ask your questions by creating a new issue here, or by writing a comment in [my blog] (http://fvt.simulkade.com). You can aslo ask your question in the [Matlab file exchange page] (http://www.mathworks.com/matlabcentral/fileexchange/46637-a-simple-finite-volume-solver-for-matlab) of this code. I truly appreciate your feedback and/or contribution.
+
+## How to cite:
+If you have used the package in your work and you find it usefull, please cite it as:
+```
+@misc{ali_akbar_eftekhari_2015_32745,
+  author       = {Ali Akbar Eftekhari and
+                  Kai Schüller},
+  title        = {FVTool: a finite volume toolbox for Matlab},
+  month        = oct,
+  year         = 2015,
+  doi          = {10.5281/zenodo.32745},
+  url          = {https://doi.org/10.5281/zenodo.32745}
+}
+```
+I will also appreciate it if you write me a couple of lines about how you have used it in your research. It encourages me to maintain the code.
