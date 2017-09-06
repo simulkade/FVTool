@@ -8,7 +8,7 @@ Nx = 100; % number of cells in x direction
 Ny = 30; % number of cells in y direction
 W = 300; % [m] length of the domain in x direction
 H = 30; % [m] length of the domain in y direction
-m = createMesh2D(Nx, Ny, W, H); % creates a 2D mesh
+m = createMesh1D(Nx, W); % creates a 1D mesh
 %% define the physical parametrs
 krw0 = 1.0;
 kro0 = 0.76;
@@ -34,7 +34,7 @@ phi0 = 0.2; % average porosity
 clx=1.2;
 cly=0.2;
 V_dp=0.7; % Dykstra-Parsons coef.
-perm_val= field2d(Nx,Ny,k0,V_dp,clx,cly);
+perm_val= k0; %field2d(Nx,Ny,k0,V_dp,clx,cly);
 k=createCellVariable(m, perm_val);
 phi=createCellVariable(m, phi0);
 lw = geometricMean(k)/mu_water;
@@ -69,8 +69,9 @@ uw = -gradientTerm(p_old); % an estimation of the water velocity
 % generate intial pressure profile (necessary to initialize the fully
 % implicit solver)
 dp_alwd= 100.0; % Pa
-dsw_alwd= 0.1;
+dsw_alwd= 0.05;
 t = 0;
+% fprintf(1, 'progress (%%):  ');
 while (t<t_end)
     error_p = 1e5;
     error_sw = 1e5;
@@ -109,8 +110,8 @@ while (t<t_end)
         x = M\RHS;
         % x = agmg(M, RHS, [], 1e-10, 500, [], [p.value(:); sw.value(:)]);
         % separate the variables from the solution
-        p_new = reshapeCell(m,full(x(1:(Nx+2)*(Ny+2))));
-        sw_new = reshapeCell(m,full(x((Nx+2)*(Ny+2)+1:end)));
+        p_new = reshapeCell(m,full(x(1:(Nx+2))));
+        sw_new = reshapeCell(m,full(x((Nx+2)+1:end)));
         % calculate error values
         error_p = max(abs((p_new(:)-p.value(:))./p_new(:)));
         error_sw = max(abs(sw_new(:)-sw.value(:)));
@@ -125,9 +126,11 @@ while (t<t_end)
       continue
     end
     dsw=max(abs(sw_new(:)-sw_old.value(:))./sw_new(:));
-    t=t+dt
+    t=t+dt;
+    fprintf(1,'\b\b\b\b\b\b\b\b\b\b\b\b\b\bProgress: %d %%',floor(t/t_end*100));
     dt=min([dt*(dsw_alwd/dsw), 2*dt, t_end-t]);
     p_old = p;
     sw_old = sw;
     figure(1);visualizeCells(sw); drawnow;
 end
+fprintf('\n')

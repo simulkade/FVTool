@@ -28,6 +28,7 @@ G=reshape(1:(Nr+2)*(Ntheta+2)*(Nz+2), Nr+2, Ntheta+2, Nz+2);
 DR = repmat(D.domain.cellsize.x, 1, Ntheta, Nz);
 DTHETA = repmat(D.domain.cellsize.y', Nr, 1, Nz);
 DZ = ones(1,1,Nz+2);
+DZ(:) = D.domain.cellsize.z;
 DZ = repmat(DZ, Nr, Ntheta, 1);
 dr = 0.5*(DR(1:end-1,:,:)+DR(2:end,:,:));
 dtheta = 0.5*(DTHETA(:,1:end-1,:)+DTHETA(:,2:end,:));

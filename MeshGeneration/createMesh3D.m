@@ -75,7 +75,7 @@ if nargin==6
   G=reshape(1:(Nx+2)*(Ny+2)*(Nz+2), Nx+2, Ny+2, Nz+2);
   CellSize.x= dx*ones(Nx+2,1);
   CellSize.y= dy*ones(Ny+2,1);
-  CellSize.z= dy*ones(Nz+2,1);
+  CellSize.z= dz*ones(Nz+2,1);
   CellLocation.x= [1:Nx]'*dx-dx/2;
   CellLocation.y= [1:Ny]'*dy-dy/2;
   CellLocation.z= [1:Nz]'*dz-dz/2;
