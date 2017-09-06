@@ -26,7 +26,7 @@ switch d
     case 1
         [M, RHS] = convectionTvdTerm1D(u, phi, FL);
     case 1.5
-        M = convectionTvdTermCylindrical1D(u, phi, FL);
+        [M, RHS] = convectionTvdTermCylindrical1D(u, phi, FL);
     case 2
         [M, RHS, Mx, My, RHSx, RHSy] = convectionTvdTerm2D(u, phi, FL);
     case 2.5
