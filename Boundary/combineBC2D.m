@@ -21,11 +21,11 @@ function [Mout, RHSout] = combineBC2D(MeshStructure, BC, Meq, RHSeq)
 % See the license file
 
 % extract data from the mesh structure
-G = MeshStructure.numbering;
-Nxy = MeshStructure.numberofcells;
+Nxy = MeshStructure.dims;
 Nx = Nxy(1); Ny = Nxy(2);
-dxdy = MeshStructure.cellsize;
-dx = dxdy(1); dy = dxdy(2);
+G=reshape(1:(Nx+2)*(Ny+2), Nx+2, Ny+2);
+dx = MeshStructure.cellsize.x;
+dy = MeshStructure.cellsize.y;
 
 % define the RHS column vector
 ms = size(Meq);
@@ -39,32 +39,32 @@ j=Ny+2;
 i=2:Nx+1;
 top = reshape(sub2ind(ms, G(i,j-1), G(i,j-1)), Nx,1); % top boundary cells
 topN = reshape(sub2ind(ms, G(i,j-1), G(i,j)), Nx, 1); % north cells to top boundary cells
-M(top) = M(top)-((BC.top.b/2 - BC.top.a/dy)./(BC.top.b/2 + BC.top.a/dy)).*M(topN);
-RHS(G(i,j-1)) = RHS(G(i,j-1))-M(topN).*BC.top.c./(BC.top.b/2 + BC.top.a/dy);
+M(top) = M(top)-((BC.top.b/2 - BC.top.a/dy(end))./(BC.top.b/2 + BC.top.a/dy(end))).*M(topN);
+RHS(G(i,j-1)) = RHS(G(i,j-1))-M(topN).*BC.top.c./(BC.top.b/2 + BC.top.a/dy(end));
 
 % Bottom boundary
 j=1;
 i=2:Nx+1;
 bottom = reshape(sub2ind(ms, G(i,j+1), G(i,j+1)), Nx,1); % bottom boundary cells
 bottomS = reshape(sub2ind(ms, G(i,j+1), G(i,j)), Nx, 1); % south cells to bottom boundary cells
-M(bottom) = M(bottom)-((BC.bottom.b/2 + BC.bottom.a/dy)./(BC.bottom.b/2 - BC.bottom.a/dy)).*M(bottomS);
-RHS(G(i,j+1)) = RHS(G(i,j+1))-M(bottomS).*BC.bottom.c./(BC.bottom.b/2 - BC.bottom.a/dy);
+M(bottom) = M(bottom)-((BC.bottom.b/2 + BC.bottom.a/dy(1))./(BC.bottom.b/2 - BC.bottom.a/dy(1))).*M(bottomS);
+RHS(G(i,j+1)) = RHS(G(i,j+1))-M(bottomS).*BC.bottom.c./(BC.bottom.b/2 - BC.bottom.a/dy(1));
 
 % Right boundary
 i=Nx+2;
 j=2:Ny+1;
 right = reshape(sub2ind(ms, G(i-1,j), G(i-1,j)), Ny,1); % right boundary cells
 rightE = reshape(sub2ind(ms, G(i-1,j), G(i,j)), Ny, 1); % east cells to right boundary cells
-M(right) = M(right)-((BC.right.b/2 - BC.right.a/dx)./(BC.right.b/2 + BC.right.a/dx))'.*M(rightE);
-RHS(G(i-1,j)) = RHS(G(i-1,j))-M(rightE).*(BC.right.c./(BC.right.b/2 + BC.right.a/dx))';
+M(right) = M(right)-((BC.right.b/2 - BC.right.a/dx(end))./(BC.right.b/2 + BC.right.a/dx(end)))'.*M(rightE);
+RHS(G(i-1,j)) = RHS(G(i-1,j))-M(rightE).*(BC.right.c./(BC.right.b/2 + BC.right.a/dx(end)))';
 
 % Left boundary
 i = 1;
 j=2:Ny+1;
 left = reshape(sub2ind(ms, G(i+1,j), G(i+1,j)), Ny,1); % left boundary cells
 leftW = reshape(sub2ind(ms, G(i+1,j), G(i,j)), Ny, 1); % west cells to left boundary cells
-M(left) = M(left)-((BC.left.b/2 + BC.left.a/dx)./(BC.left.b/2 - BC.left.a/dx))'.*M(leftW);
-RHS(G(i+1,j)) = RHS(G(i+1,j))-M(leftW).*(BC.left.c./(BC.left.b/2 - BC.left.a/dx))';
+M(left) = M(left)-((BC.left.b/2 + BC.left.a/dx(1))./(BC.left.b/2 - BC.left.a/dx(1)))'.*M(leftW);
+RHS(G(i+1,j)) = RHS(G(i+1,j))-M(leftW).*(BC.left.c./(BC.left.b/2 - BC.left.a/dx(1)))';
 
 Mout = M(G(2:end-1,2:end-1), G(2:end-1,2:end-1));
 RHSout = RHS(reshape(G(2:end-1,2:end-1),Nx*Ny,1));

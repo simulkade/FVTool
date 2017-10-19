@@ -6,14 +6,14 @@ H = 1;
 W = 1;
 Nx = 100;
 Ny = 100;
-mesh1 = buildMesh2D(Nx, Ny, W, H);
+mesh1 = createMesh2D(Nx, Ny, W, H);
 % velocity field
-u = 0.001*ones(Nx,Ny);
-uf = arithmeticMean(mesh1, u);
+u = createCellVariable(mesh1, 0.001*ones(Nx,Ny));
+uf = arithmeticMean(u);
 % uf.yvalue(:,:)=0;
 % diffusion field
 D = 1e-2*createCellVariable(mesh1, 1e-2);
-Df = arithmeticMean(mesh1, D);
+Df = arithmeticMean(D);
 % transient term coefficient
 alfa = createCellVariable(mesh1, 1);
 % define the boundaries
@@ -24,13 +24,13 @@ BC.left.a(:) = 0; BC.left.b(:) = 1; BC.left.c(:) = 0;
 % BC.right.a(:) = 0; BC.right.b(:) = 1; BC.right.c(:) = 0;
 % BC.top.a(:) = 0; BC.top.b(:) = 1; BC.top.c(:) = 0;
 % Initial values
-phi.Old = createCellVariable(mesh1, 0, BC);
-phi.Old(5:10, 5:10) = 1;
+phi_old = createCellVariable(mesh1, 0, BC);
+phi_old.value(5:10, 5:10) = 1;
 % define the convection term
-Mconv = convectionUpwindTerm(mesh1, uf);
-Mdif = diffusionTerm(mesh1, Df);
+Mconv = convectionUpwindTerm(uf);
+Mdif = diffusionTerm(Df);
 % define the BC term
-[Mbc, RHSbc] = boundaryCondition(mesh1, BC);
+[Mbc, RHSbc] = boundaryCondition(BC);
 % solver
 final_t = 500;
 % define the transient term
@@ -38,6 +38,8 @@ final_t = 500;
     zeros((Nx+2)*(Ny+2),1));
 % eq: dcdt = D d2c/dx2
 dcdt = @(t,c)(-M*c-RHS);
-[t_temp, c_temp] = ode45(dcdt, [0 final_t], phi.Old(:));
-phi.value = reshape(c_temp(end,:), Nx, Ny);
-figure(1);pcolor(phi.value');colorbar;
+[t_temp, c_temp] = ode45(dcdt, [0 final_t], internalCells(phi_old));
+for i =1:length(t_temp)
+    phi.value = reshape(c_temp(i,:), Nx, Ny);
+    figure(1);pcolor(phi.value');title(["t = ", num2str(t_temp(i))]); colorbar;drawnow;
+end
