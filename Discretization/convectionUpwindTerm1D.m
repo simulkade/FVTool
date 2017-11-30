@@ -1,4 +1,4 @@
-function M = convectionUpwindTerm1D(u)
+function M = convectionUpwindTerm1D(u, varargin)
 % This function uses the upwind scheme to discretize a 1D
 % convection term in the form \grad (u \phi) where u is a face vactor
 % It also returns the x and y parts of the matrix of coefficient.
@@ -22,25 +22,30 @@ function M = convectionUpwindTerm1D(u)
 
 % extract data from the mesh structure
 Nx = u.domain.dims(1);
-G = [1:Nx+2];
+G = 1:Nx+2;
 DXp = u.domain.cellsize.x(2:end-1);
+
+if nargin>1
+    u_upwind = varargin{1};
+else
+    u_upwind = u;
+end
 
 % define the vectors to store the sparse matrix data
 iix = zeros(3*(Nx+2),1);
 jjx = zeros(3*(Nx+2),1);
 sx = zeros(3*(Nx+2),1);
 
-% extract the velocity data
-% note: size(ux) = [1:m+1, 1:n] and size(uy) = [1:m, 1:n+1]
-ux = u.xvalue;
-
-% reassign the east, west, north, and south velocity vectors for the
-% code readability
-ue = ux(2:Nx+1);		uw = ux(1:Nx);
-
 % find the velocity direction for the upwind scheme
-ue_min = min(ue,0);	ue_max = max(ue,0);
-uw_min = min(uw,0);	uw_max = max(uw,0);
+ue_min = u.xvalue(2:Nx+1);
+ue_max = u.xvalue(2:Nx+1);
+uw_min = u.xvalue(1:Nx);
+uw_max = u.xvalue(1:Nx);
+
+ue_min(u_upwind.xvalue(2:Nx+1)>0.0) = 0.0;
+ue_max(u_upwind.xvalue(2:Nx+1)<0.0) = 0.0;
+uw_min(u_upwind.xvalue(1:Nx)>0.0) = 0.0;
+uw_max(u_upwind.xvalue(1:Nx)<0.0) = 0.0;
 
 % calculate the coefficients for the internal cells
 AE = reshape(ue_min./DXp,Nx,1);

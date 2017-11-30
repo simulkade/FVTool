@@ -1,10 +1,10 @@
-function [M, Mx, My] = convectionUpwindTerm2D(u)
+function [M, Mx, My] = convectionUpwindTerm2D(u, varargin)
 % This function uses the upwind scheme to discretize a 2D
 % convection term in the form \grad (u \phi) where u is a face vactor
 % It also returns the x and y parts of the matrix of coefficient.
 %
 % SYNOPSIS:
-%   [M, Mx, My] = convectionUpwindTerm2D(u)
+%   (M, Mx, My) = convectionUpwindTerm2D(u)
 %
 % PARAMETERS:
 %
@@ -27,27 +27,35 @@ G=reshape(1:(Nx+2)*(Ny+2), Nx+2, Ny+2);
 DXp = repmat(u.domain.cellsize.x(2:end-1), 1, Ny);
 DYp = repmat(u.domain.cellsize.y(2:end-1)', Nx, 1);
 
+if nargin>1
+    u_upwind = varargin{1};
+else
+    u_upwind = u;
+end
+
 % define the vectors to stores the sparse matrix data
 iix = zeros(3*(Nx+2)*(Ny+2),1);	iiy = zeros(3*(Nx+2)*(Ny+2),1);
 jjx = zeros(3*(Nx+2)*(Ny+2),1);	jjy = zeros(3*(Nx+2)*(Ny+2),1);
 sx = zeros(3*(Nx+2)*(Ny+2),1);	sy = zeros(3*(Nx+2)*(Ny+2),1);
 mnx = Nx*Ny;	mny = Nx*Ny;
 
-% extract the velocity data
-% note: size(ux) = [1:m+1, 1:n] and size(uy) = [1:m, 1:n+1]
-ux = u.xvalue;
-uy = u.yvalue;
+ue_min = u.xvalue(2:Nx+1,:);
+ue_max = u.xvalue(2:Nx+1,:);
+uw_min = u.xvalue(1:Nx,:);
+uw_max = u.xvalue(1:Nx,:);
+vn_min = u.yvalue(:,2:Ny+1);
+vn_max = u.yvalue(:,2:Ny+1);
+vs_min = u.yvalue(:,1:Ny);
+vs_max = u.yvalue(:,1:Ny);
 
-% reassign the east, west, north, and south velocity vectors for the
-% code readability
-ue = ux(2:Nx+1,:);		uw = ux(1:Nx,:);
-vn = uy(:,2:Ny+1);       vs = uy(:,1:Ny);
-
-% find the velocity direction for the upwind scheme
-ue_min = min(ue,0);	ue_max = max(ue,0);
-uw_min = min(uw,0);	uw_max = max(uw,0);
-vn_min = min(vn,0);	vn_max = max(vn,0);
-vs_min = min(vs,0);	vs_max = max(vs,0);
+ue_min(u_upwind.xvalue(2:Nx+1,:)>0.0) = 0.0;
+ue_max(u_upwind.xvalue(2:Nx+1,:)<0.0) = 0.0;
+uw_min(u_upwind.xvalue(1:Nx,:)>0.0) = 0.0;
+uw_max(u_upwind.xvalue(1:Nx,:)<0.0) = 0.0;
+vn_min(u_upwind.yvalue(:,2:Ny+1)>0.0) = 0.0;
+vn_max(u_upwind.yvalue(:,2:Ny+1)<0.0) = 0.0;
+vs_min(u_upwind.yvalue(:,1:Ny)>0.0) = 0.0;
+vs_max(u_upwind.yvalue(:,1:Ny)<0.0) = 0.0;
 
 % calculate the coefficients for the internal cells
 AE = ue_min./DXp;
