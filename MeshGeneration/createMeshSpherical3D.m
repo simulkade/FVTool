@@ -1,4 +1,4 @@
-function MS = createMeshCylindrical3D(varargin)
+function MS = createMeshSpherical3D(varargin)
 % MeshStructure = createMesh3D(Nr, Ntheta, Nz, Radius, theta, height)
 % MeshStructure = createMesh3D(facelocationR, facelocationTheta, facelocationPhy)
 % builds a uniform 3D mesh:
@@ -93,4 +93,4 @@ elseif nargin==3
   end
   MS=createMesh3D(facelocationX,facelocationTheta,facelocationPhy);
 end
-MS.dimension=3.2;
+MS.dimension=3.5;

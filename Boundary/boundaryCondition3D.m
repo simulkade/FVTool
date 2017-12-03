@@ -87,9 +87,9 @@ elseif (BC.top.periodic ==1) || (BC.bottom.periodic == 1) % periodic
     q = q(end)+(1:Nx*Nz);
     ii(q) = G(i,j,k);  jj(q) = G(i,j-1,k);  s(q) = -1;
     q = q(end)+(1:Nx*Nz);
-    ii(q) = G(i,j,k);  jj(q) = G(i,1,k); s(q) = dy_end;
+    ii(q) = G(i,j,k);  jj(q) = G(i,1,k); s(q) = dy_end/dy_1;
     q = q(end)+(1:Nx*Nz);
-    ii(q) = G(i,j,k);  jj(q) = G(i,2,k); s(q) = dy_1;
+    ii(q) = G(i,j,k);  jj(q) = G(i,2,k); s(q) = -dy_end/dy_1;
     BCRHS(G(i,j,k)) = 0;
 
     % Bottom boundary
@@ -99,7 +99,11 @@ elseif (BC.top.periodic ==1) || (BC.bottom.periodic == 1) % periodic
     q = q(end)+(1:Nx*Nz);
     ii(q) = G(i,j,k);  jj(q) = G(i,j,k);  s(q) = 1;
     q = q(end)+(1:Nx*Nz);
+    ii(q) = G(i,j,k);  jj(q) = G(i,j+1,k);  s(q) = 1;
+    q = q(end)+(1:Nx*Nz);
     ii(q) = G(i,j,k);  jj(q) = G(i,Ny+1,k); s(q) = -1;
+    q = q(end)+(1:Nx*Nz);
+    ii(q) = G(i,j,k);  jj(q) = G(i,Ny+2,k); s(q) = -1;
     BCRHS(G(i,j,k)) = 0;
 end
 
