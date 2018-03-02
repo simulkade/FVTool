@@ -46,6 +46,8 @@ else
             M = convectionUpwindTerm1D(u);
         case 1.5
             M = convectionUpwindTermCylindrical1D(u);
+        case 1.8
+            M = convectionUpwindTermSpherical1D(u);
         case 2
             [M, Mx, My] = convectionUpwindTerm2D(u);
         case 2.5
