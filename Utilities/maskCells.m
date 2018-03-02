@@ -23,7 +23,7 @@ function [M_out, RHS_out] = maskCells(meshstruct, M, RHS, cellIndex, cellValue)
 d = meshstruct.dimension;
 domain_size = meshstruct.numberofcells+2; % 2 is added for the ghost cells
 M_size = size(M);
-if d ==1 || d==1.5
+if d ==1 || d==1.5 || (d==1.8)
     i = sub2ind([domain_size 1], cellIndex(:,1));
 elseif d==2 || d==2.5 || d==2.8
     i = sub2ind(domain_size, cellIndex(:,1), cellIndex(:,2));

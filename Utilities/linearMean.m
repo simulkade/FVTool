@@ -23,7 +23,7 @@ function phiFaceAverage = linearMean(phi)
 % extract data from the mesh structure
 
 d = phi.domain.dimension;
-if (d ==1) || (d==1.5)
+if (d ==1) || (d==1.5) || (d==1.8)
     dx = phi.domain.cellsize.x;
     xvalue=(dx(2:end).*phi.value(1:end-1)+dx(1:end-1).*phi.value(2:end))./(dx(2:end)+dx(1:end-1));
     yvalue=[];

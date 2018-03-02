@@ -21,7 +21,7 @@ function cellGrad = gradientCellTerm(phi)
 
 phi_face=linearMean(phi);
 d = phi.domain.dimension;
-if (d ==1) || (d==1.5)
+if (d ==1) || (d==1.5) || (d==1.8)
 	Nx = phi.domain.dims(1);
 	DX = phi.domain.cellsize.x(2:end-1);
 	xvalue = (phi_face.xvalue(2:Nx+1)-phi_face.xvalue(1:Nx))./DX;

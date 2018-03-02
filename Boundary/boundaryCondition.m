@@ -30,7 +30,7 @@ function [BCMatrix, BCRHS] = boundaryCondition(BC)
 % See the license file
 
 d = BC.domain.dimension;
-if (d ==1) || (d==1.5)
+if (d ==1) || (d==1.5) || (d==1.8)
 	[BCMatrix, BCRHS] = boundaryCondition1D(BC);
 elseif (d == 2) || (d == 2.5)
 	[BCMatrix, BCRHS] = boundaryCondition2D(BC);

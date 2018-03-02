@@ -25,7 +25,7 @@ function BC = createBC(meshvar)
 % See the license file
 
 d = meshvar.dimension;
-if (d == 1) || (d==1.5)
+if (d == 1) || (d==1.5) || (d==1.8)
 	BC = createBC1D(meshvar);
 elseif (d == 2) || (d == 2.5) || (d == 2.8)
 	BC = createBC2D(meshvar);

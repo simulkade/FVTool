@@ -24,7 +24,7 @@ function cellvar = reshapeCell(MS, phi)
 d = MS.dimension;
 N = MS.dims;
 
-if (d ==1) || (d==1.5)
+if (d ==1) || (d==1.5) || (d==1.8)
 	cellvar = reshape(phi, N(1)+2, 1);
 elseif (d == 2) || (d == 2.5) || (d==2.8)
 	cellvar = reshape(phi, N(1)+2, N(2)+2);

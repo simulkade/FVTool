@@ -23,7 +23,7 @@ function ddt = ddtTerm(MeshStructure, dt, phi)
 % See the license file
 
 d = MeshStructure.dimension;
-if (d ==1) || (d==1.5)
+if (d ==1) || (d==1.5) || (d==1.8)
 	ddt = ddtTerm1D(MeshStructure, dt, phi);
 elseif (d == 2) || (d == 2.5) || (d==2.8)
 	ddt = ddtTerm2D(MeshStructure, dt, phi);

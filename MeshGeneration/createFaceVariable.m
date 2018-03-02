@@ -23,7 +23,7 @@ function facevar = createFaceVariable(meshvar, faceval)
 d = meshvar.dimension;
 mn = meshvar.dims;
 
-if (d ==1) || (d==1.5)
+if (d ==1) || (d==1.5) || (d==1.8)
 	xvalue = faceval(1).*ones(mn(1)+1,1);
     yvalue=[];
     zvalue=[];

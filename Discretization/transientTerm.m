@@ -24,7 +24,7 @@ function [M, RHS] = transientTerm(phi_old, dt, varargin)
 % See the license file
 
 d = phi_old.domain.dimension;
-if (d ==1) || (d==1.5)
+if (d ==1) || (d==1.5) || (d==1.8)
 	% extract data from the mesh structure
     Nx = phi_old.domain.dims(1);
     G = 1:Nx+2;

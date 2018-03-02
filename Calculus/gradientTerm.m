@@ -21,7 +21,7 @@ function faceGrad = gradientTerm(phi)
 % See the license file
 
 d = phi.domain.dimension;
-if (d ==1) || (d==1.5)
+if (d ==1) || (d==1.5) || (d==1.8)
 	faceGrad = gradientTerm1D(phi);
 elseif (d == 2) || (d == 2.5)
 	faceGrad = gradientTerm2D(phi);

@@ -22,7 +22,7 @@ function phiBC = cellBoundary(phi, BC)
 % extract data from the mesh structure
 d = BC.domain.dimension;
 
-if (d ==1) || (d==1.5)
+if (d ==1) || (d==1.5) || (d==1.8)
 	phiBC = cellBoundary1D(phi, BC);
 elseif (d == 2) || (d == 2.5)
 	phiBC = cellBoundary2D(phi, BC);

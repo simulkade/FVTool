@@ -22,7 +22,7 @@ function RHSout = excludeGhostRHS(MS, RHS)
 % check the size of the variable and the mesh dimension
 d = MS.dimension;
 
-if (d ==1) || (d==1.5)
+if (d ==1) || (d==1.5) || (d==1.8)
 	Nx=MS.dims(1);
 	G = 1:Nx+2;
 	RHSout = RHS(reshape(G(2:end-1),Nx,1));

@@ -26,7 +26,7 @@ Z=createFaceVariable(m, 0);
 N=m.dims;
 d = m.dimension;
 switch d
-    case {1, 1.5}
+case {1, 1.5, 1.8}
     	X.xvalue= m.facecenters.x;
     case {2, 2.5, 2.8}
         X.xvalue= repmat(m.facecenters.x, 1, N(2));

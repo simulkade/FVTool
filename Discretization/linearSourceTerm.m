@@ -21,7 +21,7 @@ function M = linearSourceTerm(k)
 % See the license file
 
 d = k.domain.dimension;
-if (d ==1) || (d==1.5)
+if (d ==1) || (d==1.5) || (d==1.5)
 	M = linearSourceTerm1D(k);
 elseif (d == 2) || (d == 2.5) || (d==2.8)
 	M = linearSourceTerm2D(k);
