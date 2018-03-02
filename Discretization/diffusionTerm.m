@@ -26,6 +26,8 @@ switch d
         M = diffusionTerm1D(D);
     case 1.5
         M = diffusionTermCylindrical1D(D);
+    case 1.8
+        M = diffusionTermSpherical1D(D);
     case 2
         [M, Mx, My] = diffusionTerm2D(D);
     case 2.5

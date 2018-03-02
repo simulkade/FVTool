@@ -27,6 +27,8 @@ switch d
         RHSdiv = divergenceTerm1D(F);
     case 1.5
         RHSdiv = divergenceTermCylindrical1D(F);
+    case 1.8
+        RHSdiv = divergenceTermSpherical1D(F);
     case 2
         [RHSdiv, RHSdivx, RHSdivy] = divergenceTerm2D(F);
     case 2.5

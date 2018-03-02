@@ -21,9 +21,12 @@ function visualizeCells(phi)
 d = phi.domain.dimension;
 switch d
     case 1
-        phi.value= [0.5*(phi.value(1)+phi.value(2)); phi.value(2:end-1); 0.5*(phi.value(end-1)+phi.value(end))];
+        phi.value = [0.5*(phi.value(1)+phi.value(2)); phi.value(2:end-1); 0.5*(phi.value(end-1)+phi.value(end))];
         visualizeCells1D(phi);
     case 1.5
+        phi.value = [0.5*(phi.value(1)+phi.value(2)); phi.value(2:end-1); 0.5*(phi.value(end-1)+phi.value(end))];
+        visualizeCells1D(phi);
+    case 1.8
         phi.value = [0.5*(phi.value(1)+phi.value(2)); phi.value(2:end-1); 0.5*(phi.value(end-1)+phi.value(end))];
         visualizeCells1D(phi);
     case 2

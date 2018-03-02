@@ -1,12 +1,12 @@
-function MS = createMeshCylindrical1D(varargin)
-% MeshStructure = createMeshCylindrical1D(Nr, Lr)
-% MeshStructure = createMeshCylindrical1D(facelocationR)
+function MS = createMeshSpherical1D(varargin)
+% MeshStructure = createMeshSpherical1D(Nr, Lr)
+% MeshStructure = createMeshSpherical1D(facelocationR)
 % builds a uniform 1D mesh (1D axial symmetry):
 % Nx is the number of cells in r (radial) direction
 % Width is the domain radius in r direction
 %
 % SYNOPSIS:
-%   MeshStructure = buildMeshCylindrical1D(Nr, Lr)
+%   MeshStructure = createMeshSpherical1D(Nr, Lr)
 %
 % PARAMETERS:
 %   Nr: number of cells in the domain
@@ -74,7 +74,7 @@ elseif nargin==1
   FaceLocation.z= [0.0];
 end
 
-MS=MeshStructure(1.8, ...
+MS=MeshStructure(1.5, ...
   [Nr,1], ...
   CellSize, ...
   CellLocation, ...

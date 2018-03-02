@@ -26,6 +26,8 @@ switch d
         RHS = convectionTvdRHS1D(u, phi, FL);
     case 1.5
         RHS = convectionTvdRHSCylindrical1D(u, phi, FL);
+    case 1.8
+        RHS = convectionTvdRHSSpherical1D(u, phi, FL);
     case 2
         [RHS, RHSx, RHSy] = convectionTvdRHS2D(u, phi, FL);
     case 2.5

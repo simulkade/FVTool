@@ -26,6 +26,8 @@ switch d
     	M = convectionTerm1D(u);
     case 1.5
         M = convectionTermCylindrical1D(u);
+    case 1.8
+        M = convectionTermSpherical1D(u);
     case 2
         [M, Mx, My] = convectionTerm2D(u);
     case 2.5

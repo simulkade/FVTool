@@ -27,6 +27,8 @@ if nargin>1
             M = convectionUpwindTerm1D(u, varargin{1});
         case 1.5
             M = convectionUpwindTermCylindrical1D(u, varargin{1});
+        case 1.8
+            M = convectionUpwindTermSpherical1D(u, varargin{1});
         case 2
             [M, Mx, My] = convectionUpwindTerm2D(u, varargin{1});
         case 2.5
