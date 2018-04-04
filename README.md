@@ -2,6 +2,8 @@
 
 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.18156.svg)](http://dx.doi.org/10.5281/zenodo.18156)
 
+[Tiny Documents :blue_book:](http://htmlpreview.github.io/?https://github.com/simulkade/FVTool/blob/master/html/FVTdemo.html).
+
 This is a finite volume (toy) toolbox for chemical/petroleum engineers.
 Right now, it can solve a transient convection-diffusion equation with variable velocity field/diffusion coefficients. The discretization schemes
 include:
@@ -69,7 +71,8 @@ You can also find a few more advanced examples (water injection into a heterogen
 fully implicit solution) in the [Advanced](https://github.com/simulkade/FVTool/tree/master/Examples/Advanced) folder.
 
 ## Documents
-comming soon
+Find some preliminary documents [here](http://htmlpreview.github.io/?https://github.com/simulkade/FVTool/blob/master/html/FVTdemo.html).
+
 
 ## But Matlab is not a free software?
 You can use the code in [octave](http://www.gnu.org/software/octave/). The new (object oriented) version of the code works in Octave 4.0 (with the new `classdef` function).  
