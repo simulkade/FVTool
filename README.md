@@ -85,8 +85,7 @@ You can ask your questions by creating a new issue here, or by writing a comment
 If you have used the package in your work and you find it usefull, please cite it as:
 ```
 @misc{ali_akbar_eftekhari_2015_32745,
-  author       = {Ali Akbar Eftekhari and
-                  Kai Schüller},
+  author       = {Ali Akbar Eftekhari and Kai Schüller and Ferran Brosa Planella},
   title        = {FVTool: a finite volume toolbox for Matlab},
   month        = oct,
   year         = 2015,
