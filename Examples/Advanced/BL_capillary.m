@@ -45,6 +45,7 @@ perm_val= field2d(Nx,Ny,k0,V_dp,clx,cly);
 k=createCellVariable(m, perm_val);
 phi=createCellVariable(m, phi0);
 pce=gama_ow*cos(teta_ow)*(phi./k).^0.5;
+pce.value(isnan(pce.value)) = 1.0;
 pce_face=gama_ow*cos(teta_ow)*(arithmeticMean(phi)./geometricMean(k)).^0.5;
 pc=@(sw)(pce.*(sws(sw)+eps).^(-1/labda)); % it can also be defined for each block
 dpc=@(sw)((-1/labda)*(1/(1-sor-swc)).*pce_face.*(sws(sw)+eps).^(-1/labda-1));
