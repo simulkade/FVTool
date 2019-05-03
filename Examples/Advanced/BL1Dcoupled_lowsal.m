@@ -16,12 +16,15 @@ BCc = createBC(m);
 BCc.left.a = 0.0; BCc.left.b = 1.0; BCc.left.c = c_inj_ion; % left boundary
 c_ion_old = createCellVariable(m, c_init_ion, BCc);
 c_ion = c_ion_old;
+[M_bc_c, RHS_bc_c]=boundaryCondition(BCc);
 
 %% define the diffusion adsorption domains for each cell
 % partameters
+rho_s = 2700; % kg/m3
+a_s = 2000; % m2/kg
 a = 1e9; % m^2/m^3
-k_lang = 1e-4; % Langmuir adsorption coefficient
-betta = 1.0e-4; % Langmuir adsorption coefficient 2
+k_lang = 1e-7; % Langmuir adsorption coefficient
+betta = 1.0; % Langmuir adsorption coefficient 2
 % Define the domain and create a mesh structure
 L = 1e-6; % [m]  % domain length
 N = 15; % number of cells
@@ -30,17 +33,19 @@ m_diff = createMesh1D(N, L);
 BC = cell(Nx, 1);
 for i = 1:Nx
     BC{i} = createBC(m_diff); % all Neumann boundary condition structure
-    BC{i}.left.a = 0; BC{i}.left.b=1; BC{i}.left.c=1; % left boundary
-    BC{i}.right.a = 0; BC{i}.right.b=1; BC{i}.right.c=1; % right boundary
+    BC{i}.left.a = 0; BC{i}.left.b=1; BC{i}.left.c=0; % left boundary
+    BC{i}.right.a = 0; BC{i}.right.b=1; BC{i}.right.c=0; % right boundary
 end
 D_val = 1e-13; % m^2/s effective diffusivity
-D = createCellVariable(m, D_val);
-alfa = createCellVariable(m, 1);
+D = createCellVariable(m_diff, D_val);
+D_face = harmonicMean(D);
+Mdiff = diffusionTerm(D_face);
+alfa = createCellVariable(m_diff, 1);
 % initial condition
 c_init = 0;
 c_old = cell(Nx);
 for i = 1:Nx
-    c_old{i} = createCellVariable(m, c_init, BC{i}); % initial values
+    c_old{i} = createCellVariable(m_diff, c_init, BC{i}); % initial values
 end
 c = c_old; % assign the old value of the cells to the current values
 %% define the physical parametrs
@@ -186,20 +191,39 @@ while (t<t_end)
     % solve the ions flow in the domain
     uw = -labdaw.*pgrad; % water velocity
     Mconv = convectionUpwindTerm(uw);
+    dswdt=(sw-sw_old)/dt;
+    Msc=linearSourceTerm(phi.*dswdt);
     for j = 1:3
-        [M_trans, RHS_trans] = transientTerm(c_ion_old, dt, phi+(1-phi).*a.*k_lang./(1+betta*c_ion));
-        M = M_trans-Mdiff+Mbc;
-        RHS = RHS_trans+RHSbc;
-        c = solvePDE(m,M, RHS);
+        [M_trans, RHS_trans] = transientTerm(c_ion_old, dt, sw.*phi+a_s*rho_s*k_lang.*(1-phi)./(1+betta*c_ion));
+        M = M_trans+Mconv+M_bc_c+Msc;
+        RHS = RHS_trans+RHS_bc_c;
+        c_ion = solvePDE(m,M, RHS);
     end
+    c_ion_old = c_ion;
     
     % solve the ions diffusion in the water films
-    
-    
-    
-    if t>t_end/2
-            SF_face=createFaceVariable(m, 1.0); % 1 is water wet, 0 is oil wet
+    for i = 1:Nx
+        BC{i}.left.a = 0; BC{i}.left.b=1; BC{i}.left.c=c_ion.value(i+1); % left boundary
+        BC{i}.right.a = 0; BC{i}.right.b=1; BC{i}.right.c=c_ion.value(i+1); % right boundary
+        [Mbc, RHSbc] = boundaryCondition(BC{i});
+        for j=1:3
+            [M_trans, RHS_trans] = transientTerm(c_old{i}, dt, 1.0+a*k_lang./(1+betta*c{i}));
+            M = M_trans-Mdiff+Mbc;
+            RHS = RHS_trans+RHSbc;
+            c{i} = solvePDE(m_diff,M, RHS);
+        end
+        
+        ind_80 = find(c{i}.value(2:end-1)<0.8*c_inj_ion,1, 'first');
+        if isempty(ind_80)
+            SF.value(i+1) = 1.0;
+        else
+            SF.value(i+1) = 2*(ind_80-1)/(N-2);
+        end
+        c_old{i} = c{i};
     end
+    
+    SF_face = arithmeticMean(SF);
+    
     dsw=max(abs(sw_new(:)-sw_old.value(:))./sw_new(:));
     t=t+dt;
     fprintf(1,'\b\b\b\b\b\b\b\b\b\b\b\b\b\bProgress: %d %%',floor(t/t_end*100));
@@ -209,9 +233,11 @@ while (t<t_end)
     rec_fact=[rec_fact (oil_init-domainInt(1-sw))/oil_init];
     t_day=[t_day t];
     figure(1);visualizeCells(sw); drawnow;
-    figure(2);plot(t_day/3600/24, rec_fact)
-    xlabel('time [day]');
-    ylabel('recovery factor');
-    title([num2str(t/3600/24) ' day']); drawnow;
+    figure(2); visualizeCells(c_ion);
+    
+%     figure(2);plot(t_day/3600/24, rec_fact)
+%     xlabel('time [day]');
+%     ylabel('recovery factor');
+%     title([num2str(t/3600/24) ' day']); drawnow;
 end
 fprintf('\n')
