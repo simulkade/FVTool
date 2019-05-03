@@ -47,7 +47,7 @@ labda=10.0;
 eps1=1e-7;
 clx=1;
 cly=0.1;
-V_dp=0.6; % Dykstra-Parsons coef.
+V_dp=0.1; % Dykstra-Parsons coef.
 if m.dimension<2 % 1D model
     perm_val=k0;
 elseif m.dimension<3 % 2D model
@@ -173,7 +173,7 @@ while (t<t_end)
     rec_fact=[rec_fact (oil_init-domainInt(1-sw))/oil_init];
     t_day=[t_day t];
     figure(2);visualizeCells(1-sw);caxis([0,1]); shading flat;
-    figure(1);plot(t_day/3600/60, rec_fact)
+    figure(1);plot(t_day/3600/24, rec_fact)
     xlabel('time [day]');
     ylabel('recovery factor');
     title([num2str(t/3600/24) ' day']); drawnow;
