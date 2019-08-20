@@ -171,5 +171,5 @@ while (t<t_end)
         end
     end
     rec_fact=[rec_fact, (oil_init-domainInt(1-sw))/oil_init];
-    %figure(1);visualizeCells(1-sw); drawnow;
+    figure(1);visualizeCells(1-sw); drawnow;
 end

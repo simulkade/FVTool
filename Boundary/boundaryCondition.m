@@ -26,7 +26,7 @@ function [BCMatrix, BCRHS] = boundaryCondition(BC)
 %     createMeshRadial2D, createMeshCylindrical3D,
 %     cellBoundary, combineBC, createCellVariable
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Copyright (c) 2012-2019 Ali Akbar Eftekhari
 % See the license file
 
 d = BC.domain.dimension;

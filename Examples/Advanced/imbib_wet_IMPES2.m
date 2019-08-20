@@ -126,7 +126,7 @@ rec_fact=0;
 t_day=0;
 t = 0;
 dt0=dt;
-dsw_alwd= 0.01;
+dsw_alwd= 0.02;
 dp_alwd= 100; % Pa
 while (t<t_end)
 % for i=1:5
