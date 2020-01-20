@@ -148,5 +148,5 @@ while (t<t_end)
     R(i) = (oil_init-oil)/oil_init;
     p_inj(i) = p.value(2,2);
     t_series(i) = t;
-%     figure(1);visualizeCells(sw); drawnow;
+    figure(1);visualizeCells(sw); drawnow;
 end
