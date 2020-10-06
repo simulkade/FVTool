@@ -1,4 +1,4 @@
-# FVTool: Finite volume toy toolbox for Matlab
+# FVTool: Finite volume toolbox for Matlab
 
 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.18156.svg)](http://dx.doi.org/10.5281/zenodo.18156)
 
