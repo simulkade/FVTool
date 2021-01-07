@@ -77,6 +77,7 @@ disp('Face variable over nonuniform mesh created successfully!');
 BC_n=cell(N_mesh, 1);
 for i=1:N_mesh
     BC_n{i}=createBC(mesh_uniform{i});
+end
 %% Part IV:
 % uniform
 figure(1);
