@@ -15,7 +15,7 @@ function visualizeCellVectorsRadial2D(phi_cell)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 % phi_cell=gradientCellTerm(phi);

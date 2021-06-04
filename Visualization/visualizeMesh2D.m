@@ -1,5 +1,5 @@
 function visualizeMesh2D(m)
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
   [X, Y] = ndgrid(m.cellcenters.x, m.cellcenters.y);
   [Xf,Yf]=ndgrid(m.facecenters.x, m.facecenters.y);

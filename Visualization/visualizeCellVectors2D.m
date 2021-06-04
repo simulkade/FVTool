@@ -15,7 +15,7 @@ function visualizeCellVectors2D(phi_cell)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 x = phi_cell.domain.cellcenters.x;
