@@ -1,6 +1,6 @@
 function [xt_prf, sw_prf] = BLanalytical(muw, muo)
 %BLANALYTICAL Analytical solution of Buckley-Leverett equation
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 %muw = 10e-3;
 %muo = 10e-3;
