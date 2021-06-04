@@ -8,7 +8,7 @@ function r = celleval(f, varargin)
 % class
 %
 % SYNOPSIS:
-%   r = funceval(f, varargin)
+%   r = celleval(f, varargin)
 %
 % PARAMETERS:
 %
@@ -21,7 +21,7 @@ function r = celleval(f, varargin)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% % Written by Ali A. Eftekhari
 % See the license file
 
 % analyze phi to find the dimension of the matrix

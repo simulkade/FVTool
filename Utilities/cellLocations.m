@@ -18,7 +18,7 @@ function [X, Y, Z] = cellLocations(m)
 % SEE ALSO:
 %   faceLocations
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 N=m.dims;

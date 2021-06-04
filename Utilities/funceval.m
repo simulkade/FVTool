@@ -21,7 +21,7 @@ function r = funceval(f, varargin)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 % analyze phi to find the dimension of the matrix

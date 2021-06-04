@@ -16,12 +16,12 @@ function [M_out, RHS_out] = maskCells(meshstruct, M, RHS, cellIndex, cellValue)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 % extract some data
 d = meshstruct.dimension;
-domain_size = meshstruct.numberofcells+2; % 2 is added for the ghost cells
+domain_size = meshstruct.dims+2; % 2 is added for the ghost cells
 M_size = size(M);
 if d ==1 || d==1.5 || (d==1.8)
     i = sub2ind([domain_size 1], cellIndex(:,1));

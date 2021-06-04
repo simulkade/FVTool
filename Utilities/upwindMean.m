@@ -18,7 +18,7 @@ function phiFaceAverage = upwindMean(phi, u)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 % extract data from the mesh structure

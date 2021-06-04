@@ -17,7 +17,7 @@ function phiFaceAverage = tvdMean2D(phi, u, FL)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 % extract the velocity data

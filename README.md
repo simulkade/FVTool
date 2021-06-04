@@ -47,7 +47,7 @@ I have overloaded some of the matlab operators to simplify the switch from 1D co
 ### A simple example
 You can solve a diffusion equation, i.e., $ \nabla. (-D \nabla \phi) = 0 $ by running the following code in Matlab:
 ```matlab
-clc; clear;
+clc
 L = 50;  % domain length
 Nx = 20; % number of cells
 m = createMesh1D(Nx, L);

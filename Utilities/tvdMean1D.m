@@ -17,7 +17,7 @@ function phiFaceAverage = tvdMean1D(phi, u, FL)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 % check the size of the variable and the mesh dimension

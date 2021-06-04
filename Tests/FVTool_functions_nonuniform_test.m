@@ -1,8 +1,8 @@
 % FVTool test script
 % This script is supposed to call all the functions of the FVTool package
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
-clc; clear;
+clc
 %% Part I: creating an array of different mesh types:
 % domain size
 Lx= 1.0;
@@ -11,9 +11,9 @@ Lz= 2.0;
 Nx=5;
 Ny=7;
 Nz=9;
-X=[0.01 0.1 0.3 0.5 0.55 1.0];
-Y= [0.0 0.1 1.0 1.5 2.9 3.0 pi 2*pi];
-Z= [0.0 0.01 0.1 0.5 0.7 0.95 1.0 1.25 1.39 2.0];
+X=[0.01 0.1 0.2 0.23 0.28 0.3 0.36 0.38 0.42 0.43 0.44 0.5 0.51 0.55 0.7 0.9 1.0];
+Y= [0.0 0.02 0.07 0.1 0.5 0.8 1.0 1.5 1.9 1.95 2.9 3.0 pi 1.2*pi 1.5*pi 1.7*pi 1.85*pi 1.95*pi 2*pi];
+Z= [0.0 0.01 0.1 0.35 0.5 0.55 0.7 0.8 0.95 1.0 1.25 1.39 1.5 1.7 1.9 2.0];
 N_mesh=7;
 % create nonuniform mesh
 mesh_nonuniform= cell(N_mesh,1);

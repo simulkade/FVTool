@@ -5,7 +5,7 @@ function FL = fluxLimiter(varargin)
 % 'VanAlbada1', 'VanAlbada2', 'MinMod', 'SUPERBEE', 'Sweby', 'Koren',
 % 'QUICK', 'MC', and 'UMIST'. Default limiter is 'SUPERBEE'. See
 % <http://en.wikipedia.org/wiki/Flux_limiter>
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 % beta constant for Sweby and Osher
 if nargin == 2

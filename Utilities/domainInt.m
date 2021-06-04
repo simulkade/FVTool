@@ -16,7 +16,7 @@ function S = domainInt(phi)
 % SEE ALSO:
 %     
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 v=internalCells(cellVolume(phi.domain));

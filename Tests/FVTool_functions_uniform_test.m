@@ -1,8 +1,8 @@
 % FVTool test script
 % This script is supposed to call all the functions of the FVTool package
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
-clc; clear;
+clc
 %% Part I: creating an array of different mesh types:
 % domain size
 Lx= 1.0;

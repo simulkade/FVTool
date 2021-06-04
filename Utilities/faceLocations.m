@@ -18,7 +18,7 @@ function [X, Y, Z] = faceLocations(m)
 % SEE ALSO:
 %  cellLocations
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 X=createFaceVariable(m, 0);
 Y=createFaceVariable(m, 0);
