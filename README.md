@@ -31,7 +31,7 @@ Download the package, start matlab, and run
    `FVToolStartUp`
 
 ## Inspiration
-I started writing this tool after playing with [FiPy] (http://www.ctcms.nist.gov/fipy/), an amazing python-based finite volume solver.
+I started writing this tool after playing with [FiPy](http://www.ctcms.nist.gov/fipy/), an amazing python-based finite volume solver.
 This matlab solver is not a clone, and indeed very limited compared to FiPy.
 I wrote it to have a very handy tool for testing new ideas (new mathematical models) by solving them in 1D uniform Cartesian grids.
 Then I extended the code to
@@ -58,8 +58,8 @@ D_val = 1; % value of the diffusion coefficient
 D = createCellVariable(m, D_val); % assign the diffusion coefficient to the cells
 D_face = harmonicMean(D); % calculate harmonic average of the diffusion coef on the cell faces
 Mdiff = diffusionTerm(D_face); % matrix of coefficients for the diffusion term
-[Mbc, RHSbc] = boundaryCondition(BC); % matix of coefficients and RHS vector for the BC
-M = Mdiff + Mbc; % matrix of cefficients for the PDE
+[Mbc, RHSbc] = boundaryCondition(BC); % matrix of coefficients and RHS vector for the BC
+M = Mdiff + Mbc; % matrix of coefficients for the PDE
 c = solvePDE(m,M, RHSbc); % send M and RHS to the solver
 visualizeCells(c); % visualize the results
 ```
@@ -68,7 +68,7 @@ change the third line to `m = createMesh2D(Nx,Nx, L,L);` or `m = createMesh3D(Nx
 
 ## Examples
 There are a few simple examples in the [Tutorial](https://github.com/simulkade/FVTool/tree/master/Examples/Tutorial) folder.
-You can also find a few more advanced examples (water injection into a heterogeneous oil field, two nonlinear PDE's, coupled
+You can also find a few more advanced examples (water injection into a heterogeneous oil field, two nonlinear PDEs, coupled
 fully implicit solution) in the [Advanced](https://github.com/simulkade/FVTool/tree/master/Examples/Advanced) folder.
 
 ## Documents
@@ -80,13 +80,13 @@ You can use the code in [octave](http://www.gnu.org/software/octave/). The new (
 I've re-written the code in [Julia](http://julialang.org/). It works fine, but the visualization on Windows OS has still some issues.
 
 ## Questions and bug reports
-You can ask your questions by creating a new issue here, or by writing a comment in [my blog] (http://fvt.simulkade.com). You can aslo ask your question in the [Matlab file exchange page] (http://www.mathworks.com/matlabcentral/fileexchange/46637-a-simple-finite-volume-solver-for-matlab) of this code. I truly appreciate your feedback and/or contribution.
+You can ask your questions by creating a new issue here, or by writing a comment in [my blog](http://fvt.simulkade.com). You can also ask your question in the [Matlab file exchange page](http://www.mathworks.com/matlabcentral/fileexchange/46637-a-simple-finite-volume-solver-for-matlab) of this code. I truly appreciate your feedback and/or contribution.
 
 ## How to cite:
 If you have used the package in your work and you find it usefull, please cite it as:
 ```
 @misc{ali_akbar_eftekhari_2015_32745,
-  author       = {Ali Akbar Eftekhari and Kai Schüller and Ferran Brosa Planella and Martinus Werts},
+  author       = {Ali Akbar Eftekhari and Kai Schüller and Ferran Brosa Planella and Martinus Werts and Behzad Hosseinzadeh},
   title        = {FVTool: a finite volume toolbox for Matlab},
   month        = oct,
   year         = 2015,
