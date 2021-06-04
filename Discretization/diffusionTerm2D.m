@@ -17,9 +17,6 @@ function [M, Mx, My] = diffusionTerm2D(D)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 % extract data from the mesh structure
 Nx = D.domain.dims(1);
 Ny = D.domain.dims(2);

@@ -4,10 +4,10 @@ function [M, Mx, My, Mz] = convectionTermCylindrical3D(u)
 % It also returns the x and y parts of the matrix of coefficient.
 %
 % SYNOPSIS:
-%
+%   [M, Mx, My, Mz] = convectionTermCylindrical3D(u)
 %
 % PARAMETERS:
-%
+%   u   - FaceVariable  
 %
 % RETURNS:
 %
@@ -16,9 +16,6 @@ function [M, Mx, My, Mz] = convectionTermCylindrical3D(u)
 %
 % SEE ALSO:
 %
-
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % extract data from the mesh structure
 Nr = u.domain.dims(1);

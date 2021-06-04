@@ -17,12 +17,9 @@ function M = convectionTerm1D(u)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 % extract data from the mesh structure
 Nx = u.domain.dims(1);
-G = [1:Nx+2];
+G = 1:Nx+2;
 DXe = u.domain.cellsize.x(3:end);
 DXw = u.domain.cellsize.x(1:end-2);
 DXp = u.domain.cellsize.x(2:end-1);

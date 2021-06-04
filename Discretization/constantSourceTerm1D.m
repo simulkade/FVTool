@@ -15,9 +15,6 @@ function RHS = constantSourceTerm1D(phi)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 % extract data from the mesh structure
 Nx = phi.domain.dims(1);
 G = 1:Nx+2;

@@ -7,7 +7,7 @@ function M = convectionTermCylindrical1D(u)
 %   M = convectionTermCylindrical1D(u)
 %
 % PARAMETERS:
-%
+%	u   - FaceVariable  
 %
 % RETURNS:
 %
@@ -16,9 +16,6 @@ function M = convectionTermCylindrical1D(u)
 %
 % SEE ALSO:
 %
-
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % extract data from the mesh structure
 Nr = u.domain.dims(1);
@@ -36,7 +33,7 @@ sx = zeros(3*(Nr+2),1);
 
 % extract the velocity data
 % note: size(ux) = [1:m+1, 1:n] and size(uy) = [1:m, 1:n+1]
-ux = u.xvalue;
+% ux = u.xvalue;
 
 % reassign the east, west, north, and south velocity vectors for the
 % code readability

@@ -16,9 +16,6 @@ function M = linearSourceTerm3D(k)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 % extract data from the mesh structure
 Nxyz = k.domain.dims;
 Nx = Nxyz(1); Ny = Nxyz(2); Nz = Nxyz(3);

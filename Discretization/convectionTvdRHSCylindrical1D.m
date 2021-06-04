@@ -17,9 +17,6 @@ function RHS = convectionTvdRHSCylindrical1D(u, phi, FL)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 % extract data from the mesh structure
 Nr = u.domain.dims(1);
 DXp = u.domain.cellsize.x(2:end-1);

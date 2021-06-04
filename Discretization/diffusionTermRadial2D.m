@@ -17,9 +17,6 @@ function [M, Mx, My] = diffusionTermRadial2D(D)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 % extract data from the mesh structure
 Nr = D.domain.dims(1);
 Ntheta = D.domain.dims(2);

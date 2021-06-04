@@ -19,8 +19,6 @@ function [M, RHS, Mx, My, RHSx, RHSy] = ...
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % extract data from the mesh structure
 Nr = u.domain.dims(1);
@@ -30,8 +28,8 @@ DRp = repmat(u.domain.cellsize.x(2:end-1), 1, Ntetta);
 DTHETAp = repmat(u.domain.cellsize.y(2:end-1)', Nr, 1);
 rp = repmat(u.domain.cellcenters.x, 1, Ntetta);
 rf = repmat(u.domain.facecenters.x, 1, Ntetta);
-re = rf(2:Nr+1,:);
-rw = rf(1:Nr,:);
+% re = rf(2:Nr+1,:);
+% rw = rf(1:Nr,:);
 dr = repmat(0.5*(u.domain.cellsize.x(1:end-1)+u.domain.cellsize.x(2:end)), 1, Ntetta);
 dtheta = repmat(0.5*(u.domain.cellsize.y(1:end-1)+u.domain.cellsize.y(2:end))', Nr, 1);
 psiX_p = zeros(Nr+1,Ntetta);

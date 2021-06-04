@@ -18,9 +18,6 @@ function [M, RHS, Mx, My, Mz, RHSx, RHSy, RHSz] = ...
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 % extract data from the mesh structure
 Nr = u.domain.dims(1);
 Ntetta = u.domain.dims(2);

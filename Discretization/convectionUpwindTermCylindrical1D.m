@@ -17,12 +17,9 @@ function M = convectionUpwindTermCylindrical1D(u)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 % extract data from the mesh structure
 Nr = u.domain.dims(1);
-G = [1:Nr+2];
+G = 1:Nr+2;
 DXp = u.domain.cellsize.x(2:end-1);
 rp = u.domain.cellcenters.x;
 rf = u.domain.facecenters.x;

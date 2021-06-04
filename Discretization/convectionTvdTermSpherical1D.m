@@ -1,10 +1,10 @@
-function [M, RHS] = convectionTvdTermCylindrical1D(u, phi, FL)
+function [M, RHS] = convectionTvdTermSpherical1D(u, phi, FL)
 % This function uses the upwind scheme to discretize a 1D
 % convection term in the form \grad (u \phi) where u is a face vactor
 % It also returns the x and y parts of the matrix of coefficient.
 %
 % SYNOPSIS:
-%   [M, RHS] = convectionTvdTermCylindrical1D(u, phi, FL)
+%   [M, RHS] = convectionTvdTermSpherical1D(u, phi, FL)
 %
 % PARAMETERS:
 %
@@ -17,15 +17,13 @@ function [M, RHS] = convectionTvdTermCylindrical1D(u, phi, FL)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % extract data from the mesh structure
 Nr = u.domain.dims(1);
-G = [1:Nr+2];
-DXp = u.domain.cellsize.x(2:end-1);
+G = 1:Nr+2;
+% DXp = u.domain.cellsize.x(2:end-1);
 dx = 0.5*(u.domain.cellsize.x(1:end-1)+u.domain.cellsize.x(2:end));
-r = u.domain.cellcenters.x;
+% r = u.domain.cellcenters.x;
 rf = u.domain.facecenters.x;
 RHS = zeros(Nr+2, 1);
 psi_p = zeros(Nr+1,1);

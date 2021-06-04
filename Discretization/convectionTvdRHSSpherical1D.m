@@ -17,14 +17,11 @@ function RHS = convectionTvdRHSSpherical1D(u, phi, FL)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 % extract data from the mesh structure
 Nr = u.domain.dims(1);
-DXp = u.domain.cellsize.x(2:end-1);
+% DXp = u.domain.cellsize.x(2:end-1);
 dx = 0.5*(u.domain.cellsize.x(1:end-1)+u.domain.cellsize.x(2:end));
-r = u.domain.cellcenters.x;
+% r = u.domain.cellcenters.x;
 rf = u.domain.facecenters.x;
 RHS = zeros(Nr+2, 1);
 psi_p = zeros(Nr+1,1);

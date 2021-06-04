@@ -4,10 +4,12 @@ function [RHS, RHSx, RHSy, RHSz] = convectionTvdRHS(u, phi, FL)
 % It also returns the x, y, x parts of the matrix of coefficient.
 %
 % SYNOPSIS:
-%
+%   [RHS, RHSx, RHSy, RHSz] = convectionTvdRHS(u, phi, FL)
 %
 % PARAMETERS:
-%
+%   u  - velocity vector, FaceVariable
+%   phi  - value of phi from the previous time step or iteration, CellVariable
+%   FL  - Flux Limiter function
 %
 % RETURNS:
 %
@@ -16,9 +18,6 @@ function [RHS, RHSx, RHSy, RHSz] = convectionTvdRHS(u, phi, FL)
 %
 % SEE ALSO:
 %
-
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 d = u.domain.dimension;
 switch d

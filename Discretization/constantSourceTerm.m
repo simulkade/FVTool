@@ -16,9 +16,6 @@ function RHS = constantSourceTerm(phi)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 d = phi.domain.dimension;
 if (d ==1) || (d==1.5) || (d==1.8)
 	RHS = constantSourceTerm1D(phi);

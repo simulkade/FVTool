@@ -4,10 +4,10 @@ function [M, Mx, My, Mz] = diffusionTerm(D)
 % It also returns the x and y parts of the matrix of coefficient.
 %
 % SYNOPSIS:
-%
+%   [M, Mx, My, Mz] = diffusionTerm(D)
 %
 % PARAMETERS:
-%
+%   D   - diffusion coefficient, FaceVariable
 %
 % RETURNS:
 %
@@ -17,8 +17,6 @@ function [M, Mx, My, Mz] = diffusionTerm(D)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 d = D.domain.dimension;
 switch d

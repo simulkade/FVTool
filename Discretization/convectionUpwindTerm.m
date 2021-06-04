@@ -7,7 +7,7 @@ function [M, Mx, My, Mz] = convectionUpwindTerm(u, varargin)
 %   [M, Mx, My, Mz] = convectionUpwindTerm(u)
 %
 % PARAMETERS:
-%
+%   u   - velovity vector, face variable
 %
 % RETURNS:
 %
@@ -16,9 +16,6 @@ function [M, Mx, My, Mz] = convectionUpwindTerm(u, varargin)
 %
 % SEE ALSO:
 %
-
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 d = u.domain.dimension;
 if nargin>1

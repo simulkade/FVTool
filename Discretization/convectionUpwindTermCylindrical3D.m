@@ -17,8 +17,6 @@ function [M, Mx, My, Mz] = convectionUpwindTermCylindrical3D(u)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % extract data from the mesh structure
 Nr = u.domain.dims(1);

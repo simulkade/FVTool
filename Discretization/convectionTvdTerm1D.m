@@ -17,12 +17,9 @@ function [M, RHS] = convectionTvdTerm1D(u, phi, FL)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 % extract data from the mesh structure
 Nx = u.domain.dims(1);
-G = [1:Nx+2];
+G = 1:Nx+2;
 DXp = u.domain.cellsize.x(2:end-1);
 dx = 0.5*(u.domain.cellsize.x(1:end-1)+u.domain.cellsize.x(2:end));
 RHS = zeros(Nx+2, 1);

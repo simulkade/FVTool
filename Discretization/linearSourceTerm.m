@@ -7,7 +7,7 @@ function M = linearSourceTerm(k)
 %   M = linearSourceTerm(k)
 %
 % PARAMETERS:
-%
+%	k   - source term, CellVariable
 %
 % RETURNS:
 %
@@ -16,9 +16,6 @@ function M = linearSourceTerm(k)
 %
 % SEE ALSO:
 %
-
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 d = k.domain.dimension;
 if (d ==1) || (d==1.5) || (d==1.5)

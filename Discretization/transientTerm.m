@@ -20,9 +20,6 @@ function [M, RHS] = transientTerm(phi_old, dt, varargin)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 d = phi_old.domain.dimension;
 if (d ==1) || (d==1.5) || (d==1.8)
 	% extract data from the mesh structure
