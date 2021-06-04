@@ -1,8 +1,6 @@
 classdef MeshStructure
-    %CELLVARIABLE Summary of this class goes here
-    %   Detailed explanation goes here
-    % Copyright (c) 2012-2016 Ali Akbar Eftekhari
-    % See the license file
+    %MeshStructure class
+    % contains information about the domain and the mesh size
 
     properties
         dimension
