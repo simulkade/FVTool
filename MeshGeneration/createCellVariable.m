@@ -33,7 +33,7 @@ function cellvar = createCellVariable(meshvar, cellval, varargin)
 %     createMeshCylindrical1D, createMeshCylindrical2D,
 %     createMeshCylindrical3D, cellBoundary, combineBC
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 % check the size of the variable and the mesh dimension

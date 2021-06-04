@@ -1,6 +1,7 @@
 function MS = createMeshTilted2D(Nx, Ny, p1, p2, p3, p4)
-% MeshStructure = createMeshTilted2D(Nx, Ny, p1, p2, p3, p4)
-% builds a uniform 2D tilted mesh:
+% DOES NOT WORK!
+  % MeshStructure = createMeshTilted2D(Nx, Ny, p1, p2, p3, p4)
+% creates a uniform 2D tilted mesh:
 % Nx is the number of cells in x (horizontal) direction
 % Ny is the number of cells in y (vertical) direction
 % p  is the coordinate of the domain corners
@@ -10,7 +11,7 @@ function MS = createMeshTilted2D(Nx, Ny, p1, p2, p3, p4)
 %    p1 -----------p4
 %
 % SYNOPSIS:
-%   MeshStructure = buildMesh2D(Nx, Ny, Lx, Ly)
+%   MeshStructure = createMesh2D(Nx, Ny, Lx, Ly)
 %
 % PARAMETERS:
 %   Nx: number of cells in the x direction
@@ -39,18 +40,19 @@ function MS = createMeshTilted2D(Nx, Ny, p1, p2, p3, p4)
 %   Ny = 7;
 %   Lx = 10;
 %   Ly = 20;
-%   m = buildMesh2D(Nx, Ny, Lx, Ly);
+%   m = createMesh2D(Nx, Ny, Lx, Ly);
 %   [X, Y] = ndgrid(m.cellcenters.x, m.cellcenters.y);
 %   [Xf,Yf]=ndgrid(m.facecenters.x, m.facecenters.y);
 %   plot(X, Y, 'or', ...
 %        Xf, Yf, '-b', Xf', Yf', '-b');
 %
 % SEE ALSO:
-%     buildMesh1D, buildMesh3D, buildMeshCylindrical1D, ...
-%     buildMeshCylindrical2D, createCellVariable, createFaceVariable
+%     createMesh1D, createMesh3D, createMeshCylindrical1D, ...
+%     createMeshCylindrical2D, createCellVariable, createFaceVariable
 
-% Copyright (c) 2012-2019 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
+
 
 x_vertices_left = linspace(p1(1), p2(1), Ny+1);
 x_vertices_right = linspace(p4(1), p3(1), Ny+1);

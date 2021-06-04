@@ -19,9 +19,8 @@ function cellvol = cellVolume(meshvar)
 %     buildMesh2D, buildMesh3D,
 %     buildMeshCylindrical1D, buildMeshCylindrical2D,
 %     cellBoundary, combineBC
-
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
+%
+% Written by Ali A. Eftekhari
 
 % check the size of the variable and the mesh dimension
 dim = meshvar.dimension;

@@ -1,7 +1,7 @@
 function MS = createMeshSpherical3D(varargin)
 % MeshStructure = createMesh3D(Nr, Ntheta, Nz, Radius, theta, height)
 % MeshStructure = createMesh3D(facelocationR, facelocationTheta, facelocationPhy)
-% builds a uniform 3D mesh:
+% creates a uniform 3D mesh:
 % Nx is the number of cells in x (horizontal) direction
 % Ny is the number of cells in y (vertical) direction
 % Nz is the number of cells in z (perpendicular) direction
@@ -10,7 +10,7 @@ function MS = createMeshSpherical3D(varargin)
 % Lz is the domain length in z direction
 %
 % SYNOPSIS:
-%   MeshStructure = buildMesh3D(Nx, Ny, Nz, Lx, Ly, Lz)
+%   MeshStructure = createMesh3D(Nx, Ny, Nz, Lx, Ly, Lz)
 %
 % PARAMETERS:
 %   Nx: number of cells in the x direction
@@ -46,7 +46,7 @@ function MS = createMeshSpherical3D(varargin)
 %   Ly = 2.0;
 %   Nz = 4;
 %   Lz = 3.0;
-%   m = buildMesh3D(Nx, Ny, Nz, Lx, Ly, Lz);
+%   m = createMesh3D(Nx, Ny, Nz, Lx, Ly, Lz);
 %   [X, Y, Z] = ndgrid(m.cellcenters.x, m.cellcenters.y, m.cellcenters.z);
 %   [Xf, Yf, Zf] = ndgrid(m.facecenters.x, m.facecenters.y, m.facecenters.z);
 %   plot3(X(:), Y(:), Z(:), 'or')
@@ -55,10 +55,10 @@ function MS = createMeshSpherical3D(varargin)
 %   legend('cell centers', 'cell corners');
 %
 % SEE ALSO:
-%     buildMesh1D, buildMesh2D, buildMeshCylindrical1D, ...
-%     buildMeshCylindrical2D, createCellVariable, createFaceVariable
+%     createMesh1D, createMesh2D, createMeshCylindrical1D, ...
+%     createMeshCylindrical2D, createCellVariable, createFaceVariable
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 if nargin==6

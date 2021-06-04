@@ -3,7 +3,7 @@ function cellvec = createCellVector(meshvar, cellval)
 % size. For instance it can be used to create a gravity field.
 %
 % SYNOPSIS:
-%
+%   cellvec = createCellVector(meshvar, cellval)
 %
 % PARAMETERS:
 %
@@ -16,7 +16,7 @@ function cellvec = createCellVector(meshvar, cellval)
 % SEE ALSO:
 %     cellBoundary
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 % check the size of the variable and the mesh dimension

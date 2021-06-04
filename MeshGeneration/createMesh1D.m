@@ -1,7 +1,7 @@
 function MS = createMesh1D(varargin)
 % MeshStructure = createMesh1D(Nx, Width)
 % MeshStructure = createMesh1D(facelocationX)
-% builds a uniform 1D mesh:
+% creates a uniform 1D mesh:
 % Nx is the number of cells in x (horizontal) direction
 % Width is the domain length in x direction
 %
@@ -32,10 +32,10 @@ function MS = createMesh1D(varargin)
 %   legend('cell centers', 'face centers');
 %
 % SEE ALSO:
-%     buildMesh2D, buildMesh3D, buildMeshCylindrical1D, ...
-%     buildMeshCylindrical2D, createCellVariable, createFaceVariable
+%     createMesh2D, createMesh3D, createMeshCylindrical1D, ...
+%     createMeshCylindrical2D, createCellVariable, createFaceVariable
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 if nargin==2

@@ -1,14 +1,14 @@
 function MS = createMeshCylindrical2D(varargin)
-% MeshStructure = buildMeshCylindrical2D(Nr, Ny, Lr, Ly)
-% MeshStructure = buildMeshCylindrical2D(facelocationR, facelocationY)
-% builds a uniform 2D mesh on a cylindrical coordinate:
+% MeshStructure = createMeshCylindrical2D(Nr, Ny, Lr, Ly)
+% MeshStructure = createMeshCylindrical2D(facelocationR, facelocationY)
+% creates a uniform 2D mesh on a cylindrical coordinate:
 % Nr is the number of cells in r (radial) direction
 % Ny is the number of cells in y (vertical) direction
 % Lr is the domain length in r direction
 % Ly is the domain length in y direction
 %
 % SYNOPSIS:
-%   MeshStructure = buildMeshCylindrical2D(Nr, Ny, Lr, Ly)
+%   MeshStructure = createMeshCylindrical2D(Nr, Ny, Lr, Ly)
 %
 % PARAMETERS:
 %   Nr: number of cells in the x direction
@@ -37,17 +37,17 @@ function MS = createMeshCylindrical2D(varargin)
 %   Ny = 7;
 %   R = 10;
 %   Ly = 20;
-%   m = buildMeshCylindrical2D(Nx, Ny, Lx, Ly);
+%   m = createMeshCylindrical2D(Nx, Ny, Lx, Ly);
 %   [X, Y] = ndgrid(m.cellcenters.x, m.cellcenters.y);
 %   [Xf,Yf]=ndgrid(m.facecenters.x, m.facecenters.y);
 %   plot(X, Y, 'or', ...
 %        Xf, Yf, '-b', Xf', Yf', '-b');
 %
 % SEE ALSO:
-%     buildMesh1D, buildMesh3D, buildMeshCylindrical1D, ...
-%     buildMeshCylindrical2D, createCellVariable, createFaceVariable
+%     createMesh1D, createMesh3D, createMeshCylindrical1D, ...
+%     createMeshCylindrical2D, createCellVariable, createFaceVariable
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 if nargin==4

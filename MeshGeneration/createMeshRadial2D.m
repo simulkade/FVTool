@@ -1,7 +1,7 @@
 function MS = createMeshRadial2D(varargin)
 % MeshStructure = createMeshRadial2D(Nr, Ntetta, Lr, Tetta)
 % MeshStructure = createMeshRadial2D(facelocationR, facelocationTetta)
-% builds a uniform 2D mesh on a Radia coordinate:
+% creates a uniform 2D mesh on a Radia coordinate:
 % imagine a top view slice of pie
 % Nr is the number of cells in r (radial) direction
 % Ntetta is the number of cells in tetta direction
@@ -9,7 +9,7 @@ function MS = createMeshRadial2D(varargin)
 % Tetta is the domain length in tetta direction
 %
 % SYNOPSIS:
-%   MeshStructure = buildMeshRadial2D(Nr, Ntetta, Lr, Tetta)
+%   MeshStructure = createMeshRadial2D(Nr, Ntetta, Lr, Tetta)
 %
 % PARAMETERS:
 %   Nr: number of cells in the x direction
@@ -45,10 +45,10 @@ function MS = createMeshRadial2D(varargin)
 %        Xf, Yf, '-b', Xf', Yf', '-b');
 %
 % SEE ALSO:
-%     buildMesh1D, buildMesh3D, buildMeshCylindrical1D, ...
-%     buildMeshCylindrical2D, createCellVariable, createFaceVariable
+%     createMesh1D, createMesh3D, createMeshCylindrical1D, ...
+%     createMeshCylindrical2D, createCellVariable, createFaceVariable
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 if nargin==4

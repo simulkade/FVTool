@@ -1,12 +1,12 @@
 function MS = createMeshCylindrical1D(varargin)
 % MeshStructure = createMeshCylindrical1D(Nr, Lr)
 % MeshStructure = createMeshCylindrical1D(facelocationR)
-% builds a uniform 1D mesh (1D axial symmetry):
+% creates a uniform 1D mesh (1D axial symmetry):
 % Nx is the number of cells in r (radial) direction
 % Width is the domain radius in r direction
 %
 % SYNOPSIS:
-%   MeshStructure = buildMeshCylindrical1D(Nr, Lr)
+%   MeshStructure = createMeshCylindrical1D(Nr, Lr)
 %
 % PARAMETERS:
 %   Nr: number of cells in the domain
@@ -26,16 +26,16 @@ function MS = createMeshCylindrical1D(varargin)
 % EXAMPLE:
 %   R = 1.0; % length of the domain
 %   Nr = 10; % number of cells in the domain
-%   m = buildMeshCylindrical1D(Nr, R);
+%   m = createMeshCylindrical1D(Nr, R);
 %   plot(m.cellcenters.x, ones(size(m.cellcenters.x)), 'o', ...
 %        m.facecenters.x, ones(size(m.facecenters.x)), '-+');
 %   legend('cell centers', 'face centers');
 %
 % SEE ALSO:
-%     buildMesh1D, buildMesh2D, buildMesh3D, ...
-%     buildMeshCylindrical2D, createCellVariable, createFaceVariable
+%     createMesh1D, createMesh2D, createMesh3D, ...
+%     createMeshCylindrical2D, createCellVariable, createFaceVariable
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 if nargin==2
