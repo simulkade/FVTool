@@ -3,7 +3,7 @@ function [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTerm3D(F)
 % average flux vector facevariable, which is a face vector
 %
 % SYNOPSIS:
-%
+%       [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTerm3D(F)
 %
 % PARAMETERS:
 %
@@ -16,8 +16,6 @@ function [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTerm3D(F)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % extract data from the mesh structure
 Nx = F.domain.dims(1);

@@ -16,9 +16,6 @@ function [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTerm(F)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 RHSdivz=[];
 
 d = F.domain.dimension;
@@ -34,8 +31,7 @@ switch d
     case 2.5
         [RHSdiv, RHSdivx, RHSdivy] = divergenceTermCylindrical2D(F);
     case 2.8
-        [RHSdiv, RHSdivx, RHSdivy] = ...
-            divergenceTermRadial2D(F);
+        [RHSdiv, RHSdivx, RHSdivy] = divergenceTermRadial2D(F);
     case 3
         [RHSdiv, RHSdivx, RHSdivy, RHSdivz] = divergenceTerm3D(F);
     case 3.2

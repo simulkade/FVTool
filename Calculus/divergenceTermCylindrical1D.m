@@ -3,7 +3,7 @@ function RHSdiv = divergenceTermCylindrical1D(F)
 % average value and the vector u, which is a face vector
 %
 % SYNOPSIS:
-%
+%       RHSdiv = divergenceTermCylindrical1D(F)
 %
 % PARAMETERS:
 %
@@ -15,9 +15,6 @@ function RHSdiv = divergenceTermCylindrical1D(F)
 %
 % SEE ALSO:
 %
-
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % extract data from the mesh structure
 Nr = F.domain.dims(1);

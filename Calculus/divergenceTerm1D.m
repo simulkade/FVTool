@@ -16,8 +16,6 @@ function RHSdiv = divergenceTerm1D(F)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % extract data from the mesh structure
 Nx = F.domain.dims(1);

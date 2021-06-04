@@ -16,8 +16,6 @@ function cellGrad = gradientCellTerm(phi)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 phi_face=linearMean(phi);
 d = phi.domain.dimension;

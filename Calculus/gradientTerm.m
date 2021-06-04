@@ -4,7 +4,7 @@ function faceGrad = gradientTerm(phi)
 % estimate them, assuming a zero gradient on the boundaries
 %
 % SYNOPSIS:
-%
+%   faceGrad = gradientTerm(phi)
 %
 % PARAMETERS:
 %

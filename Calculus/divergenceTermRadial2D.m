@@ -1,10 +1,9 @@
-function [RHSdiv, RHSdivx, RHSdivy] = ...
-            divergenceTermRadial2D(F)
+function [RHSdiv, RHSdivx, RHSdivy] = divergenceTermRadial2D(F)
 % This function calculates the divergence of a field using its face
 % average value and the vector u, which is a face vector
 %
 % SYNOPSIS:
-%
+%   [RHSdiv, RHSdivx, RHSdivy] = divergenceTermRadial2D(F)
 %
 % PARAMETERS:
 %
@@ -16,9 +15,6 @@ function [RHSdiv, RHSdivx, RHSdivy] = ...
 %
 % SEE ALSO:
 %
-
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % extract data from the mesh structure
 Nr = F.domain.dims(1);
