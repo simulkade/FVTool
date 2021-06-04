@@ -1,6 +1,7 @@
 function perm=field3d(Nx,Ny,Nz,k_avg,V_dp,clx,cly,clz)
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
+% Does not work! Needs lots of improvements
 Lx=1.0; % domain length
 x=linspace(-Lx/2.0,Lx/2.0,Nx);
 y=linspace(-Lx/2.0,Lx/2.0,Ny);

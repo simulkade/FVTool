@@ -1,4 +1,5 @@
 % capillary pressure curve for drainage
+% Written by Ali A. Eftekhari
 function res=pc_drain(sw, pce, swc, labda)
 pc0=1.0e7;
 res=zeros(size(sw));

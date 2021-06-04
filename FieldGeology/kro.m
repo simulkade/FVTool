@@ -1,5 +1,6 @@
 % relperm and capillary pressure curves
 % to be used with FVTool package
+% Written by Ali A. Eftekhari
 function res=kro(sw, kro0, sor, swc, no)
 res=zeros(size(sw));
 for i=1:numel(sw)  

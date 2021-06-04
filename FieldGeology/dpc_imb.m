@@ -1,4 +1,5 @@
 % imbibition capillary pressure curve
+% Written by Ali A. Eftekhari
 function res=dpc_imb(sw, pce, swc, sor, teta, labda, b)
   dpc1=dpc_drain(sw, pce, swc, labda);
   dpc2=dpc_drain(1-sw, pce, sor, labda);

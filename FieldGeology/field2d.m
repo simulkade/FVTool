@@ -1,6 +1,7 @@
 function perm=field2d(Nx,Ny,k_avg,V_dp,clx,cly)
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
+% Note: a very very simple approach! Use it with utmost care :-)
 Lx=1.0; % domain length
 x=linspace(-Lx/2.0,Lx/2.0,Nx);
 y=linspace(-Lx/2.0,Lx/2.0,Ny);
