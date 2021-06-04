@@ -1,8 +1,8 @@
 % a tutorial adapted from the fipy convection diffusion 1D example
 % see: http://www.ctcms.nist.gov/fipy/examples/convection/index.html
-
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
 clc
-clear
 %% define the domain
 L = 1;  % domain length
 Nx = 25; % number of cells
@@ -29,7 +29,9 @@ RHS = -RHSbc;
 c = solvePDE(meshstruct, M, RHS);
 c_upwind = solvePDE(meshstruct, Mupwind, RHS);
 c_analytical = (1-exp(u*x/D_val))/(1-exp(u*L/D_val));
-figure(1);plot(x, c.value(2:Nx+1), 'linewidth', 2, ...
- x, c_upwind.value(2:Nx+1), '-r', 'linewidth', 2, ...
-  x, c_analytical, '^', 'linewidth', 2);
+figure(1)
+hold all
+plot(x, c.value(2:Nx+1), 'linewidth', 2);
+plot(x, c_upwind.value(2:Nx+1), '-r', 'linewidth', 2);
+plot(x, c_analytical, '^', 'linewidth', 2);
 legend('central', 'upwind', 'analytical');

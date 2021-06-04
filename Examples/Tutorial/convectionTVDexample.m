@@ -1,8 +1,12 @@
 % another simple 1D convection example with periodic BC
 % diffusion coefficients are defined but not used
 % It compares the results of upwind with TVD and shows how diffusive the upwind
-% scheme can be
-clc; clear;
+% See how diffusive the upwind scheme can be althou it is so bad 
+% everywhere. Play with flux limiters, time steps, initial condition and time steps
+% and see the difference between schemes in action
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+clc
 % define a 1D domain and mesh
 W = 1;
 Nx = 500;

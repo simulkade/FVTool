@@ -2,7 +2,10 @@
 % Buckley Leverett equation
 % dependent variables: pressure and water saturation
 % Prepared for educational purposes by ** AAE **
-clc; clear;
+% TVD scheme, really sharp fronts! Not too bad computationally.
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+clc
 %% define the geometry
 Nx = 200; % number of cells in x direction
 Ny = 150; % number of cells in y direction

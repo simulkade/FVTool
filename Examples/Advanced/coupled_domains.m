@@ -2,6 +2,9 @@
 % works
 % heat transfer between two 1D domains; it can be solved without copling in
 % only one domain, which helps to compare the results
+% tried to couple two domainsl does not work as far as I can tell :-(
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
 Nx = 10;
 Lx = 0.2;
 k1 = 0.1; % J/(m.s.K)

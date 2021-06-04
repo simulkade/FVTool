@@ -2,6 +2,10 @@
 % Buckley Leverett equation
 % dependent variables: pressure and water saturation
 % Prepared for educational purposes by ** AAE **
+% For whatever reason, the code is very slow and does not converge
+% DOES NOT WORK WELL
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
 clc; clear;
 %% define the geometry
 Nx = 50; % number of cells in x direction

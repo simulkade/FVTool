@@ -1,8 +1,10 @@
 % a tutorial adapted from the fipy diffusion 1D example
 % see: http://www.ctcms.nist.gov/fipy/examples/diffusion/index.html
 
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
 clc
-clear
+
 
 %% define the domain
 L = 5;  % domain length
@@ -21,7 +23,7 @@ c_old = createCellVariable(meshstruct, 0, BC); % initial values
 c = c_old;
 %% loop
 dt = 0.001; % time step
-final_t = 1.5;
+final_t = 0.5;
 for t=dt:dt:final_t
     % step 1: calculate divergence term
     RHS = divergenceTerm(Dave.*gradientTerm(c_old));

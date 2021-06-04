@@ -1,14 +1,15 @@
 %% Transient diffusion equation
-% a tutorial adapted from the fipy 1D diffusion example
-% see: <http://www.ctcms.nist.gov/fipy/examples/diffusion/index.html>
-%% PDE and boundary conditions
-% The transient diffusion equation reads
-%
-% $$\alpha\frac{\partial c}{\partial t}+\nabla.\left(-D\nabla c\right)=0,$$
-%
-% where $c$ is the independent variable (concentration, temperature, etc)
-% , $D$ is the diffusion coefficient, and $\alpha$ is a constant.
-clc; clear;
+% This example solves diffusion-adsorption equation
+% assume a fluid domain with fixed concentration on both ends. A solute
+% diffuses into the domain and gets adsorbed on a solid surface.
+% If the concentration in the domain goes above 80% of the boundary 
+% concentration, we record it as a change of surface properties and finally plot how the 
+% surface properties of the whole domain changes versus time.
+% this is part of our paper:
+% https://pubs.acs.org/doi/abs/10.1021/acs.energyfuels.0c02493
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+clc
 %% partameters
 a = 1e9; % m^2/m^3
 k = 1e-4; % Langmuir adsorption coefficient
@@ -38,7 +39,7 @@ dt = 100; % time step
 final_t = 2000*dt;
 t_mod_wet = 0:dt:final_t;
 mod_area = zeros(size(t_mod_wet));
-hold all
+% hold all
 i=1;
 for t=dt:dt:final_t
     for j = 1:3
@@ -48,7 +49,7 @@ for t=dt:dt:final_t
         c = solvePDE(m,M, RHS);
     end
     c_old = c;
-    visualizeCells(c); drawnow;
+    % visualizeCells(c); drawnow;
     % find the 80% index
     ind_80 = find(c.value(2:end-1)<0.8,1, 'first');
     i=i+1;

@@ -1,6 +1,10 @@
 % BURGER's equation; there are still a few strange outputs when I use TVD
 % but in general works just fine, wait for a blog post
-clc; clear;
+% The solution does not look bad and kind of satisfying to look at.
+% increate the number of iteration if you plan to bore yourself to death.
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+clc;
 % define a 1D mesh
 W = 1;
 Nx = 600;
@@ -34,7 +38,7 @@ phi_face = linearMean(phi);
 % solver
 dt = 0.001;
 t = 0;
-for i = 1:100000
+for i = 1:1000
     t = t+dt;
     % define the transient term
     [Mt, RHSt] = transientTerm(phi_old, dt, alfa);

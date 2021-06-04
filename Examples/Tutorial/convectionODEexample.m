@@ -1,6 +1,11 @@
 % another simple convection example using method of lines, still a bit
 % messy, wait for a blog post
-clc; clear;
+% Using Matlab ODE solvers to solve a convective flux that 
+% moves a plume in diagonal direction
+% see how terribly diffusive the solution is!
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+clc
 % define a 2D mesh
 H = 1;
 W = 1;
@@ -34,7 +39,7 @@ Mdif = diffusionTerm(Df);
 % solver
 final_t = 500;
 % define the transient term
-[M, RHS] = combineBC2D(mesh1, BC, Mconv, ...
+[M, RHS] = combineBC2D(BC, Mconv, ...
     zeros((Nx+2)*(Ny+2),1));
 % eq: dcdt = D d2c/dx2
 dcdt = @(t,c)(-M*c-RHS);

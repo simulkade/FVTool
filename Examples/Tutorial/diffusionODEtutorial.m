@@ -2,6 +2,9 @@
 % see: http://www.ctcms.nist.gov/fipy/examples/diffusion/index.html
 % How to convert a PDE into an ODE and solve it using a matlab ode solver
 % needs more documentation
+% If you want to have better time-stepping with Matlab ODE solver, use this example
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
 clc
 clear
 
@@ -24,8 +27,7 @@ c_value = c_old;
 dt = 0.1; % time step
 final_t = 100;
 Mdiff = diffusionTerm(D);
-[M, RHS] = combineBC1D(meshstruct, BC, Mdiff, ...
-    zeros(Nx+2,1));
+[M, RHS] = combineBC(BC, Mdiff, zeros(Nx+2,1));
 % eq: dcdt = D d2c/dx2
 dcdt = @(t,c)(M*c-RHS);
 [t_temp, c_temp] = ode45(dcdt, [0 final_t], internalCells(c_old));

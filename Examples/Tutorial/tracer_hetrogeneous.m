@@ -1,4 +1,6 @@
 % see http://fvt.simulkade.com/posts/2015-05-11-tracer-flow-porous-media.html
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
 Nx=50;
 Ny=50;
 Lx=1.0; % (m)

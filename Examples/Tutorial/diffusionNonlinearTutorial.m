@@ -1,5 +1,8 @@
 % Nonlinear diffusion equation: a tutorial
 % see http://fvt.simulkade.com/posts/2015-04-06-solving-nonlinear-pdes-with-fvm.html
+% This one is a nonlinear PDE, linearized, and discretized (see the blog post)
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
 L= 1.0; % domain length
 Nx= 100; % number of cells
 m= createMesh1D(Nx, L); % create a 1D mesh

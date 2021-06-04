@@ -1,4 +1,6 @@
-clc; clear; % clean the command prompt, clean the memory
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+clc % clean the command prompt
 L = 0.1; % 10 cm length
 W = 0.01; % 1 cm thickness
 Nx = 50; % number of cell in x direction

@@ -1,4 +1,7 @@
-clc; clear;
+% I'm sure this one is not mine; I think it was Fran who wrote it.
+% Last checked: June 2021
+
+clc
 % define parameters
 c0 = 1;
 

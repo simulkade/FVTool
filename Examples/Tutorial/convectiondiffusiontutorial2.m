@@ -1,8 +1,8 @@
 % a tutorial adapted from the fipy convection diffusion 1D example
 % see: http://www.ctcms.nist.gov/fipy/examples/convection/index.html
-
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
 clc
-clear
 %% define the domain
 L = 1;  % domain length
 Nx = 25; % number of cells

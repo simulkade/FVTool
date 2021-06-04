@@ -6,7 +6,11 @@
 %
 % where $c$ is the independent variable (concentration, temperature, etc)
 % , $D$ is the diffusion coefficient, and $\alpha$ is a constant.
-clc; clear;
+% This is another example that shows how to assigtn different boundary conditions 
+% to different sections of the boundary.
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+clc
 
 %% Define the domain and create a mesh structure
 L = 10;  % domain length

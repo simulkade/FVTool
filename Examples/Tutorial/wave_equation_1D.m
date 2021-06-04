@@ -1,4 +1,6 @@
-clc; clear;
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+clc
 c=@(x)(x.^2);
 dc=@(x)(2*x);
 Lx=1.0;

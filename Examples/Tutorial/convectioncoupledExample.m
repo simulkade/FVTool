@@ -1,8 +1,11 @@
 % 1D convection coupled example with source terms
 % diffusion coefficients are defined but not used
 % three equations are coupled
-% scheme can be
-clc; clear;
+% scheme can be switched from upwind to TVD by 
+% adding a few more lines of code
+% written by Ali A. Eftekhari
+% Last checked: June 2021
+clc
 % define a 1D domain and mesh
 W = 1;
 Nx = 300;
@@ -47,7 +50,7 @@ final_t = W/max(V);
 t = 0;
 while t<final_t
     t = t+dt;
-    % inner loop for TVD scheme
+    % inner loop can be written for TVD scheme
     [Mt1, RHSt1] = transientTerm(phi1_old, dt, alfa);
     [Mt2, RHSt2] = transientTerm(phi2_old, dt, alfa);
     [Mt3, RHSt3] = transientTerm(phi3_old, dt, alfa);

@@ -2,7 +2,13 @@
 % Buckley Leverett equation
 % dependent variables: pressure and water saturation
 % Prepared for educational purposes by ** AAE **
-clc; clear;
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+% Spontaneous imbibition in 2D cylindrical coordinate
+% the code works fine and model the effect of wettability
+% it is slow for parameter estimation purposes, otherwise fine
+% 
+clc
 %% define the geometry
 Nx = 20; % number of cells in x direction
 Ny = 50; % number of cells in y direction

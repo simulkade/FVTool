@@ -6,7 +6,11 @@
 %
 % where $c$ is the independent variable (concentration, temperature, etc)
 % , $D$ is the diffusion coefficient, and $\alpha$ is a constant.
-clc; clear;
+% OK this is a strange example; I vary the velocity field and the diffusion 
+% coefficient in each cell, so it shows how you can do the same.
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+clc
 H=@(x)((x>0)+0.5*ones(size(x)).*(x==0));
 %% Define the domain and create a mesh structure
 L = 10;  % domain length
@@ -30,6 +34,14 @@ u = createFaceVariable(m, 0.0);
 c_init = 1;
 c_old = createCellVariable(m, c_init,BC); % initial values
 c = c_old; % assign the old value of the cells to the current values
+% assign different values of velocity and diffusivity
+D = createCellVariable(m, 0.1+0.01*sin(X));
+Dave = harmonicMean(D);
+u.xvalue=0.5+0.03*cos(Xf); % they all shoud be on the cell faces
+Mdiff = diffusionTerm(Dave);
+
+f=createCellVariable(m,0.0); % source term
+RHS_f=constantSourceTerm(f);
 %% loop
 [Mbc, RHSbc] = boundaryCondition(BC);
 FL = fluxLimiter('Superbee');
@@ -37,14 +49,8 @@ dt = 1; % time step
 final_t = 50;
 for t=dt:dt:final_t
     [M_trans, RHS_trans] = transientTerm(c_old, dt, alfa);
-    D = createCellVariable(m, 0.1+0.01*sin(X));
-    Dave = harmonicMean(D);
-    u.xvalue=0.5+0.03*cos(Xf); % they all shoud be on the cell faces
-    Mdiff = diffusionTerm(Dave);
     Mconv = convectionTvdTerm(u, c, FL);
     M = M_trans-Mdiff+Mbc+Mconv;
-    f=createCellVariable(m,0.0); % source term
-    RHS_f=constantSourceTerm(f);
     RHS = RHS_trans+RHSbc;
     c = solvePDE(m,M, RHS);
     c_old = c;

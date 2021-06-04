@@ -1,4 +1,6 @@
-% data1: sea-water Pc, table 4, reservoir
+% data1: sea-water Pc
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
 data{1}=[0.073 249
 0.085 45
 0.09 15

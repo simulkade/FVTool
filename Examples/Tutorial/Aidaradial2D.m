@@ -6,7 +6,9 @@
 %
 % where $c$ is the independent variable (concentration, temperature, etc)
 % , $D$ is the diffusion coefficient, and $\alpha$ is a constant.
-clc; clear;
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+clc;
 
 %% Define the domain and create a mesh structure
 L = 10;  % domain length
@@ -34,7 +36,7 @@ c_init = 0.1;
 c_old = createCellVariable(m, c_init,BC); % initial values
 c = c_old; % assign the old value of the cells to the current values
 %% loop
-dt = 0.1; % time step
+dt = 0.5; % time step
 final_t = 7;
 Dave = harmonicMean(D);
 Mdiff = diffusionTerm(Dave);

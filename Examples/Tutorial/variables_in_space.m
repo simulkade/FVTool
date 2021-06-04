@@ -1,5 +1,8 @@
 % How to use cellLocations and faceLocations functions to define cell and
 % face values, variable in space
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+
 % Cell Variable:
 m=createMesh2D(30, 20, 5.0, 3.0);
 [X, Y, Z]=cellLocations(m);

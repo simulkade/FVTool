@@ -2,7 +2,10 @@
 % Buckley Leverett equation
 % dependent variables: pressure and water saturation
 % Prepared for educational purposes by ** AAE **
-clc; clear;
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+% works fine, field scale simulation of low-sal
+clc
 %% define the geometry
 Nx = 100; % number of cells in x direction
 Ny = 30; % number of cells in y direction

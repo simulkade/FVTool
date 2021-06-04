@@ -4,13 +4,17 @@
 % Buckley Leverett equation
 % dependent variables: pressure and water saturation
 % Prepared for educational purposes by ** AAE **
-clc; clear;
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+% This code works fine (two phase flow + Pc) and shows the effect of Pc
+% in the simulation of a heterogeneous 2D field.
+clc
 %% define the geometry
 Nx = 100; % number of cells in x direction
 Ny = 30; % number of cells in y direction
 W = 300; % [m] length of the domain in x direction
 H = 30; % [m] length of the domain in y direction
-m = createMesh1D(Nx, W);
+% m = createMesh1D(Nx, W);
 m = createMesh2D(Nx, Ny, W, H); % creates a 2D mesh
 %% define the physical parametrs
 krw0 = 1.0;

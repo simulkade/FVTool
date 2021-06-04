@@ -2,6 +2,9 @@
 % dependent variables: pressure
 % Prepared for educational purposes by Ali Akbar Eftekhari
 % DTU, a cold Friday afternoon
+% Does not work well
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
 clc; clear;
 %% define the geometry
 Nx = 50; % number of cells in x direction

@@ -8,7 +8,9 @@
 %
 % where $c$ is the independent variable (concentration, temperature, etc)
 % , $D$ is the diffusion coefficient, and $\alpha$ is a constant.
-clc; clear;
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+clc
 
 %% Define the domain and create a mesh structure
 L = 50;  % domain length

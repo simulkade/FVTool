@@ -2,7 +2,10 @@
 % Buckley Leverett equation
 % dependent variables: pressure and water saturation
 % Prepared for educational purposes by ** AAE **
-clc; clear;
+% Works fine; slow!
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+clc
 %% define the geometry
 well_radius = 0.1; % [m]
 x_well_radius = 10*well_radius; % area close to the well

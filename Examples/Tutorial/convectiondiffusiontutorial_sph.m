@@ -1,7 +1,7 @@
 % convection diffusion in a spherical coodinate (1D)
-
+% I don't remember correctly if I wrote it myself or one of the users did
+% Last checked: June 2021
 clc
-clear
 %% define the domain
 L = 1;  % domain length
 Nx = 25; % number of cells

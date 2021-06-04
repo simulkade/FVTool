@@ -4,8 +4,9 @@
 % Strange behavior when change the number of grids from even to odd
 % Wrong results does not always mean that the code has bugs.
 % Wrong use of the code can also give you wrong results
-clc; clear;
-
+% Written by Ali A. Eftekhari
+% Last checked: June 2021
+clc
 %% Define the domain and create a mesh structure
 L = 20;  % domain length
 Nx = 10000; % number of cells
