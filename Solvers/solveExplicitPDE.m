@@ -20,7 +20,7 @@ function phi = solveExplicitPDE(phi_old, dt, RHS, BC, varargin)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari
 % See the license file
 
 % this is not the most beautiful implementation, but it works.
