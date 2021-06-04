@@ -7,6 +7,8 @@ function [m_CO2, y_CO2] = DuanSun(T, p, m_salt)
 % Copyright (c) 2012-2016 Ali Akbar Eftekhari
 % See the license file
 % R = 0.08314467; % [bar.L/(mol.K)]
+% Written by Ali A. Eftekhari at TU Delft
+
 P = p/1e5; % convert Pa to bar
 % Constants (Table 2):
 % constants for the calculation of chemical potential of CO2 in the liquid phase

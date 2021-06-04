@@ -5,7 +5,7 @@ function molar_dens = JacobsenStewart_N2(p_pa, T)
 %bar
 %   Detailed explanation goes here
 % molar_dens: [mol/m^3] gas phase molar density
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari at TU Delft
 % See the license file
 p = p_pa/101325; % convert Pa to atm
 

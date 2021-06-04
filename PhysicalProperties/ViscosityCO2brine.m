@@ -2,7 +2,7 @@ function [mu, muw, mu_brine]= ViscosityCO2brine(T, p, x_CO2, m_salt)
 % This function calculates the viscosity of the pure water, brine, and
 % water-CO2, and brine-CO2 systems
 % p is in Pa, T in K, x_CO2 is the mole fraction of CO2, mu in Pa.s
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
+% Written by Ali A. Eftekhari at TU Delft
 % See the license file
 Mwater = 0.0180153; % kg/mol
 % MCO2 = 0.04401; % kg/mol
