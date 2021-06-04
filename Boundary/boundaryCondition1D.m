@@ -17,9 +17,6 @@ function [BCMatrix, BCRHS] = boundaryCondition1D(BC)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 % extract data from the mesh structure
 Nx = BC.domain.dims(1);
 dx_1 = BC.domain.cellsize.x(1);

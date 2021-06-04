@@ -1,9 +1,10 @@
 function phiBC = cellBoundary(phi, BC)
 % This function calculates the value of the boundary cells and add them
-% to the variable phi
+% to the variable phi. The function is used to add ghost cells to a matrix
+% that specifies the cell values over a domain
 %
 % SYNOPSIS:
-%
+%   phiBC = cellBoundary(phi, BC)
 %
 % PARAMETERS:
 %
@@ -15,9 +16,6 @@ function phiBC = cellBoundary(phi, BC)
 %
 % SEE ALSO:
 %
-
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % extract data from the mesh structure
 d = BC.domain.dimension;

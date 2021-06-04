@@ -5,7 +5,7 @@ function phiBC = cellBoundaryCylindrical3D(phi, BC)
 % system of equations
 %
 % SYNOPSIS:
-%   phiBC = cellBoundary2D(MeshStructure, BC, phi)
+%   phiBC = cellBoundaryCylindrical3D(phi, BC)
 %
 % PARAMETERS:
 %   MeshStructure: a mesh structure created by buildMesh* functions
@@ -19,13 +19,11 @@ function phiBC = cellBoundaryCylindrical3D(phi, BC)
 %   m = buildMesh2D(3,4,1,1);
 %   phi = createCellVariable(m,1);
 %   bc = createBC(m);
-%   phi_with_ghost = cellBoundary(m,bc,phi)
+%   phi_with_ghost = cellBoundary(phi, bc)
 %
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % extract data from the mesh structure
 Nxyz = BC.domain.dims;

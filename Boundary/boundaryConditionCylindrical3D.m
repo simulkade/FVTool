@@ -4,7 +4,7 @@ function [BCMatrix, BCRHS] = boundaryConditionCylindrical3D(BC)
 % system of equations
 %
 % SYNOPSIS:
-%
+%       [BCMatrix, BCRHS] = boundaryConditionCylindrical3D(BC)
 %
 % PARAMETERS:
 %
@@ -16,9 +16,6 @@ function [BCMatrix, BCRHS] = boundaryConditionCylindrical3D(BC)
 %
 % SEE ALSO:
 %
-
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % Note: I use a for loop here fr more readability of the code!
 

@@ -5,10 +5,10 @@ function BC = createBC3D(meshvar)
 % The values of each boundary condition are defined as:
 % BC.<position>. :
 %               a, b, c, where
-% a*grad(phi).n + b*phi = c
+% a*grad(phi).e + b*phi = c
 %
 % SYNOPSIS:
-%
+%   BC = createBC3D(meshvar)
 %
 % PARAMETERS:
 %
@@ -20,9 +20,6 @@ function BC = createBC3D(meshvar)
 %
 % SEE ALSO:
 %
-
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % Extract number of cells from the mesh structure
 Nxyz = meshvar.dims;

@@ -5,10 +5,9 @@ function phiBC = cellBoundaryRadial2D(phi, BC)
 % system of equations
 %
 % SYNOPSIS:
-%   phiBC = cellBoundary2D(MeshStructure, BC, phi)
+%   phiBC = cellBoundaryRadial2D(phi, BC)
 %
 % PARAMETERS:
-%   MeshStructure: a mesh structure created by buildMesh* functions
 %   BC: boundary condition structure created by createBC function
 %   phi: cell variable created by createCellVariable
 %
@@ -19,13 +18,10 @@ function phiBC = cellBoundaryRadial2D(phi, BC)
 %   m = buildMesh2D(3,4,1,1);
 %   phi = createCellVariable(m,1);
 %   bc = createBC(m);
-%   phi_with_ghost = cellBoundary(m,bc,phi)
+%   phi_with_ghost = cellBoundary(phi,bc)
 %
 % SEE ALSO:
 %
-
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % Note: I use a for loop here for more readability of the code!
 

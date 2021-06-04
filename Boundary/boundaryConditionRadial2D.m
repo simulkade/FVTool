@@ -17,9 +17,6 @@ function [BCMatrix, BCRHS] = boundaryConditionRadial2D(BC)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 % extract data from the mesh structure
 Nxy = BC.domain.dims;
 Nx = Nxy(1); Ntetta = Nxy(2);

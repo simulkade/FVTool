@@ -4,7 +4,7 @@ function phiBC = cellBoundary1D(phi, BC)
 % the output includes the boundary is of the size (1..Nx+2)
 %
 % SYNOPSIS:
-%
+%   phiBC = cellBoundary1D(phi, BC)
 %
 % PARAMETERS:
 %
@@ -17,8 +17,6 @@ function phiBC = cellBoundary1D(phi, BC)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % extract data from the mesh structure
 % Nx = MeshStructure.numberofcells;

@@ -2,12 +2,10 @@ function [BCMatrix, BCRHS] = boundaryCondition(BC)
 % creates the matrix of coefficient and RHS vector
 %
 % SYNOPSIS:
-%   [BCMatrix, BCRHS] = boundaryCondition(MeshStructure, BC)
+%   [BCMatrix, BCRHS] = boundaryCondition(BC)
 %
 % PARAMETERS:
-%   MeshStructure  - a mesh structure created by buildMesh* functions
-%   BC             - Right hand side values of the boundary condition
-%   equations
+%   BC             - BoundaryCondition object created by createBC
 %
 % RETURNS:
 %   BCMatrix  - an square sparse matrix
@@ -25,9 +23,6 @@ function [BCMatrix, BCRHS] = boundaryCondition(BC)
 %     createMeshCylindrical1D, createMeshCylindrical2D,
 %     createMeshRadial2D, createMeshCylindrical3D,
 %     cellBoundary, combineBC, createCellVariable
-
-% Copyright (c) 2012-2019 Ali Akbar Eftekhari
-% See the license file
 
 d = BC.domain.dimension;
 if (d ==1) || (d==1.5) || (d==1.8)

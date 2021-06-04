@@ -1,14 +1,9 @@
 function BC = createBC2D(meshvar)
 % function BC = createBC2D(meshvar)
 % Creates a boundary condition structure from a mesh structure
-% for a 2D mesh. The boundary conditions on all boundaries are Neumann;
-% The index of each boundary condition is defined as:
-%	1:	Dirichlet
-%	2:	Neumann
-%	3:	Mixed
 %
 % SYNOPSIS:
-%
+%   BC = createBC2D(meshvar)
 %
 % PARAMETERS:
 %
@@ -21,8 +16,6 @@ function BC = createBC2D(meshvar)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 % Extract number of cells from the mesh structure
 Nxy = meshvar.dims;

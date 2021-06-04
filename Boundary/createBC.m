@@ -1,14 +1,11 @@
 function BC = createBC(meshvar)
 % function BC = createBC(meshvar)
 % Creates a boundary condition structure from a mesh structure
-% for a 2D mesh. The boundary conditions on all boundaries are Neumann;
-% The index of each boundary condition is defined as:
-%	1:	Dirichlet
-%	2:	Neumann
-%	3:	Mixed
+% The boundary conditions on all boundaries are Neumann by default
+% and can be altered later bu the user; see examples
 %
 % SYNOPSIS:
-%
+%	BC = createBC(meshvar)
 %
 % PARAMETERS:
 %
@@ -17,12 +14,13 @@ function BC = createBC(meshvar)
 %
 %
 % EXAMPLE:
+%	L = 1.0; % length of a 1D domain
+%   Nx = 5; % Number of grids in x direction
+%   m = createMesh1D(Nx, L);
+%   BC = createBC(m); % all Neumann boundaries
 %
 % SEE ALSO:
 %
-
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
 
 d = meshvar.dimension;
 if (d == 1) || (d==1.5) || (d==1.8)

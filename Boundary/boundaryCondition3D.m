@@ -17,10 +17,7 @@ function [BCMatrix, BCRHS] = boundaryCondition3D(BC)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
-% Note: I use a for loop here fr more readability of the code!
+% Note: I use a for loop here for more readability of the code!
 
 % extract data from the mesh structure
 Nxyz = BC.domain.dims;

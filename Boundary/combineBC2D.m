@@ -1,10 +1,10 @@
-function [Mout, RHSout] = combineBC2D(MeshStructure, BC, Meq, RHSeq)
+function [Mout, RHSout] = combineBC2D(BC, Meq, RHSeq)
 %COMBINEBC This function combines the boundary condition equations with the
 %main physical model equations, and delivers the matrix of coefficient and
 %RHS to be solved for the internal cells.
 %
 % SYNOPSIS:
-%
+%   [Mout, RHSout] = combineBC2D(BC, Meq, RHSeq)
 %
 % PARAMETERS:
 %
@@ -17,15 +17,12 @@ function [Mout, RHSout] = combineBC2D(MeshStructure, BC, Meq, RHSeq)
 % SEE ALSO:
 %
 
-% Copyright (c) 2012-2016 Ali Akbar Eftekhari
-% See the license file
-
 % extract data from the mesh structure
-Nxy = MeshStructure.dims;
+Nxy = BC.domain.dims;
 Nx = Nxy(1); Ny = Nxy(2);
 G=reshape(1:(Nx+2)*(Ny+2), Nx+2, Ny+2);
-dx = MeshStructure.cellsize.x;
-dy = MeshStructure.cellsize.y;
+dx = BC.domain.cellsize.x;
+dy = BC.domain.cellsize.y;
 
 % define the RHS column vector
 ms = size(Meq);
