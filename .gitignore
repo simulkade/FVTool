@@ -1,4 +1,5 @@
 *.m~
 docs/site/
 .ipynb_checkpoints
+tags
 
