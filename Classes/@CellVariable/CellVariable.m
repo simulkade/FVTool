@@ -24,7 +24,7 @@ classdef CellVariable
         end
 
         function self = apply_BC(self, BC)
-            self.value = cellBoundary(self.value, BC);
+            self.value = cellBoundary(self.ival, BC);
         end
 
         function r = get.ival(self)
