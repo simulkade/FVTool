@@ -2,7 +2,7 @@ function r = times(p,q)
     %% Works with celltable, structs of labeled scalars or scalars
     t = table();
     if isa(p, 'CellTable')&&isa(q, 'CellTable')
-        CellTable.ctablesCompatible(p,q);
+        CellTable.fieldsCompatible(p,q);
         for idx = 1:numel(p.fields)
             field = p.fields{idx};
             t.(field) = p.T.(field) .* q.T.(field);
@@ -17,18 +17,19 @@ function r = times(p,q)
             field = p.fields{idx};
             t.(field) = q.T.(field) .* p;
         end
-    elseif isa(p, 'CellTable') && (isa(q, 'struct'))
-        CellTable.ctablesCompatible(p,q);
+    elseif isa(p, 'CellTable') && (isa(q, 'struct') || isa(q, 'CalculableStruct'))
+        CellTable.fieldsCompatible(p,q);
         for idx = 1:numel(p.fields)
             field = p.fields{idx};
             t.(field) = p.T.(field) .* q.(field);
         end
-    elseif isa(q, 'CellTable') && (isa(p, 'struct'))
-        CellTable.ctablesCompatible(p,q);
+    elseif isa(q, 'CellTable') && (isa(p, 'struct') || isa(p, 'CalculableStruct'))
+        CellTable.fieldsCompatible(p,q);
         for idx = 1:numel(q.fields)
             field = q.fields{idx};
             t.(field) = q.T.(field) .* p.(field);
         end
+    % TODO: should check for numeric scalar before doing that, and default should be error
     elseif isa(p, 'CellTable')
         for idx = 1:numel(p.fields)
             field = p.fields{idx};

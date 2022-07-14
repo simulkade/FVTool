@@ -23,13 +23,14 @@ classdef CellVariable
             end
         end
 
-        function self = apply_BC(self, BC)
-            self.value = cellBoundary(self.ival, BC);
-        end
-
         function r = get.ival(self)
             % Inner value
             r = self.value(2:end-1);
+        end
+
+        function self = set.ival(self,val)
+            % Inner value
+            self.value(2:end-1) = val;
         end
 
         function r = get.left(self)

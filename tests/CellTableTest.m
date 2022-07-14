@@ -174,6 +174,20 @@ classdef CellTableTest < matlab.unittest.TestCase
                 testCase.x.O2.ival(end) + 2 * (x_out.O2 - testCase.x.O2.ival(end)));
 
         end
+
+        function test_fieldsCompatible(testCase)
+            a.O2 = 3;
+            b.O2 = 2;
+            b.AZE = 'okje';
+
+            testCase.verifyError(@() CellTable.fieldsCompatible(a,b),...
+                "CellTable:FieldsNotCompatible")
+        end
+
+        function test_toArray(testCase)
+            mat = testCase.x.toArray();
+            testCase.verifySame(mat(1,1), testCase.x_N2_air);
+        end
             
     end
 

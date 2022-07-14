@@ -5,6 +5,8 @@ classdef CellTable < dynamicprops
     % species.
     % Implementation is an inner table to hold the cellVariables, because matlab
     % does not allow subclassing of table...
+    % It uses a lot of loops which is not the matlab way and is propbably pretty
+    % bad for performance. Maybe ok to prototype stuff though
 
     properties
         T  % inner table
@@ -20,7 +22,7 @@ classdef CellTable < dynamicprops
             arguments
                 inner_table table = table()
             end
-            ct.T = inner_table;
+            ct.T = inner_table(:, sort(inner_table.Properties.VariableNames));
             fields = CellTable.safe_fields(ct.T);
 
             for idx = 1:numel(CellTable.safe_fields(ct.T))
@@ -117,9 +119,24 @@ classdef CellTable < dynamicprops
                     loc_bc.(side) = robin(a,b,c);
                 end
 
-                self.(field) = cell_var.apply_BC(loc_bc);
+                self.(field) = applyBC(cell_var, loc_bc);
             end
         end
+
+        function new_obj = copy(obj)
+            new_obj = CellTable(obj.T);
+        end
+
+        function obj = toArray(self)
+            len = numel(self.fields);
+            obj = zeros(self.mesh.dims(1) + 2, len);
+
+            for idx_f = 1:len
+                field = self.fields{idx_f};
+                obj(:,idx_f) = self.(field).value;
+            end
+        end
+            
             
     end
 
@@ -130,6 +147,8 @@ classdef CellTable < dynamicprops
                 f = p.fields;
             elseif isa(p, 'table')
                 f = p.Properties.VariableNames;
+            elseif isa(p, 'CalculableStruct')
+                f = p.fields();
             elseif isa(p, 'struct')
                 f = fieldnames(p);
             else
@@ -137,10 +156,11 @@ classdef CellTable < dynamicprops
             end
         end
 
-        function ctablesCompatible(p,q)
-            if (numel(setdiff(CellTable.safe_fields(p), ...
-                    CellTable.safe_fields(q))) > 0)
-                error("Not same set of labels for CellTable operation");
+        function fieldsCompatible(p,q)
+            a = CellTable.safe_fields(p);
+            b = CellTable.safe_fields(q);
+            if (numel(setdiff(a,b)) > 0 || numel(setdiff(b,a)) > 0)
+                throw(MException("CellTable:FieldsNotCompatible", "Operations need fields to be the same"));
             end
         end
 
@@ -164,5 +184,6 @@ classdef CellTable < dynamicprops
 
 
     end
+
 end
 
