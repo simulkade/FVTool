@@ -1,44 +1,21 @@
 function r = rdivide(p,q)
-    %% Works with celltable, structs of labeled scalars or scalars
-    t = table();
     if isa(p, 'CellTable')&&isa(q, 'CellTable')
-        CellTable.fieldsCompatible(p,q);
-        for idx = 1:numel(p.fields)
-            field = p.fields{idx};
-            t.(field) = p.T.(field) ./ q.T.(field);
-        end
+        r = CellTable.from_array(p.mesh, p.A ./ q.A, p.field_struct);
     elseif isa(p, 'CellTable')&&isa(q, 'CellVariable')
-        for idx = 1:numel(p.fields)
-            field = p.fields{idx};
-            t.(field) = p.T.(field) ./ q;
-        end
+        r = CellTable.from_array(p.mesh, p.A ./ reshape(q.value, [1 1 p.mesh.dims(1)+2]), ...
+        p.field_struct);
     elseif isa(p, 'CellVariable')&&isa(q, 'CellTable')
-        for idx = 1:numel(p.fields)
-            field = p.fields{idx};
-            t.(field) = q.T.(field) ./ p;
-        end
-    elseif isa(p, 'CellTable') && (isa(q, 'struct') || isa(q, 'CalculableStruct'))
-        CellTable.fieldsCompatible(p,q);
-        for idx = 1:numel(p.fields)
-            field = p.fields{idx};
-            t.(field) = p.T.(field) / q.(field);
-        end
-    elseif isa(q, 'CellTable') && (isa(p, 'struct') || isa(p, 'CalculableStruct'))
-        CellTable.fieldsCompatible(p,q);
-        for idx = 1:numel(q.fields)
-            field = q.fields{idx};
-            t.(field) = q.T.(field) / p.(field);
-        end
+        r = CellTable.from_array(q.mesh, q.A ./ reshape(p.value, [1 1 q.mesh.dims(1)+2]), ...
+        q.field_struct);
+    elseif isa(p, 'CellTable') && isa(q, 'CalculableStruct')
+        arr_from_v = repmat(reshape(q.V, [1 numel(q.fields)]), [1 1 p.mesh.dims(1)+2]);
+        r = CellTable.from_array(p.mesh, p.A ./ arr_from_v, p.field_struct);
+    elseif isa(p, 'CalculableStruct') && isa(q, 'CellTable')
+        arr_from_v = repmat(reshape(p.V, [1 numel(p.fields)]), [1 1 q.mesh.dims(1)+2]);
+        r = CellTable.from_array(q.mesh, arr_from_v ./ q.A, p.field_struct);
     elseif isa(p, 'CellTable')
-        for idx = 1:numel(p.fields)
-            field = p.fields{idx};
-            t.(field) = p.T.(field) / q;
-        end
+        r = CellTable.from_array(p.mesh, p.A ./ q, p.field_struct);
     else
-        for idx = 1:numel(q.fields)
-            field = q.fields{idx};
-            t.(field) = p ./ q.T.(field);
-        end
+        r = CellTable.from_array(q.mesh, p ./ q.A, q.field_struct);
     end
-    r = CellTable(t);
 end

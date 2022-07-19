@@ -1,9 +1,4 @@
 function r = uminus(p)
-    t = table();
-    for idx = 1:numel(p.fields)
-        field = p.fields{idx};
-        t.(field) = -p.T.(field);
-    end
-    r = CellTable(t); 
+    r = CellTable.from_array(p.mesh, -p.A, p.field_struct);
 end
     

@@ -1,130 +1,127 @@
-classdef CellTable < dynamicprops
+classdef (InferiorClasses = {?CellVariable, ?CalculableStruct}) CellTable < dynamicprops
     % WIP: the idea is to get a data strcture to hold several labeled
     % CellVariables that one may want to treat in the same way and make some
     % algebraic calculations on. Primary use case is concentration of several
     % species.
-    % Implementation is an inner table to hold the cellVariables, because matlab
-    % does not allow subclassing of table...
-    % It uses a lot of loops which is not the matlab way and is propbably pretty
-    % bad for performance. Maybe ok to prototype stuff though
+    % It is kind of a table but not as efficient, but adapated to manipulate CellVariables
 
     properties
-        T  % inner table
+        A  % inner array
+        field_struct  % ordered list
+        mesh
     end
 
     properties (Dependent)
         fields
-        mesh
+        nxs
+        nf
+        T
     end
 
     methods
-        function ct = CellTable(inner_table)
+        function ct = CellTable(mesh, inner_table)
             arguments
+                mesh MeshStructure
                 inner_table table = table()
             end
-            ct.T = inner_table(:, sort(inner_table.Properties.VariableNames));
-            fields = CellTable.safe_fields(ct.T);
+            % ct.T = inner_table(:, sort(inner_table.Properties.VariableNames));
+            fields = string(sort(inner_table.Properties.VariableNames))';
+            ct.mesh = mesh;
+            Nxs = ct.mesh.dims(1) + 2;
+            ct.A = zeros(1, numel(fields), Nxs); 
+            ct.field_struct = struct();
 
-            for idx = 1:numel(CellTable.safe_fields(ct.T))
-                field = fields{idx};
-                ct.add_prop_from_table(field);
+            for idx = 1:numel(fields)
+                field = fields(idx);
+                ct.field_struct.(field) = idx;
+                ct.A(1, idx, :) = reshape(inner_table.(field).value, [1 1 Nxs]); 
             end
+
         end
 
-        function add_prop_from_table(self, name)
+        function add_prop(self, name)
+            if ~isprop(self, name)
                 prop = addprop(self, name);
                 prop.Dependent = true;
                 prop.GetMethod = @(obj)CellTable.getDynamicProp(obj,name);
                 prop.SetMethod = @(obj,val)CellTable.setDynamicProp(obj,name,val);
+            end
+        end
+
+        function equip_prop(self)
+            for idx = 1:numel(self.fields)
+                field = self.fields(idx);
+                self.add_prop(field);
+            end
         end
 
         function add_field(self, name, cell_variable)
-            self.T.(name) = cell_variable;
-            self.add_prop_from_table(name);
+            old_arr = self.A;
+            old_field_struct = self.field_struct;
+            new_fields = sort([self.fields; name]);
+            self.field_struct = struct();
+            Nxs = self.mesh.dims(1) + 2;
+            self.A = zeros(1, numel(new_fields), Nxs); 
+            for idx = 1:numel(new_fields)
+                field = new_fields(idx);
+                self.field_struct.(field) = idx;
+                if field == name
+                    self.A(1, idx, :) = reshape(cell_variable.value, [1 1 Nxs]); 
+                else
+                    self.A(1, idx, :) = old_arr(1, old_field_struct.(field), :);
+                end
+            end
         end
 
         function f = get.fields(self)
-            f = self.T.Properties.VariableNames;
+            f = string(fieldnames(self.field_struct));
         end
 
-        function m = get.mesh(self)
-            if numel(self.T) == 0
-                 m = "Empty CellTable";
-            else 
-                ex_field = self.fields{1};
-                m = self.T.(ex_field).domain;
+        function tab = get.T(self)
+            tab = table();
+            for idx = 1:self.nf
+                field = self.fields(idx);
+                tab.(field) = reshape(self.A(1, idx, :), [self.nxs 1]);
             end
         end
 
-        function str = repr(self)
-            if numel(self.T) == 0
-                 str = "Empty CellTable";
-            else 
-                m = self.mesh;
-                dimension = m.dimension;
-                if dimension > 1
-                    disp('Rep for dim > 1 not implemented');
-                    return
-                end
-                n_cells = m.dims(1);
-                x = [-inf; m.cellcenters.x; +inf];
-                cell_n = [0; (1:n_cells)'; n_cells+1]; 
-                tab = table(cell_n, x);
-                for idx = 1:numel(self.fields)
-                    field = self.fields{idx};
-                    tab.(field) = self.T.(field).value;
-                end
-                disp(tab);
-            end
+        function repr(self)
+            disp(self.T);
         end
 
         function res = sum(self)
             % Does horizontal sum
-            res = createCellVariable(self.mesh, 0);
-            for idx = 1:numel(self.fields)
-                field = self.fields{idx};
-                res.value = res.value + self.T.(field).value;
-            end
+            v = reshape(sum(self.A, 2), [self.mesh.dims(1)+2 1]);
+            res = createCellVariable(self.mesh, v(2:end-1));
         end
 
-        function self = apply_BC(self, bc)
-            sides = {'left', 'right'};
-            % Potentially for future: add top, bottom, front, back...
-            % when I want to add other domensions and space representations
-            for idx = 1:numel(self.fields)
-                field = self.fields{idx};
-                cell_var = self.T.(field);
-                loc_bc = createBC(self.mesh);
-                for idx_side = 1:numel(sides)
-                    side = sides{idx_side};
-                    rob = bc.(side);
-                    try
-                        a = rob.a.(field);
-                    catch
-                        a = rob.a;
-                    end
+        function cv = get_cv(self, name)
+            vec = reshape(self.A(1, self.field_struct.(name), :), [self.nxs 1]);
+            cv = createCellVariable(self.mesh, vec(2:end-1));
+        end
 
-                    try
-                        b = rob.b.(field);
-                    catch
-                        b = rob.b;
-                    end
+        function patch_cv(self, name, cv)
+            self.A(1, self.field_struct.(name), :) = reshape(cv.value, [1 1 self.nxs]);
+        end
 
-                    try
-                        c = rob.c.(field);
-                    catch
-                        c = rob.c;
-                    end
+        function patch_vec(self, name, vec)
+            self.A(1, self.field_struct.(name), :) = reshape(vec, [1 1 self.nxs]);
+        end
 
-                    loc_bc.(side) = robin(a,b,c);
-                end
+        function patch_ct(self, ct)
+            self.A = ct.A;
+        end
 
-                self.(field) = applyBC(cell_var, loc_bc);
-            end
+        function n = get.nxs(self)
+            n = self.mesh.dims(1) + 2;
+        end
+
+        function n = get.nf(self)
+            n = numel(self.fields);
         end
 
         function new_obj = copy(obj)
-            new_obj = CellTable(obj.T);
+            new_obj = CellTable.from_array(obj.mesh, obj.A, obj.field_struct);
         end
 
         function obj = toArray(self)
@@ -142,17 +139,18 @@ classdef CellTable < dynamicprops
 
     methods (Static)
 
+        function ct = from_array(mesh, arr, field_struct)
+            ct = CellTable(mesh);
+            ct.A = arr;
+            ct.field_struct = field_struct;
+        end
+
+
         function f = safe_fields(p)
-            if isa(p, 'CellTable')
-                f = p.fields;
-            elseif isa(p, 'table')
-                f = p.Properties.VariableNames;
-            elseif isa(p, 'CalculableStruct')
-                f = p.fields();
-            elseif isa(p, 'struct')
-                f = fieldnames(p);
+            if class(p) == "struct"
+                f = sort(string(fieldnames(p)))';
             else
-                error("CellTable.safe_fields not implemented for this type");
+                f = p.fields;
             end
         end
 
@@ -165,23 +163,28 @@ classdef CellTable < dynamicprops
         end
 
         function val = getDynamicProp(obj,name)
-          val = obj.T.(name);
+          idx = obj.field_struct.(name);
+          val = createCellVariable(obj.mesh, reshape(obj.A(1, idx, 2:end-1), [obj.mesh.dims(1) 1]));
         end
 
         function setDynamicProp(obj,name,val)
-          obj.T.(name) = val;
+            idx = obj.field_struct.(name);
+            if class(val) == "CellVariable"
+                Nxs = val.domain.dims(1) + 2;
+                obj.A(1,idx,:) = reshape(val.value, [1 1 Nxs]);
+            else 
+                Nxs = numel(val);
+                obj.A(1,idx,:) = reshape(val, [1 1 Nxs]);
+            end
         end
 
-        function ct = from_struct(mesh, my_struct)
-            ct = CellTable();
-            var_names = CellTable.safe_fields(my_struct);
-                for idx = 1:numel(var_names) 
-                    var_name = var_names{idx};
-                    ct.add_field(var_name, createCellVariable(mesh, ...
-                    my_struct.(var_name)));
+
+        function ct = from_calculable_struct(mesh, cs)
+            ct = CellTable(mesh);
+                for idx = 1:numel(cs.fields) 
+                    ct.add_field(cs.fields(idx), createCellVariable(mesh, cs.V(idx)));
                 end
         end
-
 
     end
 

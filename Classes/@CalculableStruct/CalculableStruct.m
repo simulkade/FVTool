@@ -1,90 +1,108 @@
-classdef CalculableStruct < dynamicprops
+classdef (InferiorClasses = {?CellVariable}) CalculableStruct < dynamicprops
     % WIP: Looks like a lot of work (and probably bad performance) 
     % just to allow nice labeled calculation but trying
     properties
-        S  % inner table
+        V  % inner vector
+        field_struct  % records the field addresses
     end
 
     properties (Dependent)
         fields
+        struct_repr
+        nf
     end
 
     methods
-        function cs = CalculableStruct(inner_struct)
+        function cs = CalculableStruct(base_struct)
             arguments
-                inner_struct struct = struct()
+                base_struct struct = struct()
             end
-            inner_struct = orderfields(inner_struct);
-            cs.S = inner_struct;
-            fields = fieldnames(inner_struct);
-
+            base_struct = orderfields(base_struct);
+            fields = fieldnames(base_struct);
+            N = numel(fields);
+            cs.V = zeros(N, 1);
             for idx = 1:numel(fields)
                 field = fields{idx};
-                cs.add_prop_from_struct(field);
+                cs.V(idx) = base_struct.(field);
+                cs.field_struct.(field) = idx;
             end
         end
 
-        function add_prop_from_struct(self, name)
+        function equip_prop(self)
+            for idx = 1:numel(self.V)
+                field = self.fields(idx);
+                self.add_prop(field);
+            end
+        end
+
+        function add_prop(self, name)
+            if ~isprop(self, name)
                 prop = addprop(self, name);
                 prop.Dependent = true;
                 prop.GetMethod = @(obj)CalculableStruct.getDynamicProp(obj,name);
                 prop.SetMethod = @(obj,val)CalculableStruct.setDynamicProp(obj,name,val);
+            end
         end
 
-        function add_field(self, name, value)
-            self.S.(name) = value;
-            self.add_prop_from_struct(name);
+        function self = add_field(self, name, value)
+            st = self.struct_repr;
+            st.(name) = value;
+            base_struct = orderfields(st);
+            new_fields = fieldnames(base_struct);
+            N = numel(new_fields);
+            self.V = zeros(N, 1);
+            self.field_struct = struct();
+            for idx = 1:numel(new_fields)
+                field = new_fields{idx};
+                self.V(idx) = base_struct.(field);
+                self.field_struct.(field) = idx;
+            end
+            self.add_prop(name);
         end
 
         function f = get.fields(self)
-            f = fieldnames(self.S);
+            f = string(fieldnames(self.field_struct));
+        end
+
+        function n = get.nf(self)
+            n = numel(self.fields);
+        end
+
+        function st = get.struct_repr(self)
+            st = struct();
+            for idx = 1:numel(self.fields)
+                field = self.fields(idx);
+                st.(field) = self.V(idx);
+            end
         end
 
         function str = repr(self)
-            str = disp(self.S);
+            str = disp(self.struct_repr);
         end
 
         function res = sum(self)
-            % Does horizontal sum
-            res = 0;
-            for idx = 1:numel(self.fields)
-                field = self.fields{idx};
-                res = res + self.(field);
-            end
+            res = sum(self.V);
         end
 
         function new_obj = copy(self)
-            new_obj = CalculableStruct(self.S);
+            new_obj = CalculableStruct.from_vec(self.V, self.field_struct);
         end
-
-        function vec = toVec(self)
-            len = numel(self.fields);
-            vec = zeros(len,1);
-            for idx_f = 1:len
-                field = self.fields{idx_f};
-                vec(idx_f) = self.(field);
-            end
-        end
-
-
     end
 
     methods (Static)
 
+        function obj = from_vec(vec, field_s)
+            obj = CalculableStruct();
+            obj.V = vec;
+            obj.field_struct = field_s;
+        end
+
         function val = getDynamicProp(obj,name)
-          val = obj.S.(name);
+          val = obj.V(obj.field_struct.(name));
         end
 
         function setDynamicProp(obj,name,val)
-          obj.S.(name) = val;
-        end
-
-        function obj = patch_vec(cs, vec)
-            obj = copy(cs);
-            for idx_f = 1:numel(cs.fields)
-                field = cs.fields{idx_f};
-                obj.S.(field) = vec(idx_f);
-            end
+          obj.V(obj.field_struct.(name)) = val;
         end
 
     end
