@@ -14,5 +14,5 @@ F = exp(-(X.^2/(clx*clx/2.0)+Y.^2/(cly*cly/2.0)));
 f =2.0/sqrt(pi)*Lx/sqrt(Nx*Ny)/sqrt(clx)/sqrt(cly).*ifft2(fft2(Z).*fft2(F)); % another filter
 d=d_avg+real(f); % aperture field
 d(d<0)=0.0;
-d(d>sd_cut_coef*sd) = sd_cut_coef*sd;
+d(real(f)>sd_cut_coef*sd) = sd_cut_coef*sd;
 
