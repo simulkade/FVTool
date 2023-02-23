@@ -39,8 +39,8 @@ mnx = Nr*Ntetta;	mny = Nr*Ntetta;
 
 % reassign the east, west, north, and south velocity vectors for the
 % code readability
-ue = re.*u.xvalue(2:Nr+1,:)./(DRp+DRe);
-uw = rw.*u.xvalue(1:Nr,:)./(DRp+DRw);
+ue = re.*u.xvalue(2:Nr+1,:)./(rp.*(DRp+DRe));
+uw = rw.*u.xvalue(1:Nr,:)./(rp.*(DRp+DRw));
 vn = u.yvalue(:,2:Ntetta+1)./(rp.*(DTHETAp+DTHETAn));
 vs = u.yvalue(:,1:Ntetta)./(rp.*(DTHETAp+DTHETAs));
 
