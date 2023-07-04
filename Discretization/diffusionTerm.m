@@ -10,11 +10,16 @@ function [M, Mx, My, Mz] = diffusionTerm(D)
 %   D   - diffusion coefficient, FaceVariable
 %
 % RETURNS:
-%
-%
+%  M   - sparse matrix representing the discretized diffusion term
+% optionally returns the x and y and z components of the discretized diffusion
+% term
 % EXAMPLE:
-%
-% SEE ALSO:
+%  m = createMesh2D(3,4,1,1);
+%  D = createCellVariable(m,1);
+%  D_face = harmonicMean(D);
+%  Mdiff = diffusionTerm(D_face);
+% 
+% SEE ALSO: convectionTerm, createFaceVariable, createCellVariable
 %
 
 
