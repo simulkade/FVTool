@@ -32,7 +32,7 @@ elseif (d == 3) || (d == 3.2)
     phi.value(2:end-1, 1, 2:end-1) = 0.5*(phi.value(2:end-1, 1, 2:end-1)+phi.value(2:end-1, 2, 2:end-1));
     phi.value(2:end-1, end, 2:end-1) = 0.5*(phi.value(2:end-1, end, 2:end-1)+phi.value(2:end-1, end-1, 2:end-1));
     phi.value(2:end-1, 2:end-1, 1) = 0.5*(phi.value(2:end-1, 2:end-1, 1)+phi.value(2:end-1, 2:end-1, 2));
-    phi.value(2:end-1, 2:end-1, end) = 0.5*(phi.value(2:end-1, 2:end-1, end-1));
+    phi.value(2:end-1, 2:end-1, end) = 0.5*(phi.value(2:end-1, 2:end-1, end-1)+phi.value(2:end-1, 2:end-1, end));
 end
 
 phi_bc = phi;
