@@ -23,13 +23,18 @@ include:
 ![diffusion pde](Tests/diff_pde.jpg)
 
 ## Which equation do you solve?
-You can solve the following PDE (or a subset of it):  
-![advection diffusion](pde.png)
+The partial differential equations that can be solved numerically with `FVTool` have the general form
 
-with the following boundary conditions:  
-![boundary condition](boundarycond.png)
+```math
+\underbrace{\alpha\frac{\partial\phi}{\partial t}}_{\textrm{Transient term}}+\underbrace{\nabla \cdot \left(\mathbf{u}\phi\right)}_{\text{Advection term}}+\underbrace{\nabla \cdot (-\mathcal{D}\nabla\phi)}_{\text{Diffusion term}}+\underbrace{\beta\phi}_{\text{Linear source term}}+\underbrace{\gamma}_{\text{Constant source term}}=0
+```
+with the following general form of boundary conditions (specified by constants `a`, `b`, and `c`):
 
-Believe it or not, the above equations describe the majority of the transport phenomena in chemical and petroleum engineering and similar fields.
+```math
+a\nabla\phi \cdot \mathbf{e}+b\phi=c
+```
+
+The above equations describe the majority of the transport phenomena in chemical and petroleum engineering and many other fields.
 
 ## How to start
 Download the package, start matlab, and run
